@@ -1,0 +1,164 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+
+class Game{
+    'main class, contains everything relevant to the starting/stopping of the game.
+    + helmet_list: ArrayList<Helmet>
+    - player: Player
+    - hero: Hero
+    - gamemap: ArrayList<GameObjects>
+    - statistics: Stats
+    + out: objectoutputstream
+    + in : objectinputstream
+
+    <u>SERIALVERSIONID : long</u>
+
+    + serialise(): void
+    + deserialise(): void
+    + init(): void
+    + play():void
+    + pause():void
+    + resume():void
+    + save():void
+    + load():void
+    + exit():void
+}
+
+class GameObjects{
+    -x_position:float
+    -y_position:float
+    -x_velocity:float
+    -y_velocity:float
+    -x_acceleration:float
+    -y_acceleration:float
+
+    +move():void
+    -setPosition(mov_x:float, mov_y:float):void
+    -setVelocity(vel_x: float, vel_y:float):void
+    -setAcceleration(acc_x:float, acc_y:float):void
+    -getPosition(): x_position, y_position
+
+}
+
+class Player{
+    +hero: Hero
+    +score: int
+    +game: Game
+    +helmet: Helmet
+
+    + enter_screen():void
+    + viewScores():void
+    + serialise(): void
+    + deserialise(): void
+    + init(): void
+    + play():void
+    + pause():void
+    + resume():void
+    + save():void
+    + load():void
+    + exit():void
+    + gameOver():void
+    + equipHelmet(helm:Helmet):void
+    + resurrect_Hero():void
+    + getPoints(point:int):void
+    + usePoints(points:int):void
+}
+
+class Hero extends GameObjects implements Collidable{
+    'contains player information: high scores, save games, etc
+    'for serialisation/deserialisation (?)
+    -availableWeapons[]: Weapon[]
+    -currentWeapon: Weapon
+    -currentHelmet: Helmet
+    -Resurrected: boolean
+
+
+    {method} <i>@Override</i>\n+Collide(other: Collidable): void
+    {method} +equipWeapon(): void
+    {method} +switch_weapon(weapon: Weapon):void
+    {method} -collectPoints(Collectable: int)
+    {method} -die():void
+    {method} +alive_status():void
+    {method} -jump():void
+    {method} -resurrect(): void
+
+}
+
+interface Collidable{
+    + void collide(other: Collidable): void
+}
+
+abstract class Chest extends GameObjects implements Collidable{
+    {method} +abstract collectChest (hero: Hero):void
+    {method} +disappear():void
+}
+
+class Orc extends GameObjects implements Collidable{
+    -health : int
+    -coin_count: int
+    +sprite : ???
+
+    <i>@Override</i>\n+collide (other: Collidable):void
+    +die(): int
+    +get_hit (hero: Hero):void
+    +isAlive():boolean
+    +smash_Hero (hero:Hero):void
+    -jump():void
+}
+class GreenOrc extends Orc{
+}
+class RedOrc extends Orc{
+}
+class Boss extends Orc{
+}
+
+class WeaponChest extends Chest{
+    -weapon: Weapon
+    {method} <i>@Override</i>\ncollectChest(hero:Hero):void
+}
+class CoinChest extends Chest{
+    -coins_number: int
+    {method} <i>@Override</i>\ncollectChest(hero:Hero):void
+}
+
+class Weapon implements Collectable{
+- level:int
+
+
+-incLevel():void
++getLevel():int
+<i>@Override</i> \n+ collect(collector: Hero): void
++ Upgrade():void
+}
+
+class Coin implements Collectable{
+<i>@Override</i> \n+ collect(collector: Hero): void
+}
+
+interface Collectable{
+    + get_collected():void
+}
+
+class Platform extends GameObjects{
+    -start_position : int       //starting point
+    -end_position : int         //end point
+    <i>@Override</i> \n+ collide(other: Collidable): void
+}
+
+class FallingPlatform extends Platform {
+
+    + collapse(): void
+}
+
+
+'for Game
+Game "1 " *-- "1 " Hero
+Game "..* " *-- GameObjects
+Game  --  Player
+'for Player
+Player "1  " --o Hero
+'for Chests
+WeaponChest "1      " *-- Weapon
+CoinChest "1 .. * " *-- Coin
+@enduml
