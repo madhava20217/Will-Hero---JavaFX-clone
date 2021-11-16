@@ -1,0 +1,178 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Game{
+    'main class, contains everything relevant to the starting/stopping of the game.
+    + helmet_list: ArrayList<Helmet>
+    - player: Player
+    - hero: Hero
+    'I dont think we need to serialise gamemap because it's constant across all games
+    - gamemap: ArrayList<GameObject>
+    - statistics: Stats
+    + out: ObjectOutputstream
+    + in: ObjectInputStream
+
+    {static}- serialVersionUID: long
+    + main(): void
+    + serialise(): void
+    + deserialise(): void
+    + start(): void
+    + stop(): void
+    + pause(): void
+    + resume(): void
+    + save(): void
+    + load(): void
+    + exit(): void
+    + resurrect(): void
+}
+
+class GameObject{
+    - x_position:float
+    - y_position:float
+    - x_velocity:float
+    - y_velocity:float
+    - x_acceleration:float
+    - y_acceleration:float
+
+    + move():void
+    - set_position(mov_x:float, mov_y:float):void
+    - set_velocity(vel_x: float, vel_y:float):void
+    - set_acceleration(acc_x:float, acc_y:float):void
+    - get_position(): x_position, y_position
+}
+
+class Player{
+    'I really dont think this class needs to exist
+    + hero: Hero
+    + score: int
+    + game: Game
+    + helmet: Helmet
+
+    + enter_screen(): void
+    + viewScores(): void
+    + serialise(): void
+    + deserialise(): void
+    + init(): void
+    + play(): void
+    + pause(): void
+    + resume(): void
+    + save(): void
+    + load(): void
+    + exit(): void
+    + game_over(): void
+    + equip_helmet(helm: Helmet): void
+    + resurrect_hero(): void
+    + get_points(point:int): void
+    + use_points(points:int): void
+}
+
+class Hero extends GameObject implements Collidable{
+    'contains player information: high scores, save games, etc
+    'for serialisation/deserialisation(?)
+    - available_weapons[]: Weapon[]
+    - current_weapon: Weapon
+    - current_helmet: Helmet
+    - resurrected: boolean
+
+    {method} <i>@Override</i>
+    + collide(other: Collidable): void
+
+    - collect_points(points: int)
+    - die(): void
+    + alive_status(): void
+    - jump(): void
+    - resurrect(): void
+    + equip_weapon(weapon: Weapon): void
+}
+
+interface Collidable{
+    + void collide(other: Collidable): void
+}
+
+abstract class Chest extends GameObject implements Collidable{
+    + abstract collectChest(hero: Hero):void
+    + disappear():void
+}
+
+class Orc extends GameObject implements Collidable{
+    - health : int
+    - coin_count: int
+    + sprite : ???
+
+    {method}<i>@Override</i>
+    +collide(other: Collidable):void
+
+    + die(): int
+    + get_hit(hero: Hero): void
+    + is_alive(): boolean
+    + smash_hero(hero: Hero): void
+    - jump(): void
+}
+class GreenOrc extends Orc{
+}
+class RedOrc extends Orc{
+}
+class Boss extends Orc{
+}
+
+class WeaponChest extends Chest{
+    -weapon: Weapon
+    {method} <i>@Override</i>
+    collect_chest(hero: Hero): void
+}
+class CoinChest extends Chest{
+    - coins_number: int
+    {method} <i>@Override</i>
+    collect_chest(hero: Hero): void
+}
+
+class Weapon implements Collectable{
+    - level:int
+
+    {method}<i>@Override</i>
+    + get_collected(): void
+
+    - inc_level(): void
+    + get_level(): int
+    + upgrade(): void
+}
+
+class FlyingWeapon extends GameObject implements Collidable{
+    {method}<i>@Override</i>
+    + collect(other: Collidable): void
+}
+
+class Coin extends GameObject implements Collectable {
+    {method}<i>@Override</i>
+    + get_collected(): void
+}
+
+interface Collectable{
+    + get_collected():void
+}
+
+class Platform extends GameObject implements Collidable{
+    'boundaries of platform
+    -start_position: int
+    -end_position: int
+    {method}<i>@Override</i>
+    + collide(other: Collidable): void
+}
+
+class FallingPlatform extends Platform {
+    + collapse(): void
+}
+
+class Helmet{
+}
+
+'for Game
+Game "1 " *-- "1 " Hero
+Game "..* " *-- GameObject
+Game  --  Player
+'for Player
+Player "1  " *-- Hero
+'for Chests
+WeaponChest "1      " *-- Weapon
+CoinChest "1 .. * " *-- Coin
+@enduml
