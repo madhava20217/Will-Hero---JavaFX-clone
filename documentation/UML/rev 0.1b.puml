@@ -122,7 +122,7 @@ class CoinChest extends Chest{
     {method} <i>@Override</i>\ncollectChest(hero:Hero):void
 }
 
-class Weapon implements Collectable{
+class Weapon extends GameObjects implements Collectable{
 - level:int
 
 
@@ -132,7 +132,7 @@ class Weapon implements Collectable{
 + Upgrade():void
 }
 
-class Coin implements Collectable{
+class Coin extends GameObjects implements Collectable {
 <i>@Override</i> \n+ collect(collector: Hero): void
 }
 
