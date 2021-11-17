@@ -1,69 +1,43 @@
 @startuml
 skinparam classAttributeIconSize 0
 
-class Game{
+class GameManager{
+    - running_save: GameInstance
+    - all_saves: ArrayList<GameInstance>
+    + save(): void
+    + load(): void
+    + serialise(): void
+    + deserialise(): void
+    {static}- serialVersionUID: long
+}
+
+class GameInstance{
     'main class, contains everything relevant to the starting/stopping of the game.
     + helmet_list: ArrayList<Helmet>
     - player: Player
     - hero: Hero
-    'I dont think we need to serialise gamemap because it's constant across all games
     - gamemap: ArrayList<GameObject>
     - statistics: Stats
-    + out: ObjectOutputstream
-    + in: ObjectInputStream
 
-    {static}- serialVersionUID: long
-    + main(): void
-    + serialise(): void
-    + deserialise(): void
     + start(): void
     + stop(): void
     + pause(): void
     + resume(): void
-    + save(): void
-    + load(): void
     + exit(): void
     + resurrect(): void
+    + game_over(): void
+    + win(): void
 }
 
 class GameObject{
-    - x_position:float
-    - y_position:float
-    - x_velocity:float
-    - y_velocity:float
-    - x_acceleration:float
-    - y_acceleration:float
+    - pos[]: float[2]
+    - vel[]: float[2]
+    - acc[]: float[2]
 
+    + get_pos(): float[2]
+    + set_vel(axis: int, value: float): void
+    + set_acc(axis: int, value: float): void
     + move():void
-    - set_position(mov_x:float, mov_y:float):void
-    - set_velocity(vel_x: float, vel_y:float):void
-    - set_acceleration(acc_x:float, acc_y:float):void
-    - get_position(): x_position, y_position
-}
-
-class Player{
-    'I really dont think this class needs to exist
-    + hero: Hero
-    + score: int
-    + game: Game
-    + helmet: Helmet
-
-    + enter_screen(): void
-    + viewScores(): void
-    + serialise(): void
-    + deserialise(): void
-    + init(): void
-    + play(): void
-    + pause(): void
-    + resume(): void
-    + save(): void
-    + load(): void
-    + exit(): void
-    + game_over(): void
-    + equip_helmet(helm: Helmet): void
-    + resurrect_hero(): void
-    + get_points(point:int): void
-    + use_points(points:int): void
 }
 
 class Hero extends GameObject implements Collidable{
@@ -82,6 +56,7 @@ class Hero extends GameObject implements Collidable{
     + alive_status(): void
     - jump(): void
     - resurrect(): void
+    + equip_helmet(helm: Helmet): void
     + equip_weapon(weapon: Weapon): void
 }
 
@@ -167,11 +142,10 @@ class Helmet{
 }
 
 'for Game
-Game "1 " *-- "1 " Hero
-Game "..* " *-- GameObject
-Game  --  Player
-'for Player
-Player "1  " *-- Hero
+GameInstance "1 " *-- "1 " Hero
+GameInstance "..* " *-- GameObject
+GameManager "*..*" *-- GameInstance
+
 'for Chests
 WeaponChest "1      " *-- Weapon
 CoinChest "1 .. * " *-- Coin

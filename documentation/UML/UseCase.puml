@@ -1,0 +1,26 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+:Player: as pl
+
+rectangle Game {
+    (Press / Click Screen\n to move hero) as press
+    (Load a save file) as load
+    (Save the current game) as save
+    (Pause the playing game) as pause
+    (Play paused game) as play
+    (Resurrect hero once dead) as resurrect
+    (Start the game) as start
+    (Close the game) as exit
+}
+
+pl --> press
+pl --> load
+pl --> start
+pl --> pause
+pause --> play
+pause --> save
+pause --> exit
+pl --> resurrect
+@enduml
