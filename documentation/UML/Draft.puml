@@ -1,7 +1,16 @@
 @startuml
-skinparam classAttributeIconSize 0
+'TODO: check serialisation for contained classes
+skinparam linetype ortho
+skinparam BackgroundColor #EEE
 
-class GameManager{
+skinparam class {
+    AttributeIconSize 0
+    BackgroundColor #E5E5E5
+    ArrowColor #666
+    BorderColor #666
+}
+
+class GameManager implements Serialisable{
     - running_save: GameInstance
     - all_saves: ArrayList<GameInstance>
     + save(): void
@@ -60,12 +69,12 @@ class Hero extends GameObject implements Collidable{
     + equip_weapon(weapon: Weapon): void
 }
 
-interface Collidable{
+interface Collidable <<interface>>{
     + void collide(other: Collidable): void
 }
 
 abstract class Chest extends GameObject implements Collidable{
-    + abstract collectChest(hero: Hero):void
+    + <i>collect_chest(hero: Hero):void</i>
     + disappear():void
 }
 
@@ -91,7 +100,6 @@ class Boss extends Orc{
 }
 
 class WeaponChest extends Chest{
-    -weapon: Weapon
     {method} <i>@Override</i>
     collect_chest(hero: Hero): void
 }
@@ -105,25 +113,24 @@ class Weapon implements Collectable{
     - level:int
 
     {method}<i>@Override</i>
-    + get_collected(): void
+    + get_collected(hero: Hero): void
 
-    - inc_level(): void
-    + get_level(): int
+    + use(): int
     + upgrade(): void
 }
 
 class FlyingWeapon extends GameObject implements Collidable{
     {method}<i>@Override</i>
-    + collect(other: Collidable): void
+    + collide(other: Collidable): void
 }
 
 class Coin extends GameObject implements Collectable {
     {method}<i>@Override</i>
-    + get_collected(): void
+    + get_collected(hero: Hero): void
 }
 
-interface Collectable{
-    + get_collected():void
+interface Collectable <<interface>>{
+    + get_collected(hero: Hero):void
 }
 
 class Platform extends GameObject implements Collidable{
@@ -139,7 +146,13 @@ class FallingPlatform extends Platform {
 }
 
 class Helmet{
+    - weapons: ArrayList<Weapon>
 }
+
+hide circle
+
+Hero *--> Helmet
+Helmet --> Weapon
 
 'for Game
 GameInstance "1 " *-- "1 " Hero

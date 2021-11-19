@@ -1,26 +1,85 @@
 @startuml
-left to right direction
+
 skinparam packageStyle rectangle
 
 :Player: as pl
 
-rectangle Game {
+skinparam BackgroundColor #EEE
+
+skinparam rectangle {
+    BackgroundColor #E5E5E5
+    BorderColor #666
+}
+
+skinparam arrowColor #666
+
+skinparam usecase {
+    BackgroundColor #DDD
+    BorderColor #666
+}
+
+skinparam actor {
+    BorderColor #666
+    BackgroundColor #DDD
+}
+
+rectangle <<subsystem>>\nGame {
     (Press / Click Screen\n to move hero) as press
     (Load a save file) as load
     (Save the current game) as save
     (Pause the playing game) as pause
-    (Play paused game) as play
-    (Resurrect hero once dead) as resurrect
-    (Start the game) as start
+    (Resume paused game) as resume
+    (Resurrect hero) as resurrect
+    (Use and deduct coins) as use_coins
+    (Start a new  game) as start
     (Close the game) as exit
+    (Open Main Menu) as initialise
+    (Play the current game) as play
+    (Collect a Treasure Chest) as collect
+    (Collect Coins) as collect_coins
+    (Collide with an entity) as collide
+    (Die to an orc) as orc
+    (Fire Weapon if\n one is equipped) as fire_weapon
+    (Push Orc) as push_orc
+    (Fall off into the abyss) as fall_off
+    (Die) as die
+    (Collect / Upgrade \n a Weapon) as collect_weapon
+    (Game Over) as game_over
+    (Kill Boss Orc) as boss_win
+    (Show Win Screen) as win
 }
 
-pl --> press
-pl --> load
-pl --> start
-pl --> pause
-pause --> play
-pause --> save
-pause --> exit
-pl --> resurrect
+pl -- initialise
+initialise <.. start: <<extends>>
+initialise <.. load: <<extends>>
+initialise <.. exit: <<extends>>
+
+play ..> press: <<includes>>
+play <.. pause: <<extends>>
+pause <.. resume: <<extends>>
+pause <.. save: <<extends>>
+
+press <.. collect: <<extends>>
+press <.. collide: <<extends>>
+press <.. collect_coins: <<extends>>
+press ..> fire_weapon: <<includes>>
+die <.. resurrect: <<extends>>
+resurrect ..> use_coins: <<includes>>
+pause <.. initialise: <<extends>>
+collide <.. push_orc: <<extends>>
+push_orc <.. collect_coins: <<extends>>
+collide <.. orc: <<extends>>
+press <.. fall_off: <<extends>>
+orc ..> die: <<includes>>
+fall_off ..> die: <<includes>>
+collect <.. collect_coins: <<extends>>
+collect <.. collect_weapon: <<extends>>
+die <.. game_over: <<extends>>
+game_over <.. initialise: <<extends>>
+
+press <.. boss_win: <<extends>>
+boss_win ..> win: <<includes>>
+win ..> initialise: <<includes>>
+pl -- play
+
 @enduml
