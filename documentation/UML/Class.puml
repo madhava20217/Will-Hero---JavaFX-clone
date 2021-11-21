@@ -1,32 +1,31 @@
 @startuml
-'TODO: check serialisation for contained classes
 skinparam linetype ortho
 skinparam BackgroundColor #EEE
 
 skinparam class {
     AttributeIconSize 0
     BackgroundColor #E5E5E5
-    ArrowColor #666
+    ArrowColor #222
+    ArrowThickness 1.5
     BorderColor #666
 }
 
-class GameManager implements Serialisable{
+class GameManager implements Serializable {
     - running_save: GameInstance
     - all_saves: ArrayList<GameInstance>
     + save(): void
     + load(): void
     + serialise(): void
-    + deserialise(): void
+    + deserialise(): GameManager
     {static}- serialVersionUID: long
 }
 
-class GameInstance{
+class GameInstance implements Serializable{
     'main class, contains everything relevant to the starting/stopping of the game.
     + helmet_list: ArrayList<Helmet>
-    - player: Player
     - hero: Hero
     - gamemap: ArrayList<GameObject>
-    - statistics: Stats
+    - coin_count: int
 
     + start(): void
     + stop(): void
@@ -38,7 +37,7 @@ class GameInstance{
     + win(): void
 }
 
-class GameObject{
+abstract class GameObject implements Serializable{
     - pos[]: float[2]
     - vel[]: float[2]
     - acc[]: float[2]
@@ -46,7 +45,9 @@ class GameObject{
     + get_pos(): float[2]
     + set_vel(axis: int, value: float): void
     + set_acc(axis: int, value: float): void
-    + move():void
+    + move(): void
+    + render(): void
+    + derender(): void
 }
 
 class Hero extends GameObject implements Collidable{
@@ -55,51 +56,59 @@ class Hero extends GameObject implements Collidable{
     - available_weapons[]: Weapon[]
     - current_weapon: Weapon
     - current_helmet: Helmet
+    - is_alive: boolean
     - resurrected: boolean
+    - current_game: GameInstance
 
     {method} <i>@Override</i>
     + collide(other: Collidable): void
 
-    - collect_points(points: int)
-    - die(): void
-    + alive_status(): void
-    - jump(): void
-    - resurrect(): void
+    + add_coins(coin_count: int)
+    + die(): void
+    + get_helmet(): Helmet
+    + is_alive(): boolean
+    + resurrect(): void
     + equip_helmet(helm: Helmet): void
     + equip_weapon(weapon: Weapon): void
 }
 
 interface Collidable <<interface>>{
-    + void collide(other: Collidable): void
+    + <i>collide(other: Collidable): void</i>
 }
 
 abstract class Chest extends GameObject implements Collidable{
-    + <i>collect_chest(hero: Hero):void</i>
-    + disappear():void
+    + <i>collect_chest(hero: Hero): void</i>
 }
 
-class Orc extends GameObject implements Collidable{
-    - health : int
-    - coin_count: int
-    + sprite : ???
+abstract class Orc extends GameObject implements Collidable{
+    - hit_endurance: int
+    - is_alive: boolean
+    - coin_drop: int
+    - dialogues: String[]
+    - size: float
+    - sprite: String
 
     {method}<i>@Override</i>
-    +collide(other: Collidable):void
+    +collide(other: Collidable): void
 
-    + die(): int
-    + get_hit(hero: Hero): void
+    + die(hero: Hero): void
+    + get_hit_by_weapon(weapon: FlyingWeapon): void
     + is_alive(): boolean
     + smash_hero(hero: Hero): void
-    - jump(): void
+    + call_out(): void
 }
 class GreenOrc extends Orc{
+
 }
 class RedOrc extends Orc{
 }
-class Boss extends Orc{
+class BossGreenOrc extends Orc{
+    {method} <i>@Override</i>
+    +collide(other: Collidable): void
 }
 
 class WeaponChest extends Chest{
+    - weapon: Weapon
     {method} <i>@Override</i>
     collect_chest(hero: Hero): void
 }
@@ -109,9 +118,8 @@ class CoinChest extends Chest{
     collect_chest(hero: Hero): void
 }
 
-class Weapon implements Collectable{
-    - level:int
-
+class Weapon implements Collectable, Serializable{
+    - level: int
     {method}<i>@Override</i>
     + get_collected(hero: Hero): void
 
@@ -120,6 +128,7 @@ class Weapon implements Collectable{
 }
 
 class FlyingWeapon extends GameObject implements Collidable{
+    - category: Weapon
     {method}<i>@Override</i>
     + collide(other: Collidable): void
 }
@@ -142,24 +151,36 @@ class Platform extends GameObject implements Collidable{
 }
 
 class FallingPlatform extends Platform {
+    - collapse_rate: float
+    'starting y-ward vel / acc
+    - collapse_motion: float[2]
     + collapse(): void
 }
 
-class Helmet{
-    - weapons: ArrayList<Weapon>
+class Helmet implements Serializable{
+    - weapon_options: Weapon[2]
+    + get_weapon_options(): Weapon[]
 }
 
+
+hide IOException members
+hide ClassNotFoundException members
 hide circle
 
-Hero *--> Helmet
-Helmet --> Weapon
+Hero " 1"*--> Helmet
+Helmet "2"--> Weapon
 
 'for Game
 GameInstance "1 " *-- "1 " Hero
-GameInstance "..* " *-- GameObject
-GameManager "*..*" *-- GameInstance
+GameInstance " 0..* " *--> GameObject
+GameManager "~*" *-- " 1  " GameInstance
 
 'for Chests
-WeaponChest "1      " *-- Weapon
-CoinChest "1 .. * " *-- Coin
+Weapon ..> Hero
+WeaponChest "1   " --> Weapon
+CoinChest "1..* " --> Coin
+GameManager .right.> IOException: "<<throws>>"
+GameManager .right.> ClassNotFoundException: "<<throws>>"
+Weapon -- FlyingWeapon
+Chest .left.> Hero
 @enduml

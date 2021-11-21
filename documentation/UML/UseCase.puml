@@ -1,6 +1,7 @@
 @startuml
 
 skinparam packageStyle rectangle
+skinparam linetype ortho
 
 :Player: as pl
 
@@ -11,7 +12,8 @@ skinparam rectangle {
     BorderColor #666
 }
 
-skinparam arrowColor #666
+skinparam arrowColor #222
+skinparam arrowThickness 1.5
 
 skinparam usecase {
     BackgroundColor #DDD
