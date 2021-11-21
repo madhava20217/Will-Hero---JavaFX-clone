@@ -1,7 +1,7 @@
 @startuml
 
 skinparam packageStyle rectangle
-skinparam linetype ortho
+'skinparam linetype ortho
 
 :Player: as pl
 
