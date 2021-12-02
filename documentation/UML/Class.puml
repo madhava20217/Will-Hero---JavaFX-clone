@@ -1,6 +1,8 @@
 @startuml
 'skinparam linetype ortho
 skinparam BackgroundColor #EEE
+skinparam linetype ortho
+
 
 skinparam class {
     AttributeIconSize 0
