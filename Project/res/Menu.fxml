@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
+<!--
+TODO: Set background image
+TODO: make exit button circle, with image behind
+TODO: set background colour for buttons
+TODO: set better shape for buttons
+-->
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="startButton" layoutX="204.0" layoutY="111.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="Start" />
-      <Button fx:id="ExitButton" layoutX="203.0" layoutY="265.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="Exit" />
-      <Button fx:id="loadButton" layoutX="204.0" layoutY="188.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="Load saved game" />
+      <Button fx:id="startButton" layoutX="453.0" layoutY="203.0" mnemonicParsing="false" prefHeight="91.0" prefWidth="290.0" style="-fx-background-color: #9999CC;" text="Start New Game">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font size="25.0" />
+         </font></Button>
+      <Button fx:id="exitButton" layoutX="983.0" layoutY="14.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" text="Exit" />
+      <Button fx:id="loadButton" layoutX="453.0" layoutY="304.0" mnemonicParsing="false" prefHeight="91.0" prefWidth="290.0" style="-fx-background-color: #9999CC;" text="Load Saved Game">
+         <font>
+            <Font size="25.0" />
+         </font></Button>
    </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </AnchorPane>
