@@ -2,30 +2,38 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <!--
 TODO: Set background image
-TODO: make exit button circle, with image behind
 TODO: set background colour for buttons
-TODO: set better shape for buttons
 -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="startButton" layoutX="453.0" layoutY="203.0" mnemonicParsing="false" prefHeight="91.0" prefWidth="290.0" style="-fx-background-color: #9999CC;" text="Start New Game">
+      <Button fx:id="startButton" layoutX="379.0" layoutY="317.0" mnemonicParsing="false" prefWidth="290.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Start New Game" textFill="#3e3e3e">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
          <font>
-            <Font size="25.0" />
+            <Font name="Calibri" size="30.0" />
          </font></Button>
-      <Button fx:id="exitButton" layoutX="983.0" layoutY="14.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" style="-fx-background-image: url('../images/exit_icon.png');" text="Exit" />
-      <Button fx:id="loadButton" layoutX="453.0" layoutY="304.0" mnemonicParsing="false" prefHeight="91.0" prefWidth="290.0" style="-fx-background-color: #9999CC;" text="Load Saved Game">
+      <Button fx:id="exitButton" layoutX="983.0" layoutY="14.0" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent;" textFill="TRANSPARENT" />
+      <Button fx:id="loadButton" layoutX="379.0" layoutY="388.0" mnemonicParsing="false" prefWidth="290.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Load Saved Game">
          <font>
-            <Font size="25.0" />
-         </font></Button>
+            <Font name="Calibri" size="30.0" />
+         </font>
+      </Button>
+      <Label layoutX="285.0" layoutY="135.0" prefHeight="102.0" prefWidth="478.0" text="Will Hero">
+         <font>
+            <Font name="Calibri Bold" size="120.0" />
+         </font>
+      </Label>
+        <ImageView fitHeight="74.0" fitWidth="70.0" layoutX="963.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/exit_icon.png" />
+        </ImageView>
    </children>
    <opaqueInsets>
       <Insets />
