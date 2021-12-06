@@ -1,0 +1,6 @@
+my_button{
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-border-width: 2px;
+    -fx-border-insets: -2px;
+}
