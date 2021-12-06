@@ -2,9 +2,29 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="265.0" layoutY="200.0" mnemonicParsing="false" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Button" />
+      <Button layoutX="348.0" layoutY="350.0" mnemonicParsing="false" prefWidth="350.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save Current Game" textFill="#3e3e3e">
+          <font>
+              <Font name="Calibri" size="30.0" />
+          </font>
+      </Button>
+      <Label layoutX="421.0" layoutY="99.0" text="Paused">
+         <font>
+            <Font name="Calibri" size="70.0" />
+         </font>
+      </Label>
+      <Button layoutX="349.0" layoutY="433.0" mnemonicParsing="false" prefWidth="350.0" style="-fx-background-color: #E55555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Return to Main Menu" textFill="#333333">
+         <font>
+            <Font name="Calibri" size="30.0" />
+         </font>
+      </Button>
+      <Button layoutX="349.0" layoutY="267.0" mnemonicParsing="false" prefWidth="350.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Continue Playing Game" textFill="#3e3e3e">
+         <font>
+            <Font name="Calibri" size="30.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

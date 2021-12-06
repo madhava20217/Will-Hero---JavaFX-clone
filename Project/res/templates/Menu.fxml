@@ -7,8 +7,12 @@
 <?import javafx.scene.text.*?>
 
 <!--
-TODO: Set background image
-TODO: set background colour for buttons
+TODO: make win screen
+TODO: make load screen
+TODO: make death screen
+TODO: make controllers for screen changing buttons
+TODO: basic animation for hero / orc. bouncing and stuff
+TODO: coin counter, position counter on play screen
 -->
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
