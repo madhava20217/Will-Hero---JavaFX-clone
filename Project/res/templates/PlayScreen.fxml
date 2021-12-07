@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
 <!--
     TODO: some way to test win and lose screen
@@ -14,7 +18,7 @@
     background will be in root pane, but root pain will not support clicking for hero movement
 -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameManager">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameManager">
    <children>
       <AnchorPane prefHeight="60.0" prefWidth="1048.0">
          <children>
@@ -35,9 +39,9 @@
             </Label>
             <HBox alignment="CENTER" layoutX="824.0" layoutY="10.0" prefHeight="40.0" prefWidth="224.0" spacing="7.0">
                <children>
-                  <Button mnemonicParsing="false" onMouseClicked="#go_to_pause" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #222277;" text="Pause" textFill="WHITE" />
-                  <Button mnemonicParsing="false" onMouseClicked="#go_to_over_lose" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Kill" textFill="WHITE" />
-                  <Button mnemonicParsing="false" onMouseClicked="#go_to_over_win" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Win" textFill="WHITE" />
+                  <Button fx:id="pauseButton" mnemonicParsing="false" onMouseClicked="#go_to_pause" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #222277;" text="Pause" textFill="WHITE" />
+                  <Button fx:id="youDiedScreen" mnemonicParsing="false" onMouseClicked="#go_to_over_lose" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Kill" textFill="WHITE" />
+                  <Button fx:id="winScreen" mnemonicParsing="false" onMouseClicked="#go_to_over_win" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Win" textFill="WHITE" />
                </children>
             </HBox>
          </children></AnchorPane>
