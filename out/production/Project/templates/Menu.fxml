@@ -15,9 +15,9 @@ TODO: basic animation for hero / orc. bouncing and stuff
 TODO: coin counter, position counter on play screen
 -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:controller="GameManager" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="startButton" layoutX="379.0" layoutY="317.0" mnemonicParsing="false" prefWidth="290.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Start New Game" textFill="#3e3e3e">
+      <Button fx:id="startButton" layoutX="379.0" layoutY="317.0" mnemonicParsing="false" onMouseClicked="#handle_mouse" prefWidth="290.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Start New Game" textFill="#3e3e3e">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -35,7 +35,7 @@ TODO: coin counter, position counter on play screen
             <Font name="Calibri Bold" size="120.0" />
          </font>
       </Label>
-        <ImageView fitHeight="74.0" fitWidth="70.0" layoutX="963.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="exit" fitHeight="74.0" fitWidth="70.0" layoutX="963.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../images/exit_icon.png" />
         </ImageView>
    </children>

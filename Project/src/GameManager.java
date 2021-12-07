@@ -1,31 +1,36 @@
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameManager implements Serializable {
-
-    private GameInstance running_save;
-    private ArrayList<GameInstance> all_saves;
-    private long serialVersionUID;
-
-    GameManager(){
-        //todo constructor
-    }
-
-    public void save(){
-        //todo method
-    }
-
-    public void load(){
-        //todo method
-    }
-
-    public void seralise() throws ClassNotFoundException, IOException{
-        //todo method serialisation
-    }
-
-    public void deserialise() throws ClassNotFoundException, IOException {
-        //todo method deserialisation
-    }
-
+public class GameManager extends Application implements Serializable {
+	public GameManager(){
+	
+	}
+	
+	@Override
+	public void start (Stage stage) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(GameManager.class.getResource("templates/Menu.fxml"));
+		Scene scene = new Scene(fxmlLoader.load(), 1048, 590);
+		
+		stage.setTitle("Will Hero");
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	@FXML
+	private void handle_mouse(MouseEvent event) {
+		System.out.println("Hello, World!");
+	}
+	
+	public static void main (String[] args) {
+		launch();
+	}
 }
