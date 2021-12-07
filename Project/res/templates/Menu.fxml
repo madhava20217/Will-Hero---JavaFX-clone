@@ -7,9 +7,6 @@
 <?import javafx.scene.text.*?>
 
 <!--
-TODO: make win screen
-TODO: make load screen
-TODO: make death screen
 TODO: make controllers for screen changing buttons
 TODO: basic animation for hero / orc. bouncing and stuff
 TODO: coin counter, position counter on play screen
