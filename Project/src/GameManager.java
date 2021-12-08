@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 public class GameManager extends Application implements Serializable {
-	GameManager(){
+	public GameManager(){
 	}
 	
 	@Override
