@@ -18,7 +18,7 @@
     background will be in root pane, but root pain will not support clicking for hero movement
 -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameManager">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
    <children>
       <AnchorPane prefHeight="60.0" prefWidth="1048.0">
          <children>
@@ -39,9 +39,9 @@
             </Label>
             <HBox alignment="CENTER" layoutX="824.0" layoutY="10.0" prefHeight="40.0" prefWidth="224.0" spacing="7.0">
                <children>
-                  <Button fx:id="pauseButton" mnemonicParsing="false" onMouseClicked="#go_to_pause" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #222277;" text="Pause" textFill="WHITE" />
-                  <Button fx:id="youDiedScreen" mnemonicParsing="false" onMouseClicked="#go_to_over_lose" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Kill" textFill="WHITE" />
-                  <Button fx:id="winScreen" mnemonicParsing="false" onMouseClicked="#go_to_over_win" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Win" textFill="WHITE" />
+                  <Button fx:id="pauseButton" mnemonicParsing="false" onMouseClicked="#goToPause" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #222277;" text="Pause" textFill="WHITE" />
+                  <Button fx:id="youDiedScreen" mnemonicParsing="false" onMouseClicked="#goToOverLose" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Kill" textFill="WHITE" />
+                  <Button fx:id="winScreen" mnemonicParsing="false" onMouseClicked="#goToOverWin" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Win" textFill="WHITE" />
                </children>
             </HBox>
          </children></AnchorPane>

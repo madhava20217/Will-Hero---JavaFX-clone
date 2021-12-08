@@ -4,9 +4,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+<!--
+    TODO: Handler for continue button, which will switch to playing scene
+    TODO: Handler + button for pausing, which will switch from playing scene to pause scene
+    TODO: return to main menu handler
+    TODO: dummy save handler
+-->
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
    <children>
-      <Button layoutX="348.0" layoutY="350.0" mnemonicParsing="false" prefWidth="350.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save Current Game" textFill="#3e3e3e">
+      <Button fx:id="save" layoutX="348.0" layoutY="350.0" mnemonicParsing="false" onMouseClicked="#goToSaveScreen" prefWidth="350.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save Current Game" textFill="#3e3e3e">
           <font>
               <Font name="Calibri" size="30.0" />
           </font>
@@ -16,12 +23,12 @@
             <Font name="Calibri" size="70.0" />
          </font>
       </Label>
-      <Button layoutX="349.0" layoutY="433.0" mnemonicParsing="false" prefWidth="350.0" style="-fx-background-color: #E55555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Return to Main Menu" textFill="#333333">
+      <Button fx:id="mainMenu" layoutX="349.0" layoutY="433.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu" prefWidth="350.0" style="-fx-background-color: #E55555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Return to Main Menu" textFill="#333333">
          <font>
             <Font name="Calibri" size="30.0" />
          </font>
       </Button>
-      <Button layoutX="349.0" layoutY="267.0" mnemonicParsing="false" prefWidth="350.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Continue Playing Game" textFill="#3e3e3e">
+      <Button fx:id="resume" layoutX="349.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#goResumeFromPause" prefWidth="350.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Continue Playing Game" textFill="#3e3e3e">
          <font>
             <Font name="Calibri" size="30.0" />
          </font>
