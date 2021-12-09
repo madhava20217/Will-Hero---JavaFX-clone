@@ -1,4 +1,4 @@
-public class Hero extends GameObject implements Collidable{
+public class Hero implements Collidable{
 
     private Weapon[] available_weapons;
     private Weapon current_weapon;

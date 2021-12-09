@@ -1,11 +1,16 @@
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class GameManager extends Application implements Serializable {
+	
+	
+	
 	public GameManager(){
 	}
 	

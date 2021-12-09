@@ -1,4 +1,4 @@
-public abstract class Orc extends GameObject implements Collidable {
+public abstract class Orc implements Collidable {
     private int hit_endurance;
     private boolean is_alive;
     private int coin_drop;

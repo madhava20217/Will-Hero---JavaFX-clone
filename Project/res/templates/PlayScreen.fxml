@@ -68,8 +68,8 @@
               </StackPane>
               <StackPane id="coin_2" layoutX="184.0" layoutY="272.0" prefHeight="33.0" prefWidth="33.0">
                  <children>
-                    <Rectangle id="coin_1_hitbox" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="33.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="33.0" StackPane.alignment="BOTTOM_CENTER" />
-                    <ImageView id="coin_1_sprite" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                    <Rectangle id="coin_2_hitbox" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="33.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="33.0" StackPane.alignment="BOTTOM_CENTER" />
+                    <ImageView id="coin_2_sprite" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                        <image>
                           <Image url="@../images/coin.png" />
                        </image>
@@ -118,7 +118,7 @@
               </StackPane>
               <StackPane id="orc" layoutX="591.0" layoutY="265.0" prefHeight="60.0" prefWidth="60.0">
                  <children>
-                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="TRANSPARENT" height="60.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="60.0" />
+                    <Rectangle id="orc_hitbox" arcHeight="5.0" arcWidth="5.0" fill="TRANSPARENT" height="60.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="60.0" />
                     <ImageView id="orc_sprite" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                        <image>
                           <Image url="@../images/orc_green_scar.png" />
