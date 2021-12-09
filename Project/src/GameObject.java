@@ -1,33 +1,39 @@
-import javafx.geometry.Point2D;
-import javafx.scene.shape.Shape;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
 
 import java.io.Serializable;
 
+
+// TODO: make objects be able to return from out of bounds
+// TODO: try harder to make hero [and other bodies] match original movement pattern
 public class GameObject implements Serializable {
-	private Shape model;
-	private float mass;
-	private float[] pos;
-	private float[] vel;
-	private float[] acc;
+	private final Node model;
+	private final float mass;
+	private final float[] pos;
+	private final float[] vel;
+	private final float[] acc;
 	private boolean rendered;
-	private boolean gravity_affected;
+	private final boolean gravity_affected;
 	
 	public float get_acc (int axis) {
 		return acc[axis];
 	}
 	
-	public Shape getModel () {
+	public Node getModel () {
 		return model;
 	}
-	
-	private float[] get_coords(Shape s){
-		Point2D c = s.localToScene(s.getLayoutX()+s.getTranslateX(),s.getLayoutY()+s.getTranslateY());
-		return new float[]{(float)c.getX(), (float)c.getY()};
+
+	private boolean is_out_of_bounds(){
+		Bounds b = model.getBoundsInParent();
+		// TODO: make this proper before release
+		return b.getMaxX()< 20 || b.getMinX() > 1000 || b.getMaxY() < 20 || b.getMinY() > 500;
+		// return pos[0]+b.getWidth()/2 < 20 || pos[0]-b.getWidth()/2 > 1000 || pos[1]+b.getHeight()/2 < 20 || pos[1]-b
+		// .getHeight()/2 > 500;
 	}
 	
-	GameObject (Shape _model, float[] v, float[] a, float m, boolean g){
+	GameObject (Node _model, float[] v, float[] a, float m, boolean g){
 		model = _model;
-		pos = get_coords(_model);
+		pos = new float[]{(float)_model.getTranslateX(),(float)_model.getTranslateY()};
 		vel = v;
 		acc = a;
 		mass = m;
@@ -64,40 +70,49 @@ public class GameObject implements Serializable {
 	}
 	
 	public void move(){
+		if(gravity_affected){
+			apply_gravity();
+		}
 		for (int axis = 0; axis < 2; axis++) {  // move in both axes
 			pos[axis] += vel[axis];
 			vel[axis] += acc[axis];
-			if(this.isRendered() && (pos[axis] < -100 || pos[axis] > 1200)){
-				this.derender();
-			}
 		}
-		if(this.isRendered()) return;
-		for(int axis = 0; axis < 2; axis++){
-			if(pos[axis] < -100 || pos[axis] > 1200){
-				return;
-			}
+		if(rendered && this.is_out_of_bounds()){
+			this.derender();
 		}
-		this.render();
+		else if(!rendered && !this.is_out_of_bounds()) {
+			this.render();
+		}
 	}
 	
 	public void refresh(){ // refreshes the posiiton on the screen
-		Point2D c = model.sceneToLocal(pos[0], pos[1]);
-		model.setTranslateX(c.getX());
-		model.setTranslateY(c.getY());
+		model.setTranslateX(pos[0]);
+		model.setTranslateY(pos[1]);
 	}
 	
 	public void collide (GameObject other, float e){
 		if (e < 0 || e > 1) return;
 		
 		// get axis of collision
-		float this_max = (float) this.getModel().getBoundsInParent().getMaxX() - vel[0];
-		float this_min = (float) this.getModel().getBoundsInParent().getMinX() - vel[0];
-		float other_min = (float) other.getModel().getBoundsInParent().getMinX() - other.vel[0];
-		float other_max = (float) other.getModel().getBoundsInParent().getMaxX() - other.vel[0];
+		Bounds this_bnds = model.getBoundsInParent();
+		Bounds other_bnds = other.model.getBoundsInParent();
+		float this_max_x = (float) this_bnds.getMaxX();
+		float this_min_x = (float) this_bnds.getMinX();
+		float other_min_x = (float) other_bnds.getMinX();
+		float other_max_x = (float) other_bnds.getMaxX();
 		
-		int axis = (this_max < other_min || this_min > other_max)?0:1;
+		float this_max_y = (float) this_bnds.getMaxY();
+		float this_min_y = (float) this_bnds.getMinY();
+		float other_min_y = (float) other_bnds.getMinY();
+		float other_max_y = (float) other_bnds.getMaxY();
 		
-		if((this.pos[axis]-other.pos[axis])*(this.vel[axis]-other.vel[axis]) < 0){
+		float x_overlap = Math.max(0, Math.min(this_max_x, other_max_x) - Math.max(this_min_x, other_min_x));
+		float y_overlap = Math.max(0, Math.min(this_max_y, other_max_y) - Math.max(this_min_y, other_min_y));
+		
+		int axis = (x_overlap > y_overlap)? 1: 0;
+		
+		// don't do anything if they're moving away from each other already
+		if ((this.vel[axis]*other.vel[axis]) < 0) {
 			return; // don't do anything if they're moving away from each other already
 		}
 		
@@ -117,11 +132,11 @@ public class GameObject implements Serializable {
 	}
 	
 	public void apply_gravity(){
-		acc[1] = 0.05F;
+		acc[1] = 0.08F;
 	}
 	
 	public boolean touching(GameObject other){
-		return this.getModel().getBoundsInParent().intersects(other.getModel().getBoundsInParent());
+		return model.getBoundsInParent().intersects(other.model.getBoundsInParent());
 	}
 
   public void render(){

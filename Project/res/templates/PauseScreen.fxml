@@ -5,10 +5,6 @@
 <?import javafx.scene.text.*?>
 
 <!--
-    TODO: Handler for continue button, which will switch to playing scene
-    TODO: Handler + button for pausing, which will switch from playing scene to pause scene
-    TODO: return to main menu handler
-    TODO: dummy save handler
 -->
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">

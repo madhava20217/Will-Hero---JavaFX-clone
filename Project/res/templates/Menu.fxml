@@ -9,9 +9,6 @@
 <?import javafx.scene.text.Font?>
 
 <!--
-TODO: make controllers for screen changing buttons
-TODO: basic animation for hero / orc. bouncing and stuff
-TODO: coin counter, position counter on play screen
 -->
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">

@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <!--
-    TODO: some way to test win and lose screen
-    TODO: coin counter, position counter
     TODO: collision detection
-    TODO: bouncing animations
     background will be in root pane, but root pain will not support clicking for hero movement
 -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
    <children>
       <AnchorPane prefHeight="60.0" prefWidth="1048.0">
          <children>
-            <ImageView id="coin_1_sprite" fitHeight="33.0" fitWidth="33.0" layoutX="23.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView id="coin_1_hitbox" fitHeight="33.0" fitWidth="33.0" layoutX="23.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/coin.png" />
                </image>
@@ -37,95 +29,57 @@
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <HBox alignment="CENTER" layoutX="824.0" layoutY="10.0" prefHeight="40.0" prefWidth="224.0" spacing="7.0">
+            <HBox alignment="CENTER" layoutX="760.0" layoutY="10.0" prefHeight="40.0" prefWidth="288.0" spacing="7.0">
                <children>
                   <Button fx:id="pauseButton" mnemonicParsing="false" onMouseClicked="#goToPause" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #222277;" text="Pause" textFill="WHITE" />
                   <Button fx:id="youDiedScreen" mnemonicParsing="false" onMouseClicked="#goToOverLose" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Kill" textFill="WHITE" />
                   <Button fx:id="winScreen" mnemonicParsing="false" onMouseClicked="#goToOverWin" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Win" textFill="WHITE" />
+                  <Button fx:id="youDiedScreen1" mnemonicParsing="false" onMouseClicked="#reset" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Reset" textFill="WHITE" />
                </children>
             </HBox>
          </children></AnchorPane>
-      <AnchorPane layoutY="60.0" prefHeight="530.0" prefWidth="1048.0">
+      <AnchorPane layoutY="60.0" onMouseClicked="#move_hero" prefHeight="530.0" prefWidth="1048.0">
           <children>
-              <StackPane id="hero" layoutX="68.0" layoutY="266.0" prefHeight="44.0" prefWidth="33.0">
-                 <children>
-                    <Rectangle id="hero_hitbox" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="33.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="33.0" StackPane.alignment="BOTTOM_CENTER" />
-                    <ImageView id="hero_sprite" fitHeight="44.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                       <image>
-                          <Image url="@../images/knight.png" />
-                       </image>
-                    </ImageView>
-                 </children></StackPane>
-              <StackPane id="coin_1" layoutX="140.0" layoutY="272.0" prefHeight="33.0" prefWidth="33.0">
-                 <children>
-                    <Rectangle id="coin_1_hitbox" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="33.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="33.0" StackPane.alignment="BOTTOM_CENTER" />
-                    <ImageView id="coin_1_sprite" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                       <image>
-                          <Image url="@../images/coin.png" />
-                       </image>
-                    </ImageView>
-                 </children>
-              </StackPane>
-              <StackPane id="coin_2" layoutX="184.0" layoutY="272.0" prefHeight="33.0" prefWidth="33.0">
-                 <children>
-                    <Rectangle id="coin_1_hitbox" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="33.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="33.0" StackPane.alignment="BOTTOM_CENTER" />
-                    <ImageView id="coin_1_sprite" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                       <image>
-                          <Image url="@../images/coin.png" />
-                       </image>
-                    </ImageView>
-                 </children>
-              </StackPane>
-              <StackPane id="platform_1" layoutX="-16.0" layoutY="310.0" prefHeight="139.0" prefWidth="329.0">
-                 <children>
-                    <Rectangle id="platform_1_hitbox" arcHeight="5.0" arcWidth="5.0" fill="#c4e88200" height="155.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="330.0" />
-                    <ImageView id="platform_1_sprite" fitHeight="156.0" fitWidth="352.0" pickOnBounds="true" preserveRatio="true">
-                       <image>
-                          <Image url="@../images/platform_1.png" />
-                       </image>
-                    </ImageView>
-                 </children>
-              </StackPane>
-              <StackPane id="platform_2" layoutX="355.0" layoutY="324.0" prefHeight="156.0" prefWidth="387.0">
-                 <children>
-                    <Rectangle id="platform_2_hitbox" arcHeight="5.0" arcWidth="5.0" fill="#c4e88200" height="164.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="385.0" />
-                    <ImageView id="platform_2_sprite" fitHeight="197.0" fitWidth="387.0" pickOnBounds="true" preserveRatio="true">
-                       <image>
-                          <Image url="@../images/platform_2.png" />
-                       </image>
-                    </ImageView>
-                 </children>
-              </StackPane>
-              <StackPane id="platform_3" layoutX="814.0" layoutY="289.0" prefHeight="198.0" prefWidth="210.0">
-                 <children>
-                    <Rectangle id="platform_3_hitbox" arcHeight="5.0" arcWidth="5.0" fill="#c4e88200" height="197.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="255.0" />
-                    <ImageView id="platform_3_sprite" fitHeight="197.0" fitWidth="387.0" pickOnBounds="true" preserveRatio="true">
-                       <image>
-                          <Image url="@../images/platform_3.png" />
-                       </image>
-                    </ImageView>
-                 </children>
-              </StackPane>
-              <StackPane id="chest" layoutX="407.0" layoutY="271.0" prefHeight="56.0" prefWidth="80.0">
-                 <children>
-                    <Rectangle id="chest_hitbox" arcHeight="5.0" arcWidth="5.0" fill="TRANSPARENT" height="56.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
-                    <ImageView id="chest_sprite" fitHeight="56.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                       <image>
-                          <Image url="@../images/chest_closed.png" />
-                       </image>
-                    </ImageView>
-                 </children>
-              </StackPane>
-              <StackPane id="orc" layoutX="591.0" layoutY="265.0" prefHeight="60.0" prefWidth="60.0">
-                 <children>
-                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="TRANSPARENT" height="60.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="60.0" />
-                    <ImageView id="orc_sprite" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                       <image>
-                          <Image url="@../images/orc_green_scar.png" />
-                       </image>
-                    </ImageView>
-                 </children>
-              </StackPane>
+              <ImageView id="coin_2_hitbox" fitHeight="33.0" fitWidth="33.0" layoutX="192.0" layoutY="276.0" pickOnBounds="true" preserveRatio="true">
+                 <image>
+                    <Image url="@../images/coin.png" />
+                 </image>
+              </ImageView>
+              <ImageView id="hero_hitbox" fitHeight="44.0" fitWidth="33.0" layoutX="15.0" layoutY="271.0" pickOnBounds="true" preserveRatio="true">
+                 <image>
+                    <Image url="@../images/knight.png" />
+                 </image>
+              </ImageView>
+              <ImageView id="chest_hitbox" fitHeight="56.0" fitWidth="80.0" layoutX="412.0" layoutY="235.0" pickOnBounds="true" preserveRatio="true">
+                 <image>
+                    <Image url="@../images/chest_closed.png" />
+                 </image>
+              </ImageView>
+              <ImageView id="platform_2_hitbox" fitHeight="197.0" fitWidth="387.0" layoutX="729.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true">
+                 <image>
+                    <Image url="@../images/platform_2.png" />
+                 </image>
+              </ImageView>
+              <ImageView id="platform_3_hitbox" fitHeight="197.0" fitWidth="387.0" layoutX="376.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true">
+                 <image>
+                    <Image url="@../images/platform_3.png" />
+                 </image>
+              </ImageView>
+              <ImageView id="orc_hitbox" fitHeight="60.0" fitWidth="60.0" layoutX="547.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true">
+                 <image>
+                    <Image url="@../images/orc_green_scar.png" />
+                 </image>
+              </ImageView>
+              <ImageView id="coin_1_hitbox" fitHeight="33.0" fitWidth="33.0" layoutX="148.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true">
+                 <image>
+                    <Image url="@../images/coin.png" />
+                 </image>
+              </ImageView>
+              <ImageView id="platform_1_hitbox" fitHeight="156.0" fitWidth="352.0" layoutX="-62.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true">
+                 <image>
+                    <Image url="@../images/platform_1.png" />
+                 </image>
+              </ImageView>
           </children>
       </AnchorPane>
    </children>

@@ -1,9 +1,10 @@
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Shape;
+import javafx.scene.Node;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -13,9 +14,10 @@ public class GameController{
 	public GameController(){
 	
 	}
-	ArrayList<GameObject> objects = new ArrayList<>();
+	private static ArrayList<GameObject> objects = new ArrayList<>();
 	private static Stage stage; // if i keep this non-static the game breaks dont ask me why
 	private static Scene pausedGame = null;
+	private static AnimationTimer clock;
 	
 	public void setStageVar(Stage _stage){
 		stage = _stage;
@@ -29,18 +31,18 @@ public class GameController{
 			stage.setScene(scene);
 			
 			objects.add(
-				new GameObject((Shape)scene.lookup("#hero_hitbox"),new float[]{0,-10},new float[]{0,0},2, true));
+				new GameObject(scene.lookup("#hero_hitbox"),new float[]{0,-5},new float[]{0,0},2, true));
 			objects.add(
-				new GameObject((Shape)scene.lookup("#platform_1_hitbox"),new float[]{0,0},new float[]{0,0},100,false));
+				new GameObject(scene.lookup("#platform_1_hitbox"),new float[]{0,0},new float[]{0,0},1000,false));
 			objects.add(
-				new GameObject((Shape)scene.lookup("#platform_2_hitbox"),new float[]{0,0},new float[]{0,0},100,false));
+				new GameObject(scene.lookup("#platform_2_hitbox"),new float[]{0,0},new float[]{0,0},1000,false));
 			objects.add(
-				new GameObject((Shape)scene.lookup("#platform_3_hitbox"),new float[]{0,0},new float[]{0,0},100,false));
+				new GameObject(scene.lookup("#platform_3_hitbox"),new float[]{0,0},new float[]{0,0},1000,false));
 			objects.add(
-				new GameObject((Shape)scene.lookup("#orc_hitbox"),new float[]{0,-10},new float[]{0,0},5,false));
+				new GameObject(scene.lookup("#orc_hitbox"),new float[]{0,-5},new float[]{0,0},10,true));
 		} catch(IOException ignored1) {}
 
-		AnimationTimer clock = new AnimationTimer(){
+		clock = new AnimationTimer(){
 			@Override
 			public void handle (long l) {
 				for (int i = 0; i < objects.size() - 1; i++) {
@@ -60,6 +62,14 @@ public class GameController{
 			}
 		};
 		clock.start();
+	}
+	
+	@FXML
+	private void reset(MouseEvent ignored){
+		assert(clock != null);
+		clock.stop();
+		objects = new ArrayList<>();
+		goToPlay(null);
 	}
 	
 	@FXML
@@ -85,8 +95,6 @@ public class GameController{
 	private void goToPause(MouseEvent ignored){
 		try{
 			pausedGame = stage.getScene();
-			
-			
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PauseScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
@@ -142,5 +150,11 @@ public class GameController{
 	private void exitGame(MouseEvent ignored){
 		System.out.println("Thank you for playing!");
 		stage.close();
+	}
+	
+	@FXML
+	private void move_hero(MouseEvent ignored){
+		// Find hero properly in actual implementation
+		objects.get(0).set_vel(0, 5);
 	}
 }

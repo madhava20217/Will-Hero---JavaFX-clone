@@ -8,9 +8,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class GameManager extends Application implements Serializable {
-	
-	
-	
 	public GameManager(){
 	}
 	

@@ -6,9 +6,6 @@
 
 <!--
    Saving Screen: only meant for saving.
-
-    TODO: return to main screen button and handler
-    TODO: stub for loading game, redirects to playing scene
 -->
 
 <AnchorPane prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
