@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<!--
+-->
+
+<AnchorPane prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
+   <children>
+      <Button fx:id="main_menu_return" layoutX="258.0" layoutY="441.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #E55555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Return to Main Menu">
+         <font>
+            <Font name="Calibri" size="39.0" />
+         </font>
+      </Button>
+      <Label layoutX="345.0" layoutY="131.0" text="YOU DIED" textFill="#ae2e14">
+         <font>
+            <Font name="Microsoft Sans Serif" size="76.0" />
+         </font>
+      </Label>
+      <Label layoutX="318.0" layoutY="295.0" text="Coins collected: 25">
+         <font>
+            <Font name="Microsoft Sans Serif" size="28.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

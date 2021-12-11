@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
+   <children>
+      <ImageView fitHeight="590.0" fitWidth="1048.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: #99CCFF;">
+         <image>
+            <Image url="@../images/BG/battleback10.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="117.0" layoutY="205.0" stylesheets="@../stylesheets/play_screen.css" text="Thank You For Playing!" textFill="#d7dbff">
+         <font>
+            <Font name="Calibri" size="88.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
