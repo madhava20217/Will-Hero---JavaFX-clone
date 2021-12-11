@@ -36,7 +36,7 @@
                <Font name="Calibri" size="30.0" />
             </font>
          </Button>
-         <Button fx:id="mainMenu" layoutX="13.0" layoutY="331.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #E55555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Return to Main Menu">
+         <Button fx:id="mainMenu" layoutX="13.0" layoutY="331.0" mnemonicParsing="false" onMouseClicked="#returnToPause" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #E55555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Return to Pause Menu">
             <font>
                <Font name="Calibri" size="30.0" />
             </font>

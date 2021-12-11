@@ -3,19 +3,16 @@ import javafx.scene.Node;
 
 import java.io.Serializable;
 
-
-// TODO: make objects be able to return from out of bounds
-// TODO: try harder to make hero [and other bodies] match original movement pattern
 public class GameObject implements Serializable {
 	private final Node model;
 	private final float mass;
-	private float[] pos;
-	private float[] p0;
-	private float[] vel;
-	private float[] acc;
+	private final float[] pos;
+	private final float[] p0;
+	private final float[] vel;
+	private final float[] acc;
 	private boolean rendered;
 	private final boolean gravity_affected;
-	boolean tangible;
+	private final boolean tangible;
 	
 	protected float[] getPos(){
 		return pos;
@@ -39,7 +36,7 @@ public class GameObject implements Serializable {
 	private boolean is_out_of_bounds(){
 		Bounds b = model.getBoundsInParent();
 		float pc = GameController.getPanCam();
-		return pos[0] - pc > 1020 || pos[0] - pc + b.getWidth() < 20 || pos[1] + b.getHeight() < 0 || pos[1] > 550;
+		return pos[0] - pc > 1020 || pos[0] - pc + b.getWidth() < 20 || pos[1] + b.getHeight() < 0 || pos[1] > 500;
 	}
 	
 	GameObject (Node _model, float[] v, float[] a, float m, boolean g, boolean t){
@@ -113,7 +110,7 @@ public class GameObject implements Serializable {
 		int axis = (x_overlap > y_overlap)? 1: 0;
 		
 		// don't do anything if they're moving away from each other already
-		if ((this.vel[axis]*other.vel[axis]) < 0) {
+		if ((other.vel[axis] - this.vel[axis])*(other.pos[axis]-this.pos[axis]) > 0) {
 			return; // don't do anything if they're moving away from each other already
 		}
 		

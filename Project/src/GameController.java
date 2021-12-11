@@ -22,7 +22,7 @@ public class GameController{
 	public static float getPanCam(){
 		return panCam;
 	}
-	public static void panCam (float x){
+	public static void panCamera (float x){
 		panCam += x;
 	}
 	
@@ -50,19 +50,19 @@ public class GameController{
 			objects.add(
 				new GameObject(scene.lookup("#orc_hitbox"),new float[]{0,-5},new float[]{0,0},10,true, true));
 			objects.add(
-				new GameObject(scene.lookup("#coin_1_hitbox"),new float[]{0,0},new float[]{0,0},10,false, false));
+				new GameObject(scene.lookup("#coin_1_hitbox"),new float[]{0,0},new float[]{0,0},0,false, false));
 			objects.add(
-				new GameObject(scene.lookup("#coin_2_hitbox"),new float[]{0,0},new float[]{0,0},10,false, false));
+				new GameObject(scene.lookup("#coin_2_hitbox"),new float[]{0,0},new float[]{0,0},0,false, false));
 			objects.add(
-				new GameObject(scene.lookup("#chest_hitbox"),new float[]{0,0},new float[]{0,0},10,false, false));
+				new GameObject(scene.lookup("#chest_hitbox"),new float[]{0,0},new float[]{0,0},0,false, false));
 			
 			d = (Label) scene.lookup("#distance");
 			assert(objects.get(0).getClass() == Hero.class); // hero needs to be first for collision stuff
 		} catch(IOException ignored1) {
 			d = null;
 		}
-		
 		distance = d;
+		
 		clock = new AnimationTimer(){
 			@Override
 			public void handle (long l) {
@@ -86,22 +86,39 @@ public class GameController{
 				
 				assert distance != null;
 				distance.setText(String.valueOf(((Hero)objects.get(0)).getDistance()));
+				
+				if(!((Hero)objects.get(0)).is_alive()){
+					goToOverLose(null);
+				}
 			}
 		};
 		clock.start();
 	}
 	
 	@FXML
-	private void reset(MouseEvent ignored){
+	private void move_hero(MouseEvent ignored){
+		Hero h = (Hero) objects.get(0);
+		// TODO: Find hero properly in actual implementation
+		h.launch();
+	}
+	
+	private void reset_params(){
 		assert(clock != null);
 		clock.stop();
+		panCam = 0;
 		objects = new ArrayList<>();
+	}
+	
+	@FXML
+	private void reset(MouseEvent ignored){
+		reset_params();
 		goToPlay(null);
 	}
 	
 	@FXML
 	private void goToOverWin(MouseEvent ignored){
 		try{
+			reset_params();
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/GameOverWin.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
@@ -109,8 +126,9 @@ public class GameController{
 	}
 	
 	@FXML
-	private void goToOverLose(MouseEvent ignored){
+	public void goToOverLose(MouseEvent ignored){
 		try{
+			reset_params();
 			FXMLLoader overLose = new FXMLLoader(GameController.class.getResource("templates/GameOverLose.fxml"));
 			stage.setScene(new Scene(overLose.load()));
 		} catch(IOException ignored1) {
@@ -121,7 +139,17 @@ public class GameController{
 	@FXML
 	private void goToPause(MouseEvent ignored){
 		try{
+			clock.stop();
 			pausedGame = stage.getScene();
+			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PauseScreen.fxml"));
+			Scene scene = new Scene(fxmlLoader.load());
+			stage.setScene(scene);
+		} catch(IOException ignored1) {}
+	}
+	
+	@FXML
+	private void returnToPause(MouseEvent ignored){
+		try{
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PauseScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
@@ -131,10 +159,8 @@ public class GameController{
 	@FXML
 	private void goResumeFromPause(MouseEvent ignored){
 		try{
-			/*FXMLLoader loader = new FXMLLoader(GameManager.class.getResource("templates/Menu.fxml"));
-			Scene scene = new Scene(loader.load());*/
-			
 			stage.setScene(pausedGame);
+			clock.start();
 		}
 		catch (NullPointerException ignored1){
 			System.err.println("Null Pointer exception when resuming game");
@@ -144,6 +170,7 @@ public class GameController{
 	@FXML
 	private void goToMainMenu(MouseEvent ignored){
 		try{
+			reset_params();
 			FXMLLoader mainLoad = new FXMLLoader(GameController.class.getResource("templates/Menu.fxml"));
 			stage.setScene(new Scene(mainLoad.load()));
 		}
@@ -177,12 +204,5 @@ public class GameController{
 	private void exitGame(MouseEvent ignored){
 		System.out.println("Thank you for playing!");
 		stage.close();
-	}
-	
-	@FXML
-	private void move_hero(MouseEvent ignored){
-		Hero h = (Hero) objects.get(0);
-		// Find hero properly in actual implementation
-		h.launch();
 	}
 }
