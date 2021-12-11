@@ -41,12 +41,19 @@ public class GameController{
 			
 			objects.add(
 				new Hero(scene.lookup("#hero_hitbox"),new float[]{0,-5},new float[]{0,0},2, true, true));
-			objects.add(
+			/*objects.add(
 				new GameObject(scene.lookup("#platform_1_hitbox"),new float[]{0,0},new float[]{0,0},1000,false, true));
 			objects.add(
 				new GameObject(scene.lookup("#platform_2_hitbox"),new float[]{0,0},new float[]{0,0},1000,false, true));
 			objects.add(
-				new GameObject(scene.lookup("#platform_3_hitbox"),new float[]{0,0},new float[]{0,0},1000,false, true));
+				new GameObject(scene.lookup("#platform_3_hitbox"),new float[]{0,0},new float[]{0,0},1000,false, true));*/
+
+			objects.add(
+				new Platform(scene.lookup("#platform_1_hitbox")));
+			objects.add(
+				new Platform(scene.lookup("#platform_2_hitbox")));
+			objects.add(
+				new Platform(scene.lookup("#platform_3_hitbox")));
 			objects.add(
 				new GameObject(scene.lookup("#orc_hitbox"),new float[]{0,-5},new float[]{0,0},10,true, true));
 			objects.add(
@@ -71,7 +78,7 @@ public class GameController{
 						float[] overlaps = objects.get(i).getOverlaps(objects.get(j));
 						if (overlaps[0] > 0 && overlaps[1] > 0) {
 							if (objects.get(i).isTangible() && objects.get(j).isTangible()) {
-								objects.get(i).bounce(objects.get(j), 1F, overlaps[0], overlaps[1]);
+								objects.get(i).bounce(objects.get(j), 0.985F, overlaps[0], overlaps[1]);
 							}
 						}
 					}

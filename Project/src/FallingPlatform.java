@@ -1,3 +1,4 @@
+/*
 public class FallingPlatform extends Platform{
     private float collapse_rate;
     private float[] collapse_motion;
@@ -11,3 +12,4 @@ public class FallingPlatform extends Platform{
         //todo method
     }
 }
+*/
