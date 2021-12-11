@@ -24,7 +24,7 @@
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="489.0" layoutY="13.0" prefHeight="34.0" prefWidth="70.0" text="009" textFill="WHITE">
+            <Label fx:id="distance" alignment="CENTER" layoutX="489.0" layoutY="13.0" prefHeight="34.0" prefWidth="70.0" text="009" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
@@ -45,7 +45,7 @@
                     <Image url="@../images/coin.png" />
                  </image>
               </ImageView>
-              <ImageView id="hero_hitbox" fitHeight="44.0" fitWidth="33.0" layoutX="15.0" layoutY="271.0" pickOnBounds="true" preserveRatio="true">
+              <ImageView id="hero_hitbox" fitHeight="44.0" fitWidth="33.0" layoutX="50.0" layoutY="271.0" pickOnBounds="true" preserveRatio="true">
                  <image>
                     <Image url="@../images/knight.png" />
                  </image>

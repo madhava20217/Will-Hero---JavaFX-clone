@@ -1,10 +1,9 @@
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.Node;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,13 +24,15 @@ public class GameController{
 	
 	@FXML
 	private void goToPlay(MouseEvent ignored){
+		final Label distance;
+		Label d;
 		try{
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PlayScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
 			
 			objects.add(
-				new GameObject(scene.lookup("#hero_hitbox"),new float[]{0,-5},new float[]{0,0},2, true));
+				new Hero(scene.lookup("#hero_hitbox"),new float[]{0,-5},new float[]{0,0},2, true));
 			objects.add(
 				new GameObject(scene.lookup("#platform_1_hitbox"),new float[]{0,0},new float[]{0,0},1000,false));
 			objects.add(
@@ -40,15 +41,20 @@ public class GameController{
 				new GameObject(scene.lookup("#platform_3_hitbox"),new float[]{0,0},new float[]{0,0},1000,false));
 			objects.add(
 				new GameObject(scene.lookup("#orc_hitbox"),new float[]{0,-5},new float[]{0,0},10,true));
-		} catch(IOException ignored1) {}
-
+			
+			d = (Label) scene.lookup("#distance");
+		} catch(IOException ignored1) {
+			d = null;
+		}
+		
+		distance = d;
 		clock = new AnimationTimer(){
 			@Override
 			public void handle (long l) {
 				for (int i = 0; i < objects.size() - 1; i++) {
 					for (int j = i + 1; j < objects.size(); j++) {
 						if (objects.get(i).touching(objects.get(j))) {
-							objects.get(i).collide(objects.get(j), 1F);
+							objects.get(i).bounce(objects.get(j), 1F);
 						}
 					}
 				}
@@ -59,6 +65,9 @@ public class GameController{
 						obj.refresh();
 					}
 				}
+				
+				assert distance != null;
+				distance.setText(String.valueOf(((Hero)objects.get(0)).getDistance()));
 			}
 		};
 		clock.start();
@@ -154,7 +163,8 @@ public class GameController{
 	
 	@FXML
 	private void move_hero(MouseEvent ignored){
+		Hero h = (Hero) objects.get(0);
 		// Find hero properly in actual implementation
-		objects.get(0).set_vel(0, 5);
+		h.launch();
 	}
 }

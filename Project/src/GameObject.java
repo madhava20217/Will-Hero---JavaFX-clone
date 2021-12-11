@@ -9,11 +9,18 @@ import java.io.Serializable;
 public class GameObject implements Serializable {
 	private final Node model;
 	private final float mass;
-	private final float[] pos;
-	private final float[] vel;
-	private final float[] acc;
+	private float[] pos;
+	private float[] vel;
+	private float[] acc;
 	private boolean rendered;
 	private final boolean gravity_affected;
+	
+	protected float[] getPos(){
+		return pos;
+	}
+	protected float[] getVel(){
+		return vel;
+	}
 	
 	public float get_acc (int axis) {
 		return acc[axis];
@@ -41,9 +48,9 @@ public class GameObject implements Serializable {
 		rendered = true;
 	}
 	
-	public void set_acc(int axis, float value){
+	public void apply_force(int axis, float value){
 		if (!(axis == 0 || axis == 1)) return;
-		acc[axis] = value;
+		acc[axis] += value/mass;
 	}
 	
 	public void set_vel(int axis, float value){
@@ -63,10 +70,11 @@ public class GameObject implements Serializable {
 		
 		if (Math.abs(vel_next) < value){  // if friction can make object still
 			acc[axis] = -vel[axis];  // it will make it still
+			return;
 		}
 		
 		int dir = (int) Math.signum(vel_next);  // friction will oppose this direction
-		acc[axis] -= dir*value;
+		apply_force(axis,-dir*value);
 	}
 	
 	public void move(){
@@ -76,6 +84,7 @@ public class GameObject implements Serializable {
 		for (int axis = 0; axis < 2; axis++) {  // move in both axes
 			pos[axis] += vel[axis];
 			vel[axis] += acc[axis];
+			acc[axis] = 0;
 		}
 		if(rendered && this.is_out_of_bounds()){
 			this.derender();
@@ -90,7 +99,11 @@ public class GameObject implements Serializable {
 		model.setTranslateY(pos[1]);
 	}
 	
-	public void collide (GameObject other, float e){
+	public void bounce (GameObject other, float e){
+		if (other.getClass() == Hero.class){
+			other.bounce(this, e);
+			return;
+		}
 		if (e < 0 || e > 1) return;
 		
 		// get axis of collision
@@ -132,7 +145,7 @@ public class GameObject implements Serializable {
 	}
 	
 	public void apply_gravity(){
-		acc[1] = 0.08F;
+		apply_force(1,0.08F*mass);
 	}
 	
 	public boolean touching(GameObject other){
