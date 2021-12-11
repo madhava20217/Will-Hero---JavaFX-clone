@@ -1,14 +1,15 @@
 import javafx.animation.AnimationTimer;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class GameController{
 	public GameController(){
@@ -75,7 +76,7 @@ public class GameController{
 							// if there is no overlap, ther will be no interaction
 							if (objects.get(i).isTangible() && objects.get(j).isTangible()) {
 								// if even one object is intangible, there will be no physical collision
-								objects.get(i).bounce(objects.get(j), 0.985F, overlaps[0], overlaps[1]);
+								objects.get(i).bounce(objects.get(j), 0.9865F, overlaps[0], overlaps[1]);
 							}
 						}
 					}
@@ -211,24 +212,26 @@ public class GameController{
 		//TODO: Possible to make a method to change Menu's background to reflect the change.
 
 		try{
-			stage.setScene(new Scene((new FXMLLoader(GameController.class.getResource("templates/Exit.fxml"))).load()));
+			FXMLLoader exitScreen = new FXMLLoader(GameController.class.getResource("templates/Exit.fxml"));
+			stage.setScene(new Scene(exitScreen.load()));
 			System.out.println("Thank you for playing!");
-
-			stage.close();
+			PauseTransition delay = new PauseTransition(Duration.seconds(3));
+			delay.setOnFinished(ignored1 ->stage.close());
+			delay.play();
 		}
-		catch (IOException meh){
+		catch (IOException ignored1){
 			System.err.println("IOException caught when exiting");
 		}
 	}
 
 	@FXML
-	private void saveGame(MouseEvent click){
+	private void saveGame(MouseEvent ignored){
 		//TODO: implement it for the final game
 		System.out.println("Saving game");
 	}
 
 	@FXML
-	private void loadGame(MouseEvent click){
+	private void loadGame(MouseEvent ignored){
 		//TODO: implement it for the final game
 		System.out.println("Loading game");
 	}
