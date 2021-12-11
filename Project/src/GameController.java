@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class GameController{
 	public GameController(){
@@ -205,9 +206,19 @@ public class GameController{
 	}
 	
 	@FXML
-	private void exitGame(MouseEvent ignored){
-		System.out.println("Thank you for playing!");
-		stage.close();
+	private void exitGame(MouseEvent ignored) {
+		//TODO: Implement it correctly (doesn't switch between scenes right now)
+		//TODO: Possible to make a method to change Menu's background to reflect the change.
+
+		try{
+			stage.setScene(new Scene((new FXMLLoader(GameController.class.getResource("templates/Exit.fxml"))).load()));
+			System.out.println("Thank you for playing!");
+
+			stage.close();
+		}
+		catch (IOException meh){
+			System.err.println("IOException caught when exiting");
+		}
 	}
 
 	@FXML
