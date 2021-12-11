@@ -209,4 +209,16 @@ public class GameController{
 		System.out.println("Thank you for playing!");
 		stage.close();
 	}
+
+	@FXML
+	private void saveGame(MouseEvent click){
+		//TODO: implement it for the final game
+		System.out.println("Saving game");
+	}
+
+	@FXML
+	private void loadGame(MouseEvent click){
+		//TODO: implement it for the final game
+		System.out.println("Loading game");
+	}
 }
