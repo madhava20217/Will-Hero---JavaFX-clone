@@ -20,7 +20,7 @@
             <Font name="Microsoft Sans Serif" size="76.0" />
          </font>
       </Label>
-      <Label layoutX="318.0" layoutY="295.0" text="Coins collected: ">
+      <Label layoutX="318.0" layoutY="295.0" text="Coins collected: 25">
          <font>
             <Font name="Microsoft Sans Serif" size="28.0" />
          </font>

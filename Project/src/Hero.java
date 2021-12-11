@@ -37,12 +37,12 @@ public class Hero extends GameObject implements Collidable{
 		decelerate(0,0.4F); // air resistance
 		
 		if (CROSSING) { // after crossing over a co-ordinate
+			// applies inertia to snapping after it is done
 			CROSSING = false;
-			if (vel[0] < 9.5) {
-				decelerate(0, 20F);
-			}
+			decelerate(0, 20F); // apply very very very strong air resistance
 		}
 		else if (((vel[0] + pos[0]) % 100 < 50 && pos[0] % 100 > 50) && vel[0] > 0){ // crossing LTR
+			// 9.5 instead of 10 to avoid floating point problems, 9.9 will work too
 			if (vel[0] < 9.5) { // with less than launch velocity
 				CROSSING = true;
 				distance++;
@@ -53,6 +53,7 @@ public class Hero extends GameObject implements Collidable{
 			// distance--;  //TODO: check this more properly
 			set_vel(0, - pos[0] % 100); // clip to co-ordinate
 		}
+		// after this is called, if we have clipped velocity, then hero's position will be exactly n.100
 		super.move();
 		Node model = getModel();
 		if(model.getTranslateX() > 0){
@@ -64,8 +65,10 @@ public class Hero extends GameObject implements Collidable{
 	public void bounce(GameObject other, float e, float x_overlap, float y_overlap){
 		// TODO: make this apply for platforms ONLY - use if other instanceOf platform
 		if(x_overlap > y_overlap && this.getPos()[1] > other.getPos()[1]){
+			// if hero is below whatever he is colliding with, he will die
 			die();
 		}
+		// TODO: reset moveCnt only if hitting platform
 		moveCnt = 0;
 		super.bounce(other, e, x_overlap, y_overlap);
 	}

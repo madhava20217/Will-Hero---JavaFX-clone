@@ -6,6 +6,7 @@
 
 <!--
    Saving Screen: only meant for saving.
+   TODO: could have a marking at left of button to highlight that the save is already used.
 -->
 
 <AnchorPane prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">

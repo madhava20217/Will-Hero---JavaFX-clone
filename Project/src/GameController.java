@@ -32,8 +32,9 @@ public class GameController{
 	
 	@FXML
 	private void goToPlay(MouseEvent ignored){
+		// label of the distance counter in game header
 		final Label distance;
-		Label d;
+		Label d; // temp variable
 		try{
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PlayScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
@@ -41,13 +42,6 @@ public class GameController{
 			
 			objects.add(
 				new Hero(scene.lookup("#hero_hitbox"),new float[]{0,-5},new float[]{0,0},2, true, true));
-			/*objects.add(
-				new GameObject(scene.lookup("#platform_1_hitbox"),new float[]{0,0},new float[]{0,0},1000,false, true));
-			objects.add(
-				new GameObject(scene.lookup("#platform_2_hitbox"),new float[]{0,0},new float[]{0,0},1000,false, true));
-			objects.add(
-				new GameObject(scene.lookup("#platform_3_hitbox"),new float[]{0,0},new float[]{0,0},1000,false, true));*/
-
 			objects.add(
 				new Platform(scene.lookup("#platform_1_hitbox")));
 			objects.add(
@@ -68,7 +62,7 @@ public class GameController{
 		} catch(IOException ignored1) {
 			d = null;
 		}
-		distance = d;
+		distance = d; // distance is a function-level variable
 		
 		clock = new AnimationTimer(){
 			@Override
@@ -77,7 +71,9 @@ public class GameController{
 					for (int j = i + 1; j < objects.size(); j++) {
 						float[] overlaps = objects.get(i).getOverlaps(objects.get(j));
 						if (overlaps[0] > 0 && overlaps[1] > 0) {
+							// if there is no overlap, ther will be no interaction
 							if (objects.get(i).isTangible() && objects.get(j).isTangible()) {
+								// if even one object is intangible, there will be no physical collision
 								objects.get(i).bounce(objects.get(j), 0.985F, overlaps[0], overlaps[1]);
 							}
 						}
@@ -110,8 +106,8 @@ public class GameController{
 	}
 	
 	private void reset_params(){
-		assert(clock != null);
-		clock.stop();
+		// reset params = end game
+		if(clock != null) clock.stop();
 		panCam = 0;
 		objects = new ArrayList<>();
 	}
@@ -146,7 +142,7 @@ public class GameController{
 	@FXML
 	private void goToPause(MouseEvent ignored){
 		try{
-			clock.stop();
+			clock.stop(); // game pauses running when we go to pause screen
 			pausedGame = stage.getScene();
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PauseScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
@@ -156,6 +152,7 @@ public class GameController{
 	
 	@FXML
 	private void returnToPause(MouseEvent ignored){
+		// when we return from save menu to pause screen
 		try{
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PauseScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());

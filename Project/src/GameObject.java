@@ -36,6 +36,8 @@ public class GameObject implements Serializable {
 	private boolean is_out_of_bounds(){
 		Bounds b = model.getBoundsInParent();
 		float pc = GameController.getPanCam();
+		// {pos - pc} is visual [on the screen], absolute position [not relative to starting position]
+		// there is no pc in y because we are not doing panning in y axis
 		return pos[0] - pc > 1020 || pos[0] - pc + b.getWidth() < 20 || pos[1] + b.getHeight() < 0 || pos[1] > 500;
 	}
 	
@@ -87,7 +89,7 @@ public class GameObject implements Serializable {
 		for (int axis = 0; axis < 2; axis++) {  // move in both axes
 			pos[axis] += vel[axis];
 			vel[axis] += acc[axis];
-			acc[axis] = 0;
+			acc[axis] = 0; // force has to be applied to be each frame to change things
 		}
 		if(rendered && this.is_out_of_bounds()){
 			this.derender();
@@ -121,9 +123,6 @@ public class GameObject implements Serializable {
 		// set velocity in axis of collision
 		float u1 = this.get_vel(axis);
 		float u2 = other.get_vel(axis);
-		
-		float a1 = this.get_acc(axis);
-		float a2 = other.get_acc(axis);
 		
 		this.set_vel(axis, (m1*u1 + m2*u2 -m2*e*(u1-u2))/(m1+m2));
 		other.set_vel(axis, (m1*u1 + m2*u2 -m1*e*(u2-u1))/(m1+m2));
