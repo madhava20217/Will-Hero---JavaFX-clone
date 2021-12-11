@@ -10,10 +10,12 @@ public class GameObject implements Serializable {
 	private final Node model;
 	private final float mass;
 	private float[] pos;
+	private float[] p0;
 	private float[] vel;
 	private float[] acc;
 	private boolean rendered;
 	private final boolean gravity_affected;
+	boolean tangible;
 	
 	protected float[] getPos(){
 		return pos;
@@ -29,23 +31,27 @@ public class GameObject implements Serializable {
 	public Node getModel () {
 		return model;
 	}
+	
+	public boolean isTangible(){
+		return tangible;
+	}
 
 	private boolean is_out_of_bounds(){
 		Bounds b = model.getBoundsInParent();
-		// TODO: make this proper before release
-		return b.getMaxX()< 20 || b.getMinX() > 1000 || b.getMaxY() < 20 || b.getMinY() > 500;
-		// return pos[0]+b.getWidth()/2 < 20 || pos[0]-b.getWidth()/2 > 1000 || pos[1]+b.getHeight()/2 < 20 || pos[1]-b
-		// .getHeight()/2 > 500;
+		float pc = GameController.getPanCam();
+		return pos[0] - pc > 1020 || pos[0] - pc + b.getWidth() < 20 || pos[1] + b.getHeight() < 0 || pos[1] > 550;
 	}
 	
-	GameObject (Node _model, float[] v, float[] a, float m, boolean g){
+	GameObject (Node _model, float[] v, float[] a, float m, boolean g, boolean t){
 		model = _model;
-		pos = new float[]{(float)_model.getTranslateX(),(float)_model.getTranslateY()};
+		p0 = new float[]{(float)(_model.getLayoutX()),(float)(_model.getLayoutY())};
+		pos = p0.clone();
 		vel = v;
 		acc = a;
 		mass = m;
 		gravity_affected = g;
 		rendered = true;
+		tangible = t;
 	}
 	
 	public void apply_force(int axis, float value){
@@ -94,34 +100,16 @@ public class GameObject implements Serializable {
 		}
 	}
 	
-	public void refresh(){ // refreshes the posiiton on the screen
-		model.setTranslateX(pos[0]);
-		model.setTranslateY(pos[1]);
+	public void refresh(){ // refreshes the position on the screen
+		float panCam = GameController.getPanCam();
+		model.setTranslateX(pos[0]-p0[0]-panCam);
+		model.setTranslateY(pos[1]-p0[1]);
 	}
 	
-	public void bounce (GameObject other, float e){
-		if (other.getClass() == Hero.class){
-			other.bounce(this, e);
-			return;
-		}
+	public void bounce (GameObject other, float e, float x_overlap, float y_overlap){
 		if (e < 0 || e > 1) return;
 		
 		// get axis of collision
-		Bounds this_bnds = model.getBoundsInParent();
-		Bounds other_bnds = other.model.getBoundsInParent();
-		float this_max_x = (float) this_bnds.getMaxX();
-		float this_min_x = (float) this_bnds.getMinX();
-		float other_min_x = (float) other_bnds.getMinX();
-		float other_max_x = (float) other_bnds.getMaxX();
-		
-		float this_max_y = (float) this_bnds.getMaxY();
-		float this_min_y = (float) this_bnds.getMinY();
-		float other_min_y = (float) other_bnds.getMinY();
-		float other_max_y = (float) other_bnds.getMaxY();
-		
-		float x_overlap = Math.max(0, Math.min(this_max_x, other_max_x) - Math.max(this_min_x, other_min_x));
-		float y_overlap = Math.max(0, Math.min(this_max_y, other_max_y) - Math.max(this_min_y, other_min_y));
-		
 		int axis = (x_overlap > y_overlap)? 1: 0;
 		
 		// don't do anything if they're moving away from each other already
@@ -148,8 +136,24 @@ public class GameObject implements Serializable {
 		apply_force(1,0.08F*mass);
 	}
 	
-	public boolean touching(GameObject other){
-		return model.getBoundsInParent().intersects(other.model.getBoundsInParent());
+	public float[] getOverlaps(GameObject other){
+		// returns the overlaps with another object
+		Bounds this_bnds = this.model.getBoundsInParent();
+		Bounds other_bnds = other.model.getBoundsInParent();
+		float this_min_x = this.pos[0];
+		float this_max_x = (float) (this.pos[0]+this_bnds.getWidth());
+		float other_min_x = other.pos[0];
+		float other_max_x = (float) (other.pos[0]+other_bnds.getWidth());
+		
+		float this_min_y = this.pos[1];
+		float this_max_y = (float) (this.pos[1]+this_bnds.getHeight());
+		float other_min_y = other.pos[1];
+		float other_max_y = (float) (other.pos[1]+other_bnds.getHeight());
+		
+		float x_overlap = Math.max(0, Math.min(this_max_x, other_max_x) - Math.max(this_min_x, other_min_x));
+		float y_overlap = Math.max(0, Math.min(this_max_y, other_max_y) - Math.max(this_min_y, other_min_y));
+		
+		return new float[]{x_overlap, y_overlap};
 	}
 
   public void render(){

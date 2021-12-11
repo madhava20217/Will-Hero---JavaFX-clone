@@ -11,8 +11,8 @@ public class Hero extends GameObject implements Collidable{
 	private int moveCnt;
 	private boolean CROSSING;
 	private int distance;
-  Hero(Node _model, float[] v, float[] a, float m, boolean g){
-    super(_model, v, a, m, g);
+  Hero(Node _model, float[] v, float[] a, float m, boolean g, boolean t){
+    super(_model, v, a, m, g, t);
 		moveCnt = 0;
 		CROSSING = false;
   }
@@ -51,13 +51,17 @@ public class Hero extends GameObject implements Collidable{
 			set_vel(0, - pos[0] % 100); // clip to co-ordinate
 		}
 		super.move();
+		Node model = getModel();
+		if(model.getTranslateX() > 0){
+			GameController.panCam((float)(model.getTranslateX()/3));
+		}
 	}
 	
 	@Override
-	public void bounce(GameObject other, float e){
+	public void bounce(GameObject other, float e, float x_overlap, float y_overlap){
 		// TODO: make this apply for platforms ONLY - use if other instanceOf platform
 		moveCnt = 0;
-		super.bounce(other, e);
+		super.bounce(other, e, x_overlap, y_overlap);
 	}
 	
   @Override

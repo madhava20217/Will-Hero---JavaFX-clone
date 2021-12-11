@@ -14,7 +14,7 @@
    <children>
       <AnchorPane prefHeight="60.0" prefWidth="1048.0">
          <children>
-            <ImageView id="coin_1_hitbox" fitHeight="33.0" fitWidth="33.0" layoutX="23.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView id="coin_count_icon" fitHeight="33.0" fitWidth="33.0" layoutX="23.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/coin.png" />
                </image>

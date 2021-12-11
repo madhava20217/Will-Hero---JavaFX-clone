@@ -17,6 +17,14 @@ public class GameController{
 	private static Stage stage; // if i keep this non-static the game breaks dont ask me why
 	private static Scene pausedGame = null;
 	private static AnimationTimer clock;
+	private static float panCam;
+	
+	public static float getPanCam(){
+		return panCam;
+	}
+	public static void panCam (float x){
+		panCam += x;
+	}
 	
 	public void setStageVar(Stage _stage){
 		stage = _stage;
@@ -32,17 +40,24 @@ public class GameController{
 			stage.setScene(scene);
 			
 			objects.add(
-				new Hero(scene.lookup("#hero_hitbox"),new float[]{0,-5},new float[]{0,0},2, true));
+				new Hero(scene.lookup("#hero_hitbox"),new float[]{0,-5},new float[]{0,0},2, true, true));
 			objects.add(
-				new GameObject(scene.lookup("#platform_1_hitbox"),new float[]{0,0},new float[]{0,0},1000,false));
+				new GameObject(scene.lookup("#platform_1_hitbox"),new float[]{0,0},new float[]{0,0},1000,false, true));
 			objects.add(
-				new GameObject(scene.lookup("#platform_2_hitbox"),new float[]{0,0},new float[]{0,0},1000,false));
+				new GameObject(scene.lookup("#platform_2_hitbox"),new float[]{0,0},new float[]{0,0},1000,false, true));
 			objects.add(
-				new GameObject(scene.lookup("#platform_3_hitbox"),new float[]{0,0},new float[]{0,0},1000,false));
+				new GameObject(scene.lookup("#platform_3_hitbox"),new float[]{0,0},new float[]{0,0},1000,false, true));
 			objects.add(
-				new GameObject(scene.lookup("#orc_hitbox"),new float[]{0,-5},new float[]{0,0},10,true));
+				new GameObject(scene.lookup("#orc_hitbox"),new float[]{0,-5},new float[]{0,0},10,true, true));
+			objects.add(
+				new GameObject(scene.lookup("#coin_1_hitbox"),new float[]{0,0},new float[]{0,0},10,false, false));
+			objects.add(
+				new GameObject(scene.lookup("#coin_2_hitbox"),new float[]{0,0},new float[]{0,0},10,false, false));
+			objects.add(
+				new GameObject(scene.lookup("#chest_hitbox"),new float[]{0,0},new float[]{0,0},10,false, false));
 			
 			d = (Label) scene.lookup("#distance");
+			assert(objects.get(0).getClass() == Hero.class); // hero needs to be first for collision stuff
 		} catch(IOException ignored1) {
 			d = null;
 		}
@@ -53,8 +68,11 @@ public class GameController{
 			public void handle (long l) {
 				for (int i = 0; i < objects.size() - 1; i++) {
 					for (int j = i + 1; j < objects.size(); j++) {
-						if (objects.get(i).touching(objects.get(j))) {
-							objects.get(i).bounce(objects.get(j), 1F);
+						float[] overlaps = objects.get(i).getOverlaps(objects.get(j));
+						if (overlaps[0] > 0 && overlaps[1] > 0) {
+							if (objects.get(i).isTangible() && objects.get(j).isTangible()) {
+								objects.get(i).bounce(objects.get(j), 1F, overlaps[0], overlaps[1]);
+							}
 						}
 					}
 				}
