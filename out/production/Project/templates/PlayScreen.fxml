@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
 <!--
     TODO: collision detection
     background will be in root pane, but root pain will not support clicking for hero movement
 -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
    <children>
       <AnchorPane prefHeight="60.0" prefWidth="1048.0">
          <children>
@@ -38,16 +41,11 @@
                </children>
             </HBox>
          </children></AnchorPane>
-      <AnchorPane layoutY="60.0" onMouseClicked="#move_hero" prefHeight="530.0" prefWidth="1048.0">
+      <AnchorPane id = "frame" layoutY="60.0" onMouseClicked="#move_hero" prefHeight="530.0" prefWidth="1048.0">
           <children>
               <ImageView id="coin_2_hitbox" fitHeight="33.0" fitWidth="33.0" layoutX="192.0" layoutY="276.0" pickOnBounds="true" preserveRatio="true">
                  <image>
                     <Image url="@../images/coin.png" />
-                 </image>
-              </ImageView>
-              <ImageView id="hero_hitbox" fitHeight="44.0" fitWidth="33.0" layoutX="50.0" layoutY="271.0" pickOnBounds="true" preserveRatio="true">
-                 <image>
-                    <Image url="@../images/knight.png" />
                  </image>
               </ImageView>
               <ImageView id="chest_hitbox" fitHeight="56.0" fitWidth="80.0" layoutX="412.0" layoutY="235.0" pickOnBounds="true" preserveRatio="true">
@@ -55,17 +53,7 @@
                     <Image url="@../images/chest_closed.png" />
                  </image>
               </ImageView>
-              <ImageView id="platform_2_hitbox" fitHeight="197.0" fitWidth="387.0" layoutX="729.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true">
-                 <image>
-                    <Image url="@../images/platform_2.png" />
-                 </image>
-              </ImageView>
-              <ImageView id="platform_3_hitbox" fitHeight="197.0" fitWidth="387.0" layoutX="376.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true">
-                 <image>
-                    <Image url="@../images/platform_3.png" />
-                 </image>
-              </ImageView>
-              <ImageView id="orc_hitbox" fitHeight="60.0" fitWidth="60.0" layoutX="547.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true">
+              <ImageView id="orc_hitbox" fitHeight="60.0" fitWidth="60.0" layoutX="575.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true">
                  <image>
                     <Image url="@../images/orc_green_scar.png" />
                  </image>
@@ -73,11 +61,6 @@
               <ImageView id="coin_1_hitbox" fitHeight="33.0" fitWidth="33.0" layoutX="148.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true">
                  <image>
                     <Image url="@../images/coin.png" />
-                 </image>
-              </ImageView>
-              <ImageView id="platform_1_hitbox" fitHeight="156.0" fitWidth="352.0" layoutX="-62.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true">
-                 <image>
-                    <Image url="@../images/platform_1.png" />
                  </image>
               </ImageView>
           </children>

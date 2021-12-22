@@ -8,7 +8,7 @@ public class Coin extends GameObject implements Collectable, Collidable{
 
     Coin(Node model){
         //todo constructor
-        super(model , new float[]{0F, 0F}, new float[]{0F, 0F}, 0, false, false);
+        super(new float[]{0,0} , new float[]{0F, 0F}, new float[]{0F, 0F}, 0, false, false, "coin.png", new float[]{0,0});
         frames = 200;
         value = 1;
         collected = false;

@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -45,24 +46,12 @@ public class GameController{
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
 			
-			objects.add(
-				new Hero(scene.lookup("#hero_hitbox"),new float[]{0,-5},new float[]{0,0},2, true, true));
-			objects.add(
-				new Platform(scene.lookup("#platform_1_hitbox")));
-			objects.add(
-				new Platform(scene.lookup("#platform_2_hitbox")));
-			objects.add(
-				new Platform(scene.lookup("#platform_3_hitbox")));
-			objects.add(
-				new GameObject(scene.lookup("#orc_hitbox"),new float[]{0,-5},new float[]{0,0},10,true, true));
-			objects.add(
-				new GameObject(scene.lookup("#coin_1_hitbox"),new float[]{0,0},new float[]{0,0},0,false, false));
-			objects.add(
-				new GameObject(scene.lookup("#coin_2_hitbox"),new float[]{0,0},new float[]{0,0},0,false, false));
-			objects.add(
-				new GameObject(scene.lookup("#chest_hitbox"),new float[]{0,0},new float[]{0,0},0,false, false));
-			objects.add(new Coin(scene.lookup("#coin_1_hitbox")));
-			objects.add(new Coin(scene.lookup("#coin_2_hitbox")));
+			GameInstance g = new GameInstance();
+			AnchorPane frame = (AnchorPane)scene.lookup("#frame");
+			objects = g.get_gameMap();
+			for (GameObject o : g.get_gameMap()){
+				frame.getChildren().add(o.getModel());
+			}
 			
 			d = (Label) scene.lookup("#distance");
 			assert(objects.get(0).getClass() == Hero.class); // hero needs to be first for collision stuff

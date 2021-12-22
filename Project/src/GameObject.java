@@ -1,10 +1,12 @@
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.Serializable;
 
 public class GameObject implements Serializable {
-	private final Node model;
+	private final ImageView model;
 	private final float mass;
 	private final float[] pos;
 	private final float[] p0;
@@ -41,10 +43,14 @@ public class GameObject implements Serializable {
 		return pos[0] - pc > 1020 || pos[0] - pc + b.getWidth() < 20 || pos[1] + b.getHeight() < 0 || pos[1] > 500;
 	}
 	
-	GameObject (Node _model, float[] v, float[] a, float m, boolean g, boolean t){
-		model = _model;
-		p0 = new float[]{(float)(_model.getLayoutX()),(float)(_model.getLayoutY())};
-		pos = p0.clone();
+	GameObject (float[]_pos, float[] v, float[] a, float m, boolean g, boolean t, String sprite, float[] size){
+		model = new ImageView(sprite);
+		model.setLayoutX(_pos[0]);
+		model.setLayoutY(_pos[1]);
+		model.setFitWidth(size[0]);
+		model.setFitHeight(size[1]);
+		p0 = _pos.clone();
+		pos = _pos;
 		vel = v;
 		acc = a;
 		mass = m;

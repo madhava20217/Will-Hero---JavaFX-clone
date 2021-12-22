@@ -1,7 +1,7 @@
 import javafx.scene.Node;
 
 public class Hero extends GameObject{
-
+	
   private Weapon[] available_weapons;
   private Weapon current_weapon;
   private Helmet current_helmet;
@@ -13,11 +13,12 @@ public class Hero extends GameObject{
 	private int moveCnt;
 	private int distance;
 	
-  Hero(Node _model, float[] v, float[] a, float m, boolean g, boolean t){
-    super(_model, v, a, m, g, t);
+  Hero(float[] pos, float[] v, float[] a, float m, boolean g, boolean t, GameInstance gi){
+    super(pos, v, a, m, g, t, "images/knight.png", new float[]{33,44});
 		moveCnt = 0;
 		CROSSING = false;
 		is_alive = true;
+		current_game = gi;
   }
 	
 	public int getDistance () {
@@ -77,13 +78,6 @@ public class Hero extends GameObject{
 		super.bounce(other, e);
 	}
 	
-  @Override
-  public void collide(Collidable other) {
-		if (other instanceof Collectable){
-			((Collectable)other).get_collected(this);
-		}
-  }
-
   public void add_coins(int coin_count){
     current_game.add_coins(coin_count);
   }
@@ -98,12 +92,12 @@ public class Hero extends GameObject{
       return is_alive;
   }
   public void resurrect(){
-      //todo method
+      is_alive = true;
   }
   public void equip_helmet(Helmet helm){
-      //todo method
+      current_helmet = helm;
   }
   public void equip_weapon(Weapon weapon){
-      //todo method
+      current_weapon = weapon;
   }
 }
