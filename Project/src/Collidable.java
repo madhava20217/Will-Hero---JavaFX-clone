@@ -1,5 +1,5 @@
 public interface Collidable {
 
-    public void collide(Collidable other);
+    public void collide(Hero other);
 
 }

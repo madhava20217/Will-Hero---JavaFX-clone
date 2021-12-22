@@ -1,4 +1,4 @@
-public class FlyingWeapon extends Weapon implements Collidable{
+public class FlyingWeapon extends Weapon{
 
     private Weapon category;
 
@@ -6,8 +6,8 @@ public class FlyingWeapon extends Weapon implements Collidable{
         //todo
     }
 
-    @Override
-    public void collide(Collidable other) {
+
+    public void collide(Orc other) {
         //todo
     }
 }

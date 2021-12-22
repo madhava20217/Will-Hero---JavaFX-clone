@@ -1,6 +1,6 @@
 import javafx.scene.Node;
 
-public class Hero extends GameObject implements Collidable{
+public class Hero extends GameObject{
 
   private Weapon[] available_weapons;
   private Weapon current_weapon;

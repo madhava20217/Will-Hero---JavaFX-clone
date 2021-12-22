@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -35,6 +36,8 @@ public class GameController{
 	@FXML
 	private void goToPlay(MouseEvent ignored){
 		// label of the distance counter in game header
+		Toolkit.getDefaultToolkit().beep();
+
 		final Label distance;
 		Label d; // temp variable
 		try{
@@ -58,6 +61,8 @@ public class GameController{
 				new GameObject(scene.lookup("#coin_2_hitbox"),new float[]{0,0},new float[]{0,0},0,false, false));
 			objects.add(
 				new GameObject(scene.lookup("#chest_hitbox"),new float[]{0,0},new float[]{0,0},0,false, false));
+			objects.add(new Coin(scene.lookup("#coin_1_hitbox")));
+			objects.add(new Coin(scene.lookup("#coin_2_hitbox")));
 			
 			d = (Label) scene.lookup("#distance");
 			assert(objects.get(0).getClass() == Hero.class); // hero needs to be first for collision stuff
@@ -119,6 +124,7 @@ public class GameController{
 	@FXML
 	private void reset(MouseEvent ignored){
 		reset_params();
+		Toolkit.getDefaultToolkit().beep();
 		goToPlay(null);
 	}
 	

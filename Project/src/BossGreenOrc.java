@@ -4,8 +4,5 @@ public class BossGreenOrc extends Orc{
         //todo constructor
     }
 
-    @Override
-    public void collide(Collidable other){
-        //todo
-    }
+
 }

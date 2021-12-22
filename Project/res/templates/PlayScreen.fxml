@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
 <!--
     TODO: collision detection
     background will be in root pane, but root pain will not support clicking for hero movement
 -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
    <children>
       <AnchorPane prefHeight="60.0" prefWidth="1048.0">
          <children>
@@ -65,7 +68,7 @@
                     <Image url="@../images/platform_3.png" />
                  </image>
               </ImageView>
-              <ImageView id="orc_hitbox" fitHeight="60.0" fitWidth="60.0" layoutX="547.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true">
+              <ImageView id="orc_hitbox" fitHeight="60.0" fitWidth="60.0" layoutX="575.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true">
                  <image>
                     <Image url="@../images/orc_green_scar.png" />
                  </image>
