@@ -12,7 +12,14 @@ public class GameInstance implements Serializable {
         //todo constructor
     }
 
-
+		public void add_coins(int _coin_count){
+			coin_count += _coin_count;
+		}
+		
+		public int getCoin_count(){
+			return coin_count;
+		}
+		
     public void start(){
         //todo method
     }

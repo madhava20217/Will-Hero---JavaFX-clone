@@ -76,7 +76,7 @@ public class GameController{
 							// if there is no overlap, ther will be no interaction
 							if (objects.get(i).isTangible() && objects.get(j).isTangible()) {
 								// if even one object is intangible, there will be no physical collision
-								objects.get(i).bounce(objects.get(j), 0.9865F, overlaps[0], overlaps[1]);
+								objects.get(i).bounce(objects.get(j), 0.9865F);
 							}
 						}
 					}
@@ -95,6 +95,8 @@ public class GameController{
 				if(!((Hero)objects.get(0)).is_alive()){
 					goToOverLose(null);
 				}
+				// TODO: set coin count
+				int coins = ((Hero)objects.get(0)).getCurrent_game().getCoin_count();
 			}
 		};
 		clock.start();
@@ -208,9 +210,7 @@ public class GameController{
 	
 	@FXML
 	private void exitGame(MouseEvent ignored) {
-		//TODO: Implement it correctly (doesn't switch between scenes right now)
-		//TODO: Possible to make a method to change Menu's background to reflect the change.
-
+		//TODO: Possible to make a method to change Menu's background to reflect the change
 		try{
 			FXMLLoader exitScreen = new FXMLLoader(GameController.class.getResource("templates/Exit.fxml"));
 			stage.setScene(new Scene(exitScreen.load()));

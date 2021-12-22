@@ -24,6 +24,10 @@ public class Hero extends GameObject implements Collidable{
 		return distance;
 	}
 	
+	public GameInstance getCurrent_game(){
+		return current_game;
+	}
+	
 	public void launch(){
 		if(moveCnt >= 2 || (Math.abs(get_vel(0)) > 1)) return;
 		moveCnt++;
@@ -62,24 +66,26 @@ public class Hero extends GameObject implements Collidable{
 	}
 	
 	@Override
-	public void bounce(GameObject other, float e, float x_overlap, float y_overlap){
-		// TODO: make this apply for platforms ONLY - use if other instanceOf platform
-		if(x_overlap > y_overlap && this.getPos()[1] > other.getPos()[1]){
+	public void bounce(GameObject other, float e){
+		float[] overlaps = this.getOverlaps(other);
+		if(overlaps[0] > overlaps[1] && this.getPos()[1] > other.getPos()[1]){
 			// if hero is below whatever he is colliding with, he will die
 			die();
 		}
 		// TODO: reset moveCnt only if hitting platform
 		moveCnt = 0;
-		super.bounce(other, e, x_overlap, y_overlap);
+		super.bounce(other, e);
 	}
 	
   @Override
   public void collide(Collidable other) {
-		
+		if (other instanceof Collectable){
+			((Collectable)other).get_collected(this);
+		}
   }
 
   public void add_coins(int coin_count){
-      //todo method
+    current_game.add_coins(coin_count);
   }
   public void die(){
       is_alive = false;

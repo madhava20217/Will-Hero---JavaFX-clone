@@ -105,9 +105,12 @@ public class GameObject implements Serializable {
 		model.setTranslateY(pos[1]-p0[1]);
 	}
 	
-	public void bounce (GameObject other, float e, float x_overlap, float y_overlap){
+	public void bounce (GameObject other, float e){
 		if (e < 0 || e > 1) return;
-		
+		float[] overlaps = this.getOverlaps(other);
+		float x_overlap = overlaps[0];
+		float y_overlap = overlaps[1];
+		// TODO: hero bouncing on orc
 		// get axis of collision
 		int axis = (x_overlap > y_overlap)? 1: 0;
 		
