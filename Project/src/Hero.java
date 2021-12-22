@@ -1,6 +1,6 @@
 import javafx.scene.Node;
 
-public class Hero extends GameObject implements Collidable{
+public class Hero extends GameObject{
 
   private Weapon[] available_weapons;
   private Weapon current_weapon;
@@ -12,9 +12,10 @@ public class Hero extends GameObject implements Collidable{
 	private boolean CROSSING;
 	private int moveCnt;
 	private int distance;
+
 	
   Hero(Node _model, float[] v, float[] a, float m, boolean g, boolean t){
-    super(_model, v, a, m, g, t);
+    super(_model, v, a, m, g, t, -5F);
 		moveCnt = 0;
 		CROSSING = false;
 		is_alive = true;
@@ -25,9 +26,10 @@ public class Hero extends GameObject implements Collidable{
 	}
 	
 	public void launch(){
-		if(moveCnt >= 2 || (Math.abs(get_vel(0)) > 1)) return;
+		if(moveCnt >= 4 || (Math.abs(get_vel(0)) > 1)) return;
 		moveCnt++;
 		set_vel(0, 10);
+		set_vel(1, this.get_vel(1)+0.2F);
 	}
 	
 	@Override
@@ -72,11 +74,8 @@ public class Hero extends GameObject implements Collidable{
 		moveCnt = 0;
 		super.bounce(other, e, x_overlap, y_overlap);
 	}
-	
-  @Override
-  public void collide(Collidable other) {
-		
-  }
+
+
 
   public void add_coins(int coin_count){
       //todo method

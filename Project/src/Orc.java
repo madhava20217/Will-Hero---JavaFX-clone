@@ -1,4 +1,4 @@
-public abstract class Orc implements Collidable {
+public abstract class Orc {
     private int hit_endurance;
     private boolean is_alive;
     private int coin_drop;
@@ -10,10 +10,7 @@ public abstract class Orc implements Collidable {
         //todo constructor
     }
 
-    @Override
-    public void collide(Collidable other) {
-        //todo
-    }
+
 
     public void die(Hero hero){
         //todo

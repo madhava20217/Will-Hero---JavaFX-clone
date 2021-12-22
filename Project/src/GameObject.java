@@ -3,7 +3,13 @@ import javafx.scene.Node;
 
 import java.io.Serializable;
 
+import static java.lang.Math.signum;
+
 public class GameObject implements Serializable {
+
+	//defines
+	private final float BOUNCEVELY;
+
 	private final Node model;
 	private final float mass;
 	private final float[] pos;
@@ -42,6 +48,19 @@ public class GameObject implements Serializable {
 	}
 	
 	GameObject (Node _model, float[] v, float[] a, float m, boolean g, boolean t){
+		BOUNCEVELY = -4.5F;
+		model = _model;
+		p0 = new float[]{(float)(_model.getLayoutX()),(float)(_model.getLayoutY())};
+		pos = p0.clone();
+		vel = v;
+		acc = a;
+		mass = m;
+		gravity_affected = g;
+		rendered = true;
+		tangible = t;
+	}
+	GameObject (Node _model, float[] v, float[] a, float m, boolean g, boolean t, float bouncevel){
+		BOUNCEVELY = bouncevel;
 		model = _model;
 		p0 = new float[]{(float)(_model.getLayoutX()),(float)(_model.getLayoutY())};
 		pos = p0.clone();
@@ -56,6 +75,11 @@ public class GameObject implements Serializable {
 	public void apply_force(int axis, float value){
 		if (!(axis == 0 || axis == 1)) return;
 		acc[axis] += value/mass;
+	}
+
+	public void apply_acc(int axis, float val){
+		if (!(axis == 0 || axis == 1)) return;
+		acc[axis] += val;
 	}
 	
 	public void set_vel(int axis, float value){
@@ -78,7 +102,7 @@ public class GameObject implements Serializable {
 			return;
 		}
 		
-		int dir = (int) Math.signum(vel_next);  // friction will oppose this direction
+		int dir = (int) signum(vel_next);  // friction will oppose this direction
 		apply_force(axis,-dir*value);
 	}
 	
@@ -86,6 +110,11 @@ public class GameObject implements Serializable {
 		if(gravity_affected){
 			apply_gravity();
 		}
+		//checking for moving and applying acceleration wrt that
+		if(get_vel(0) != 0 && !(this instanceof Hero)){
+			this.decelerate(0, 0.09F);
+		}
+
 		for (int axis = 0; axis < 2; axis++) {  // move in both axes
 			pos[axis] += vel[axis];
 			vel[axis] += acc[axis];
@@ -105,33 +134,69 @@ public class GameObject implements Serializable {
 		model.setTranslateY(pos[1]-p0[1]);
 	}
 	
-	public void bounce (GameObject other, float e, float x_overlap, float y_overlap){
+	public void bounce (GameObject other, float e, float x_overlap, float y_overlap) {
 		if (e < 0 || e > 1) return;
-		
+
+		if(!other.isTangible() || !this.isTangible()){
+			if(other instanceof Coin && this instanceof Hero) ((Coin)other).collide((Hero)this);
+			if(this instanceof Coin && other instanceof Hero) ((Coin)this).collide((Hero)other);
+		}
+
+
 		// get axis of collision
-		int axis = (x_overlap > y_overlap)? 1: 0;
-		
+		int axis = (x_overlap > y_overlap) ? 1 : 0;
+
 		// don't do anything if they're moving away from each other already
-		if ((other.vel[axis] - this.vel[axis])*(other.pos[axis]-this.pos[axis]) > 0) {
+		if ((other.vel[axis] - this.vel[axis]) * (other.pos[axis] - this.pos[axis]) > 0) {
 			return; // don't do anything if they're moving away from each other already
 		}
-		
-		// check for "infinite mass"
-		float m1 = (this.mass / other.mass > 25)? 10000000: this.mass;
-		float m2 = (other.mass / this.mass > 25)? 10000000: other.mass;
-		
-		// set velocity in axis of collision
-		float u1 = this.get_vel(axis);
-		float u2 = other.get_vel(axis);
-		
-		this.set_vel(axis, (m1*u1 + m2*u2 -m2*e*(u1-u2))/(m1+m2));
-		other.set_vel(axis, (m1*u1 + m2*u2 -m1*e*(u2-u1))/(m1+m2));
+
+		if(!(other instanceof Platform) && !(this instanceof Platform)){// check for "infinite mass"
+			float m1 = (this.mass / other.mass > 25) ? 10000000 : this.mass;
+			float m2 = (other.mass / this.mass > 25) ? 10000000 : other.mass;
+
+			// set velocity in axis of collision
+			float u1 = this.get_vel(axis);
+			float u2 = other.get_vel(axis);
+
+			float temp = (m1 * u1 + m2 * u2 - m2 * e * (u1 - u2)) / (m1 + m2);
+			float temp2 = (m1 * u1 + m2 * u2 - m1 * e * (u2 - u1)) / (m1 + m2);
+
+			//if x axis
+			if (axis == 0){
+			this.set_vel(axis, temp);
+			other.set_vel(axis, temp2);
+			}
+
+			//if y axis
+			if(axis == 1){
+				//TODO: make sure laws of collision are correct.
+				//determine first which object lies above, the one with lower y coordinate will be higher (JavaFX rules)
+				if(this.getPos()[1] < other.getPos()[1]){
+					//other lies below
+					other.set_vel(axis,-other.BOUNCEVELY);
+					this.set_vel(axis, BOUNCEVELY);
+				}
+				else{
+					this.set_vel(axis, -BOUNCEVELY);
+					other.set_vel(axis, other.BOUNCEVELY);
+				}
+			}
+		}
+		else{
+			if(this instanceof Platform){
+				other.set_vel(axis, BOUNCEVELY);
+			}
+			else{
+				this.set_vel(axis, BOUNCEVELY);
+			}
+		}
 	}
 	
 	public void apply_gravity(){
 		apply_force(1,0.08F*mass);
 	}
-	
+
 	public float[] getOverlaps(GameObject other){
 		// returns the overlaps with another object
 		Bounds this_bnds = this.model.getBoundsInParent();
