@@ -1,6 +1,6 @@
-public interface Collectable {
-
-    public void get_collected(Hero hero);
-
-
+public interface Collectable{
+	
+	void get_collected (Hero hero);
+	
+	
 }

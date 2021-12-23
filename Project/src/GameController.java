@@ -14,34 +14,38 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameController{
-	public GameController(){
+	public GameController () {
 	
 	}
+	
 	private static ArrayList<GameObject> objects = new ArrayList<>();
 	private static Stage stage; // if i keep this non-static the game breaks dont ask me why
 	private static Scene pausedGame = null;
 	private static AnimationTimer clock;
 	private static float panCam;
 	
-	public static float getPanCam(){
+	public static float getPanCam () {
 		return panCam;
 	}
-	public static void panCamera (float x){
+	
+	public static void panCamera (float x) {
 		panCam += x;
 	}
 	
-	public void setStageVar(Stage _stage){
+	public void setStageVar (Stage _stage) {
 		stage = _stage;
 	}
 	
 	@FXML
-	private void goToPlay(MouseEvent ignored){
+	private void goToPlay (MouseEvent ignored) {
 		// label of the distance counter in game header
 		Toolkit.getDefaultToolkit().beep();
-
+		
 		final Label distance;
+		final Label count;
 		Label d; // temp variable
-		try{
+		Label c; // temp variable
+		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PlayScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
@@ -49,16 +53,19 @@ public class GameController{
 			GameInstance g = new GameInstance();
 			AnchorPane frame = (AnchorPane)scene.lookup("#frame");
 			objects = g.get_gameMap();
-			for (GameObject o : g.get_gameMap()){
+			for (GameObject o : g.get_gameMap()) {
 				frame.getChildren().add(o.getModel());
 			}
 			
-			d = (Label) scene.lookup("#distance");
-			assert(objects.get(0).getClass() == Hero.class); // hero needs to be first for collision stuff
-		} catch(IOException ignored1) {
+			d = (Label)scene.lookup("#distance");
+			c = (Label)scene.lookup("#coin_count");
+			assert (objects.get(0).getClass() == Hero.class); // hero needs to be first for collision stuff
+		} catch (IOException ignored1) {
 			d = null;
+			c = null;
 		}
 		distance = d; // distance is a function-level variable
+		count = c;
 		
 		clock = new AnimationTimer(){
 			@Override
@@ -72,10 +79,10 @@ public class GameController{
 								// if even one object is intangible, there will be no physical collision
 								objects.get(i).bounce(objects.get(j), 0.9865F);
 							}
-
+							
 							//assumes that the 0th index is hero's index
-							if(i == 0 && objects.get(j) instanceof Collidable){
-								((Collidable) objects.get(j)).collide((Hero)objects.get(0));
+							if (i == 0 && objects.get(j) instanceof Collidable) {
+								((Collidable)objects.get(j)).collide((Hero)objects.get(0));
 							}
 						}
 					}
@@ -83,7 +90,7 @@ public class GameController{
 				
 				for (GameObject obj : objects) {
 					obj.move();
-					if(obj.isRendered()){
+					if (obj.isRendered()) {
 						obj.refresh();
 					}
 				}
@@ -91,147 +98,147 @@ public class GameController{
 				assert distance != null;
 				distance.setText(String.valueOf(((Hero)objects.get(0)).getDistance()));
 				
-				if(!((Hero)objects.get(0)).is_alive()){
+				if (!((Hero)objects.get(0)).is_alive()) {
 					goToOverLose(null);
+					return;
 				}
 				// TODO: set coin count
-				int coins = ((Hero)objects.get(0)).getCurrent_game().getCoin_count();
+				count.setText("x " + ((Hero)objects.get(0)).getCurrent_game().getCoin_count());
 			}
 		};
 		clock.start();
 	}
 	
 	@FXML
-	private void move_hero(MouseEvent ignored){
-		Hero h = (Hero) objects.get(0);
+	private void move_hero (MouseEvent ignored) {
+		Hero h = (Hero)objects.get(0);
 		// TODO: Find hero properly in actual implementation
 		h.launch();
 	}
 	
-	private void reset_params(){
+	private void reset_params () {
 		// reset params = end game
-		if(clock != null) clock.stop();
+		if (clock != null) clock.stop();
 		panCam = 0;
 		objects = new ArrayList<>();
 	}
 	
 	@FXML
-	private void reset(MouseEvent ignored){
+	private void reset (MouseEvent ignored) {
 		reset_params();
 		Toolkit.getDefaultToolkit().beep();
 		goToPlay(null);
 	}
 	
 	@FXML
-	private void goToOverWin(MouseEvent ignored){
-		try{
+	private void goToOverWin (MouseEvent ignored) {
+		try {
 			reset_params();
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/GameOverWin.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
-		} catch(IOException ignored1) {}
+		} catch (IOException ignored1) {
+		}
 	}
 	
 	@FXML
-	public void goToOverLose(MouseEvent ignored){
-		try{
+	public void goToOverLose (MouseEvent ignored) {
+		try {
 			reset_params();
 			FXMLLoader overLose = new FXMLLoader(GameController.class.getResource("templates/GameOverLose.fxml"));
 			stage.setScene(new Scene(overLose.load()));
-		} catch(IOException ignored1) {
+		} catch (IOException ignored1) {
 			System.err.println("IOException when overLose screen.");
 		}
 	}
 	
 	@FXML
-	private void goToPause(MouseEvent ignored){
-		try{
+	private void goToPause (MouseEvent ignored) {
+		try {
 			clock.stop(); // game pauses running when we go to pause screen
 			pausedGame = stage.getScene();
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PauseScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
-		} catch(IOException ignored1) {}
+		} catch (IOException ignored1) {
+		}
 	}
 	
 	@FXML
-	private void returnToPause(MouseEvent ignored){
+	private void returnToPause (MouseEvent ignored) {
 		// when we return from save menu to pause screen
-		try{
+		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PauseScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
-		} catch(IOException ignored1) {}
+		} catch (IOException ignored1) {
+		}
 	}
 	
 	@FXML
-	private void goResumeFromPause(MouseEvent ignored){
-		try{
+	private void goResumeFromPause (MouseEvent ignored) {
+		try {
 			stage.setScene(pausedGame);
 			clock.start();
-		}
-		catch (NullPointerException ignored1){
+		} catch (NullPointerException ignored1) {
 			System.err.println("Null Pointer exception when resuming game");
 		}
 	}
 	
 	@FXML
-	private void goToMainMenu(MouseEvent ignored){
-		try{
+	private void goToMainMenu (MouseEvent ignored) {
+		try {
 			reset_params();
 			FXMLLoader mainLoad = new FXMLLoader(GameController.class.getResource("templates/Menu.fxml"));
 			stage.setScene(new Scene(mainLoad.load()));
-		}
-		catch (IOException ignored1){
+		} catch (IOException ignored1) {
 			System.err.println("IOException caught when returning to main menu.");
 		}
 	}
 	
 	@FXML
-	private void goToSaveScreen(MouseEvent ignored){
-		try{
+	private void goToSaveScreen (MouseEvent ignored) {
+		try {
 			FXMLLoader saveScreen = new FXMLLoader(GameController.class.getResource("templates/SaveScreen.fxml"));
 			stage.setScene(new Scene(saveScreen.load()));
-		}
-		catch (IOException ignored1){
-			System.err.println("IOException when going to save screen");
-		}
-	}
-	@FXML
-	private void goToLoadScreen(MouseEvent ignored){
-		try{
-			FXMLLoader saveScreen = new FXMLLoader(GameController.class.getResource("templates/LoadScreen.fxml"));
-			stage.setScene(new Scene(saveScreen.load()));
-		}
-		catch (IOException ignored1){
+		} catch (IOException ignored1) {
 			System.err.println("IOException when going to save screen");
 		}
 	}
 	
 	@FXML
-	private void exitGame(MouseEvent ignored) {
+	private void goToLoadScreen (MouseEvent ignored) {
+		try {
+			FXMLLoader saveScreen = new FXMLLoader(GameController.class.getResource("templates/LoadScreen.fxml"));
+			stage.setScene(new Scene(saveScreen.load()));
+		} catch (IOException ignored1) {
+			System.err.println("IOException when going to save screen");
+		}
+	}
+	
+	@FXML
+	private void exitGame (MouseEvent ignored) {
 		//TODO: Possible to make a method to change Menu's background to reflect the change
-		try{
+		try {
 			FXMLLoader exitScreen = new FXMLLoader(GameController.class.getResource("templates/Exit.fxml"));
 			stage.setScene(new Scene(exitScreen.load()));
 			System.out.println("Thank you for playing!");
 			PauseTransition delay = new PauseTransition(Duration.seconds(3));
-			delay.setOnFinished(ignored1 ->stage.close());
+			delay.setOnFinished(ignored1->stage.close());
 			delay.play();
-		}
-		catch (IOException ignored1){
+		} catch (IOException ignored1) {
 			System.err.println("IOException caught when exiting");
 		}
 	}
-
+	
 	@FXML
-	private void saveGame(MouseEvent ignored){
+	private void saveGame (MouseEvent ignored) {
 		//TODO: implement it for the final game
 		System.out.println("Saving game");
 	}
-
+	
 	@FXML
-	private void loadGame(MouseEvent ignored){
+	private void loadGame (MouseEvent ignored) {
 		//TODO: implement it for the final game
 		System.out.println("Loading game");
 	}

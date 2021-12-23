@@ -22,7 +22,7 @@
                   <Image url="@../images/coin.png" />
                </image>
             </ImageView>
-            <Label layoutX="61.0" layoutY="12.0" prefHeight="33.0" prefWidth="79.0" text="X 25" textFill="WHITE">
+            <Label id="coin_count" layoutX="61.0" layoutY="12.0" prefHeight="33.0" prefWidth="79.0" text="X 25" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
