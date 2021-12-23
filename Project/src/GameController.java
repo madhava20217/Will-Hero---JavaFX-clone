@@ -74,8 +74,8 @@ public class GameController{
 							}
 
 							//assumes that the 0th index is hero's index
-							if(objects.get(i) instanceof Collidable){
-								((Collidable) objects.get(i)).collide((Hero)objects.get(0));
+							if(i == 0 && objects.get(j) instanceof Collidable){
+								((Collidable) objects.get(j)).collide((Hero)objects.get(0));
 							}
 						}
 					}

@@ -2,10 +2,9 @@ public class CoinChest extends Chest{
 
     private int coins_number;
 
-    CoinChest(int coins){
-        coins_number = coins;
-        //todo constructor
-
+    CoinChest(float[] pos){
+			super(pos);
+			coins_number = (int)(4*Math.random()+1);
     }
 
     @Override

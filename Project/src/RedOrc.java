@@ -5,6 +5,6 @@ public class RedOrc extends Orc{
 
     //TODO: other inits in orc abstract
     RedOrc(float[] position, GameInstance instance){
-        super(position, 5, loc1, new float[]{60,60}, HP, instance);
+        super(position, 8, loc1, new float[]{60,60}, HP, instance);
     }
 }

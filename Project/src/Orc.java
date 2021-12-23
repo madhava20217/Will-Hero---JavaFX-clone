@@ -13,7 +13,8 @@ public abstract class Orc extends GameObject{
     //TODO: other inits
     Orc(float[] position, float mass, String spritee, float[] size, int HP, GameInstance instance){
         //todo constructor
-        super(position, new float[]{0,0}, new float[]{0,0}, mass, true, true, spritee, size);
+        super(position, new float[]{0,3}, new float[]{0,0}, mass, true, true, spritee, size);
+				// TODO: im pretty sure we have no reason to store this in orc
         this.current_game = instance;
         this.hit_endurance = HP;
     }

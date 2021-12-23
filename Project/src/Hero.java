@@ -14,7 +14,7 @@ public class Hero extends GameObject{
 	private int distance;
 	
   Hero(float[] pos, float[] v, float[] a, float m, boolean g, boolean t, GameInstance gi){
-    super(pos, v, a, m, g, t, "images/knight.png", new float[]{33,44});
+    super(new float[]{100,250},new float[]{0,-5},new float[]{0,0},2, true, true, "images/knight.png", new float[]{33,44});
 		moveCnt = 0;
 		CROSSING = false;
 		is_alive = true;
@@ -30,7 +30,7 @@ public class Hero extends GameObject{
 	}
 	
 	public void launch(){
-		if(moveCnt >= 2 || (Math.abs(get_vel(0)) > 1)) return;
+		if(moveCnt >= 5 || (Math.abs(get_vel(0)) > 1)) return;
 		moveCnt++;
 		set_vel(0, 10);
 	}
@@ -62,7 +62,7 @@ public class Hero extends GameObject{
 		super.move();
 		Node model = getModel();
 		if(model.getTranslateX() > 0){
-			GameController.panCamera((float)(model.getTranslateX()/3));
+			GameController.panCamera((float)(model.getTranslateX()/8));
 		}
 	}
 	
@@ -73,8 +73,8 @@ public class Hero extends GameObject{
 			// if hero is below whatever he is colliding with, he will die
 			die();
 		}
-		// TODO: reset moveCnt only if hitting platform
-		moveCnt = 0;
+		if(other instanceof Platform)
+			moveCnt = 0;
 		super.bounce(other, e);
 	}
 	
@@ -85,8 +85,7 @@ public class Hero extends GameObject{
       is_alive = false;
   }
   public Helmet get_helmet(){
-      //todo method
-      return null;
+      return current_helmet;
   }
   public boolean is_alive(){
       return is_alive;

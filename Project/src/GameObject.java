@@ -176,10 +176,12 @@ public class GameObject implements Serializable {
 	}
 
   public void render(){
+		model.setVisible(true);
 		rendered = true;
   }
 
   public void derender(){
+		model.setVisible(false);
 		rendered = false;
   }
 	
