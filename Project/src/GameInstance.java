@@ -8,6 +8,8 @@ public class GameInstance implements Serializable {
     private int coin_count;
 	private static int platformCount = 0;
 	private static int OrcCount = 0;
+	private static final double GREENORCPROBABILITY = 0.4;			//higher number => less green orcs
+	private static final double ORCPLACEPROBABILITY = 0.6;			//higher number => lower probability to place orcs
 
 	private void init_gamemap(){
 			gamemap = new ArrayList<>(100);
@@ -27,29 +29,35 @@ public class GameInstance implements Serializable {
 
 			//random orc generator	: green orc only for now
 
-		/*	for(GameObject obj: this.gamemap){
-				if(obj instanceof Platform && this.gamemap.get(1) != obj){		//first platform excluded
+
+
+			for(int i = 0; i< gamemap.size(); i++){
+				GameObject o = gamemap.get(i);
+				if(o instanceof Platform && o != p0){		//first platform excluded
 					//if it is an instance of platform
+					Platform obj = (Platform) o;
+
 
 
 					// placing orcs with 70% probability
-					if(Math.random() > 0.3){
+					if(Math.random() > ORCPLACEPROBABILITY){
+
 						float[] positionInit = obj.getPos();
 						float[] size = obj.getSize();
 						float[] orcPos = new float[2];
 
-						int side = (Math.random() > 0.5) ? -1: 1;		//determining positive or negative deviation
+						int side = (Math.random() > 0.5) ? -1: 1;		//determining positive or negative deviation from mean
 
-						orcPos[0] = (float) (positionInit[0] + size[0]/2 + side*Math.random()*10);
-						orcPos[1] = (float) (positionInit[0] + size[0]/2 + side*Math.random()*10);
+						orcPos[0] = (float) (positionInit[0] + size[0]/2 + side*(size[0]/2-70));
+						orcPos[1] = (float) (positionInit[1] - 100 - 100*Math.random());		//some deviation
 
 						//Orc Type;
-						Orc orc = (Math.random() > 0.5) ? new GreenOrc(orcPos, this) : new RedOrc(orcPos, this);
+						Orc orc = (Math.random() > GREENORCPROBABILITY) ? new GreenOrc(orcPos, this) : new RedOrc(orcPos, this);
 						OrcCount++;			//incrementing orc count
 						gamemap.add(orc);
 					}
 				}
-			}*/
+			}
 		}
 
     GameInstance(){

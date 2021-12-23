@@ -7,14 +7,15 @@ public abstract class Orc extends GameObject{
     private String sprite;
     private GameInstance current_game;
 
-    private static final double CallOutProbability = 0.05;
+    private static final double CallOutProbability = 0.0005;
 
 
     //TODO: other inits
-    Orc(float[] position, float mass, String spritee, float[] size, GameInstance instance){
+    Orc(float[] position, float mass, String spritee, float[] size, int HP, GameInstance instance){
         //todo constructor
         super(position, new float[]{0,0}, new float[]{0,0}, mass, true, true, spritee, size);
         this.current_game = instance;
+        this.hit_endurance = HP;
     }
 
 
@@ -24,7 +25,7 @@ public abstract class Orc extends GameObject{
     }
 
     public void get_hit_by_weapon(FlyingWeapon weapon){
-        //todo
+        //todo: get weapon damage and subtract it from HP
     }
 
     public void is_alive(){
