@@ -18,4 +18,6 @@ public class Platform extends GameObject{
 			// TODO: abstract more things in constructors
 	    super(pos,new float[]{0,0},new float[]{0,0},1000,false,true,getfile(cat), getsize(cat));
     }
+
+
 }

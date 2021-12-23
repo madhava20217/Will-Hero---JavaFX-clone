@@ -72,6 +72,11 @@ public class GameController{
 								// if even one object is intangible, there will be no physical collision
 								objects.get(i).bounce(objects.get(j), 0.9865F);
 							}
+
+							//assumes that the 0th index is hero's index
+							if(objects.get(i) instanceof Collidable){
+								((Collidable) objects.get(i)).collide((Hero)objects.get(0));
+							}
 						}
 					}
 				}

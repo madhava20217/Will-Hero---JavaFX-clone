@@ -1,4 +1,10 @@
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import javafx.scene.transform.Translate;
+import javafx.util.Duration;
 
 public class Coin extends GameObject implements Collectable, Collidable{
 
@@ -9,18 +15,39 @@ public class Coin extends GameObject implements Collectable, Collidable{
     Coin(Node model){
         //todo constructor
         super(new float[]{0,0} , new float[]{0F, 0F}, new float[]{0F, 0F}, 0, false, false, "coin.png", new float[]{0,0});
-        frames = 200;
+        frames = 50;
         value = 1;
         collected = false;
     }
 
     public void get_collected(Hero hero){
         //todo: implement a scaling or a "collected" state change animation
-        this.getModel().setScaleX(0.5);
-        this.getModel().setScaleY(0.5);
-        this.getModel().scaleXProperty();
-        this.getModel().scaleYProperty();
+
+
+        //creates new ScaleTransition animation and sets node accordingly
+
+        ((Hero) hero).add_coins(this.value);
         collected = true;
+        TranslateTransition trans = new TranslateTransition();
+        trans.setNode((ImageView) this.getModel());
+        trans.setByY(-200);
+
+        FadeTransition fade = new FadeTransition();
+        fade.setNode((ImageView)this.getModel());
+        fade.setFromValue(1);
+        fade.setToValue(0);
+
+        ScaleTransition animation = new ScaleTransition();
+        animation.setNode((ImageView)this.getModel());
+
+        animation.setDuration(Duration.millis(250));
+        animation.setByX(2);
+        animation.setByY(2);
+
+        trans.play();
+        animation.play();
+        fade.play();
+
     }
 
     public void derender(){
@@ -35,13 +62,6 @@ public class Coin extends GameObject implements Collectable, Collidable{
         ((Hero) other).add_coins(this.value);
         get_collected(other);
 
-    }
-
-    @Override
-    public void refresh() {
-        this.set_vel(1, 0.25F);
-        if(!collected)frames--;
-        if(frames == 0) derender();
     }
 
 }

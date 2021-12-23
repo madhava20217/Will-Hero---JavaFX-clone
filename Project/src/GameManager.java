@@ -13,7 +13,7 @@ public class GameManager extends Application implements Serializable {
 	
 	@Override
 	public void start (Stage stage) throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(GameManager.class.getResource("templates/Menu.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(GameManager.class.getResource("/Menu.fxml"));
 		Scene scene = new Scene(fxmlLoader.load(), 1048, 590);
 		
 		assert(fxmlLoader.getController() instanceof GameController);

@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class GameObject implements Serializable {
 	private final ImageView model;
@@ -15,7 +16,9 @@ public class GameObject implements Serializable {
 	private boolean rendered;
 	private final boolean gravity_affected;
 	private final boolean tangible;
-	
+	private final UUID ID;				//UUID
+	private final float[] size;			//size of the model
+
 	protected float[] getPos(){
 		return pos;
 	}
@@ -35,6 +38,10 @@ public class GameObject implements Serializable {
 		return tangible;
 	}
 
+	public float[] getSize() {
+		return size;
+	}
+
 	private boolean is_out_of_bounds(){
 		Bounds b = model.getBoundsInParent();
 		float pc = GameController.getPanCam();
@@ -44,6 +51,9 @@ public class GameObject implements Serializable {
 	}
 	
 	GameObject (float[]_pos, float[] v, float[] a, float m, boolean g, boolean t, String sprite, float[] size){
+		this.ID = UUID.randomUUID();
+		this.size = size;
+
 		model = new ImageView(sprite);
 		model.setLayoutX(_pos[0]);
 		model.setLayoutY(_pos[1]);
@@ -58,7 +68,11 @@ public class GameObject implements Serializable {
 		rendered = true;
 		tangible = t;
 	}
-	
+
+	public UUID getID() {
+		return ID;
+	}
+
 	public void apply_force(int axis, float value){
 		if (!(axis == 0 || axis == 1)) return;
 		acc[axis] += value/mass;

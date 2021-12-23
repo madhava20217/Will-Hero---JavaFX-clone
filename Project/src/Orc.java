@@ -1,13 +1,20 @@
-public abstract class Orc {
+public abstract class Orc extends GameObject{
     private int hit_endurance;
     private boolean is_alive;
     private int coin_drop;
     private String[] dialogues;
     private float size;
     private String sprite;
+    private GameInstance current_game;
 
-    Orc(){
+    private static final double CallOutProbability = 0.05;
+
+
+    //TODO: other inits
+    Orc(float[] position, float mass, String spritee, float[] size, GameInstance instance){
         //todo constructor
+        super(position, new float[]{0,0}, new float[]{0,0}, mass, true, true, spritee, size);
+        this.current_game = instance;
     }
 
 
@@ -29,6 +36,17 @@ public abstract class Orc {
     }
     public void call_out(){
         //todo
+        System.out.println("CALLED OUT!");
+    }
+
+    @Override
+    public void refresh(){
+        super.refresh();
+        //call out dialogue, probability 0.05
+        if(Math.random() < CallOutProbability){
+            call_out();
+        }
+
     }
 
 }
