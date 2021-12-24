@@ -27,6 +27,10 @@ public class GameObject implements Serializable{
 		return vel;
 	}
 	
+	protected float[] getP0 (){
+		return p0;
+	}
+	
 	public float get_acc (int axis) {
 		return acc[axis];
 	}

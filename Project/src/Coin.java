@@ -28,7 +28,7 @@ public class Coin extends GameObject implements Collectable, Collidable{
 		scale.setByY(1.5);
 		
 		fade.setOnFinished((e)->{
-			hero.getCurrent_game().get_gameMap().remove(this);
+			hero.getCurrent_game().remove_ID(this.getID());
 			this.derender();
 		});
 		

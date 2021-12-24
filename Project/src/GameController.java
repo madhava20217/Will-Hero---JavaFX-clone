@@ -13,13 +13,14 @@ import javafx.scene.control.Button;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameController{
 	public GameController () {
 	
 	}
 	
-	private static ArrayList<GameObject> objects = new ArrayList<>();
+	private static List<GameObject> objects;
 	private static Stage stage; // if i keep this non-static the game breaks dont ask me why
 	private static Scene pausedGame = null;
 	private static AnimationTimer clock;

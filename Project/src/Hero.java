@@ -62,7 +62,7 @@ public class Hero extends GameObject{
 		super.move();
 		Node model = getModel();
 		if (model.getTranslateX() > 0) {
-			GameController.panCamera((float)(model.getTranslateX() / 8));
+			GameController.panCamera(((pos[0] - getP0()[0] - GameController.getPanCam())/ 8));
 		}
 		if (is_out_of_bounds() && pos[1] > 50) { // went out of bounds from below
 			die();

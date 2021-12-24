@@ -1,10 +1,10 @@
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.*;
 
 public class GameInstance implements Serializable{
 	public ArrayList<Helmet> helmet_list;
 	private Hero hero;
-	private ArrayList<GameObject> gamemap;
+	private Map<UUID, GameObject> gamemap;
 	private int coin_count;
 	
 	// RATES
@@ -32,14 +32,18 @@ public class GameInstance implements Serializable{
 		return (float)(Math.random() - 0.5);
 	}
 	
+	public void remove_ID(UUID ID){
+		gamemap.remove(ID);
+	}
+	
 	private void init_gamemap () {
-		gamemap = new ArrayList<>(100);
+		gamemap = new LinkedHashMap<>(150);
 		hero = new Hero(new float[]{100, 250}, new float[]{0, -5}, new float[]{0, 0}, 2, true, true, this);
-		gamemap.add(hero);
+		gamemap.put(hero.getID(), hero);
 		
 		// MAKE STARTING PLATFORM
 		Platform p0 = new Platform(new float[]{0, 300}, 0);
-		gamemap.add(p0);
+		gamemap.put(p0.getID(), p0);
 		
 		for (int i = 1; i < 25; i++) {
 			float p_del_x = PLATFORMVARIANCE[0] * genrand();
@@ -48,7 +52,7 @@ public class GameInstance implements Serializable{
 			// SET PLATFORM
 			Platform p = new Platform(new float[]{PLATFORMSIZE[0] * i + p_del_x, PLATFORMSIZE[1] + p_del_y},
 				(int)(Math.random() * 3));
-			gamemap.add(p);
+			gamemap.put(p.getID(), p);
 			
 			// ADD ORCS
 			if (Math.random() < ORCPLACEPROB) {
@@ -59,7 +63,7 @@ public class GameInstance implements Serializable{
 				//Orc Type;
 				Orc orc = (Math.random() < GREENORCPROB) ?
 					new GreenOrc(orcPos, this) : new RedOrc(orcPos, this);
-				gamemap.add(orc);
+				gamemap.put(orc.getID(), orc);
 			}
 			
 			// ADD COINS
@@ -67,11 +71,11 @@ public class GameInstance implements Serializable{
 			if (Math.random() < COINPROB) {
 				Coin c1 = new Coin(new float[]{PLATFORMSIZE[0] * i + p_del_x + c_del_x + COINOFFSET[0],
 					PLATFORMSIZE[1] + COINOFFSET[1] + p_del_y});
-				gamemap.add(c1);
+				gamemap.put(c1.getID(), c1);
 				if (Math.random() < DOUBLECOINPROB) {
 					Coin c2 = new Coin(new float[]{PLATFORMSIZE[0] * i + p_del_x + c_del_x + COINOFFSET[0] + 35,
 						PLATFORMSIZE[1] + COINOFFSET[1] + p_del_y});
-					gamemap.add(c2);
+					gamemap.put(c2.getID(), c2);
 				}
 			}
 			
@@ -86,7 +90,7 @@ public class GameInstance implements Serializable{
 					c = new CoinChest(new float[]{PLATFORMSIZE[0] * i + p_del_x + ch_del_x + CHESTOFFSET[0],
 						PLATFORMSIZE[1] + CHESTOFFSET[1] + p_del_y});
 				}
-				gamemap.add(c);
+				gamemap.put(c.getID(), c);
 			}
 		}
 	}
@@ -95,8 +99,8 @@ public class GameInstance implements Serializable{
 		init_gamemap();
 	}
 	
-	public ArrayList<GameObject> get_gameMap () {
-		return gamemap;
+	public List<GameObject> get_gameMap () {
+		return gamemap.values().stream().toList();
 	}
 	
 	public void add_coins (int _coin_count) {
