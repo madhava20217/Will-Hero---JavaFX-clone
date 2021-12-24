@@ -1,5 +1,4 @@
-import javafx.animation.AnimationTimer;
-import javafx.animation.PauseTransition;
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,14 +15,20 @@ import java.sql.Time;
 import java.util.ArrayList;
 
 public class GameController{
+	private double keyFrameDuration;
+	private boolean easyMode;
+	private double easyKeyFrameDuration;
 	public GameController () {
-	
+		easyMode = false;
+		keyFrameDuration = 1000/120.0;
+		easyKeyFrameDuration = 10;
 	}
+
 	
 	private static ArrayList<GameObject> objects = new ArrayList<>();
 	private static Stage stage; // if i keep this non-static the game breaks dont ask me why
 	private static Scene pausedGame = null;
-	private static AnimationTimer clock;
+	private static Timeline clock;
 	private static float panCam;
 	
 	public static float getPanCam () {
@@ -45,10 +50,8 @@ public class GameController{
 		
 		final Label distance;
 		final Label count;
-		final Label fps;
 		Label d; // temp variable
 		Label c; // temp variable
-		Label f;
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PlayScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
@@ -63,31 +66,18 @@ public class GameController{
 			
 			d = (Label)scene.lookup("#distance");
 			c = (Label)scene.lookup("#coin_count");
-			f = (Label)scene.lookup("#framerate");
 			assert (objects.get(0).getClass() == Hero.class); // hero needs to be first for collision stuff
 		} catch (IOException ignored1) {
 			d = null;
 			c = null;
-			f = null;
 		}
 		distance = d; // distance is a function-level variable
 		count = c;
-		fps = f;
 
-		clock = new AnimationTimer(){
-			static long delta = 0;
-			static long lastFrameTime = 0;
+		double dur = (easyMode) ? easyKeyFrameDuration : keyFrameDuration;
 
-			public int getFrameRate(){
-				return (int) (1e9*(1d/(delta - lastFrameTime)));
-			}
-
-			@Override
-			public void handle (long l) {
-				delta = System.nanoTime();
-				fps.setText(String.valueOf(getFrameRate()));
-				lastFrameTime = delta;
-				for (int i = 0; i < objects.size() - 1; i++) {
+		clock = new Timeline(60, new KeyFrame(Duration.millis(dur), event->{
+			for (int i = 0; i < objects.size() - 1; i++) {
 					for (int j = i + 1; j < objects.size(); j++) {
 						float[] overlaps = objects.get(i).getOverlaps(objects.get(j));
 						if (overlaps[0] > 0 && overlaps[1] > 0) {
@@ -123,10 +113,9 @@ public class GameController{
 				// TODO: set coin count
 				count.setText("x " + ((Hero)objects.get(0)).getCurrent_game().getCoin_count());
 
-			}
-		};
-
-		clock.start();
+			}));
+		clock.setCycleCount(Animation.INDEFINITE);
+		clock.play();
 	}
 	
 	@FXML
@@ -205,7 +194,7 @@ public class GameController{
 	private void goResumeFromPause (MouseEvent ignored) {
 		try {
 			stage.setScene(pausedGame);
-			clock.start();
+			clock.playFromStart();
 		} catch (NullPointerException ignored1) {
 			System.err.println("Null Pointer exception when resuming game");
 		}
@@ -277,7 +266,34 @@ public class GameController{
 			System.err.println("IOException caught when exiting");
 		}
 	}
-	
+
+	@FXML
+	private void goToModeSelect(MouseEvent ignored){
+		try{
+			FXMLLoader saveScreen = new FXMLLoader(GameController.class.getResource("templates/ModeSelectScreen.fxml"));
+			stage.setScene(new Scene(saveScreen.load()));
+
+		}
+		catch(IOException ign){
+			System.err.println("IOException caught when moving to modeSelect screen");
+		}
+	}
+
+	@FXML
+	private void normalLoad(MouseEvent ev1){
+		//todo
+		this.easyMode = false;
+		goToPlay(ev1);
+	}
+
+	@FXML
+	private void easyLoad(MouseEvent ev1){
+		//todo
+		this.easyMode = true;
+		goToPlay(ev1);
+	}
+
+
 	@FXML
 	private void saveGame (MouseEvent ignored) {
 		//TODO: implement it for the final game

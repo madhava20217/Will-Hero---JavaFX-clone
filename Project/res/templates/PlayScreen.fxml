@@ -38,12 +38,6 @@
                </children>
             </HBox>
          </children></AnchorPane>
-      <AnchorPane id="frame" layoutY="60.0" onMouseClicked="#move_hero" prefHeight="530.0" prefWidth="1048.0">
-         <children>
-            <Label id="framerate" alignment="CENTER_RIGHT" layoutX="936.0" layoutY="14.0" prefHeight="39.0" prefWidth="98.0" text="Label" textFill="#ffdd00">
-               <font>
-                  <Font size="27.0" />
-               </font></Label>
-         </children></AnchorPane>
+      <AnchorPane id="frame" layoutY="60.0" onMouseClicked="#move_hero" prefHeight="530.0" prefWidth="1048.0" />
    </children>
 </AnchorPane>
