@@ -54,6 +54,14 @@ public class GameInstance implements Serializable{
 			float p_del_y = PLATFORMVARIANCE[1] * genrand();
 			
 			// SET PLATFORM
+			if (Math.random() < 0.8){
+				FallingPlatform p = new FallingPlatform(new float[]{PLATFORMSIZE[0] * i + p_del_x, PLATFORMSIZE[1] + p_del_y});
+				gamemap.put(p.getID(), p);
+				for (Platform m : p.getSubmodels()){
+					gamemap.put(m.getID(), m);
+				}
+				continue;
+			}
 			Platform p = new Platform(new float[]{PLATFORMSIZE[0] * i + p_del_x, PLATFORMSIZE[1] + p_del_y},
 				(int)(Math.random() * 3));
 			gamemap.put(p.getID(), p);

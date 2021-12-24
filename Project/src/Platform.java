@@ -20,7 +20,7 @@ public class Platform extends GameObject{
 		super(pos, new float[]{0, 0}, new float[]{0, 0}, 1000, false, true, getfile(cat), getsize(cat));
 	}
 	
-	protected Platform(float[] pos, float[] size) {
-		super(pos, new float[]{0, 0}, new float[]{0, 0}, 1000, false, false, null, size);
+	protected Platform(float[] pos, String sprite, float[] size) {
+		super(pos, new float[]{0, 0}, new float[]{0, 0}, 1000, false, true, sprite, size);
 	}
 }

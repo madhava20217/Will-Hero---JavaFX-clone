@@ -75,8 +75,10 @@ public class Hero extends GameObject{
 		if (overlaps[0] > overlaps[1]) { // if collision is vertical
 			if(this.getPos()[1] > other.getPos()[1]){
 				// if hero is below whatever he is colliding with, he will die
-				die();
-				return;
+				if (other instanceof Orc) {
+					die();
+					return;
+				}
 			}
 			moveCnt = 0;
 			if (other instanceof Platform) { // if bouncing on platform

@@ -14,7 +14,7 @@ public class GameObject implements Serializable{
 	private final float[] vel;
 	private final float[] acc;
 	private boolean rendered;
-	private final boolean gravity_affected;
+	private boolean gravity_affected;
 	private final boolean tangible;
 	private final UUID ID;        //UUID
 	private final float[] size;      //size of the model
@@ -29,6 +29,10 @@ public class GameObject implements Serializable{
 	
 	protected float[] getP0 (){
 		return p0;
+	}
+	
+	protected void setG(boolean g){
+		gravity_affected = g;
 	}
 	
 	public float get_acc (int axis) {
@@ -59,7 +63,9 @@ public class GameObject implements Serializable{
 		this.ID = UUID.randomUUID();
 		this.size = size;
 		
-		model = new ImageView(sprite);
+		model = new ImageView();
+		if(sprite != null)
+			model.setImage(new Image(sprite));
 		model.setLayoutX(_pos[0]);
 		model.setLayoutY(_pos[1]);
 		model.setFitWidth(size[0]);
