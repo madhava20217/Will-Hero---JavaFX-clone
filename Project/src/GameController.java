@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.control.Button;
 
 import java.awt.*;
 import java.io.IOException;
@@ -217,6 +218,17 @@ public class GameController{
 		try {
 			FXMLLoader saveScreen = new FXMLLoader(GameController.class.getResource("templates/LoadScreen.fxml"));
 			stage.setScene(new Scene(saveScreen.load()));
+			Button save1 = (Button)stage.getScene().lookup("#save1");
+			Button save2 = (Button)stage.getScene().lookup("#save2");
+			Button save3 = (Button)stage.getScene().lookup("#save3");
+			Button save4 = (Button)stage.getScene().lookup("#save4");
+			Button save5 = (Button)stage.getScene().lookup("#save5");
+
+			setHoverActionLoad(save1);
+			setHoverActionLoad(save2);
+			setHoverActionLoad(save3);
+			setHoverActionLoad(save4);
+			setHoverActionLoad(save5);
 		} catch (IOException ignored1) {
 			System.err.println("IOException when going to save screen");
 		}
@@ -246,5 +258,11 @@ public class GameController{
 	private void loadGame (MouseEvent ignored) {
 		//TODO: implement it for the final game
 		System.out.println("Loading game");
+	}
+
+	private void setHoverActionLoad(Button b){
+		b.hoverProperty().addListener(e->{
+			System.out.println(b.getId() + " save file located!!!!!");
+		});
 	}
 }
