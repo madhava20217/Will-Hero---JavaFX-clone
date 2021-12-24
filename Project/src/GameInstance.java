@@ -19,8 +19,8 @@ public class GameInstance implements Serializable{
 	
 	// OFFSETS
 	private static final float[] ORCOFFSET = {300, -50};
-	private static final float[] CHESTOFFSET = {225, -54};
-	private static final float[] COINOFFSET = {100, -40};
+	private static final float[] CHESTOFFSET = {200, -54};
+	private static final float[] COINOFFSET = {80, -40};
 	
 	// VARIANCES
 	private static final float[] PLATFORMVARIANCE = {60, 100};
@@ -36,9 +36,13 @@ public class GameInstance implements Serializable{
 		gamemap.remove(ID);
 	}
 	
+	public Hero getHero () {
+		return hero;
+	}
+	
 	private void init_gamemap () {
-		gamemap = new LinkedHashMap<>(150);
-		hero = new Hero(new float[]{100, 250}, new float[]{0, -5}, new float[]{0, 0}, 2, true, true, this);
+		gamemap = new LinkedHashMap<>(150); // I want hashmap, but also hero should be first object
+		hero = new Hero(this);
 		gamemap.put(hero.getID(), hero);
 		
 		// MAKE STARTING PLATFORM

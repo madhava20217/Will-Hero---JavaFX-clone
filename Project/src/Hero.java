@@ -13,7 +13,7 @@ public class Hero extends GameObject{
 	private int moveCnt;
 	private int distance;
 	
-	Hero (float[] pos, float[] v, float[] a, float m, boolean g, boolean t, GameInstance gi) {
+	Hero (GameInstance gi) {
 		super(new float[]{100, 250}, new float[]{0, -5}, new float[]{0, 0}, 2, true, true, "images/knight.png",
 			new float[]{33, 44});
 		moveCnt = 0;
@@ -72,13 +72,17 @@ public class Hero extends GameObject{
 	@Override
 	public void bounce (GameObject other, float e) {
 		float[] overlaps = this.getOverlaps(other);
-		if (overlaps[0] > overlaps[1] && this.getPos()[1] > other.getPos()[1]) {
-			// if hero is below whatever he is colliding with, he will die
-			die();
-		}
-		if (other instanceof Platform) {
+		if (overlaps[0] > overlaps[1]) { // if collision is vertical
+			if(this.getPos()[1] > other.getPos()[1]){
+				// if hero is below whatever he is colliding with, he will die
+				die();
+				return;
+			}
 			moveCnt = 0;
-			set_vel(1, -5);
+			if (other instanceof Platform) { // if bouncing on platform
+				set_vel(1, -5);
+				return;
+			}
 		}
 		super.bounce(other, e);
 	}

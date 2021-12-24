@@ -21,6 +21,7 @@ public class GameController{
 	}
 	
 	private static List<GameObject> objects;
+	private static GameInstance gameInstance;
 	private static Stage stage; // if i keep this non-static the game breaks dont ask me why
 	private static Scene pausedGame = null;
 	private static AnimationTimer clock;
@@ -40,9 +41,10 @@ public class GameController{
 	
 	@FXML
 	private void goToPlay (MouseEvent ignored) {
-		// label of the distance counter in game header
+		// TODO: audio stuff?
 		Toolkit.getDefaultToolkit().beep();
 		
+		// label of the distance counter in game header
 		final Label distance;
 		final Label count;
 		Label d; // temp variable
@@ -52,10 +54,10 @@ public class GameController{
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
 			
-			GameInstance g = new GameInstance();
+			gameInstance = new GameInstance();
 			AnchorPane frame = (AnchorPane)scene.lookup("#frame");
-			objects = g.get_gameMap();
-			for (GameObject o : g.get_gameMap()) {
+			objects = gameInstance.get_gameMap();
+			for (GameObject o : gameInstance.get_gameMap()) {
 				frame.getChildren().add(o.getModel());
 			}
 			
@@ -104,7 +106,6 @@ public class GameController{
 					goToOverLose(null);
 					return;
 				}
-				// TODO: set coin count
 				count.setText("x " + ((Hero)objects.get(0)).getCurrent_game().getCoin_count());
 			}
 		};
@@ -113,9 +114,7 @@ public class GameController{
 	
 	@FXML
 	private void move_hero (MouseEvent ignored) {
-		Hero h = (Hero)objects.get(0);
-		// TODO: Find hero properly in actual implementation
-		h.launch();
+		gameInstance.getHero().launch();
 	}
 	
 	private void reset_params () {
@@ -262,6 +261,7 @@ public class GameController{
 	}
 
 	private void setHoverActionLoad(Button b){
+		// TODO: do something better with the handler
 		b.hoverProperty().addListener(e->{
 			System.out.println(b.getId() + " save file located!!!!!");
 		});
