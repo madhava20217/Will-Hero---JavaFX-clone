@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 
 import java.awt.*;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class GameController{
@@ -44,8 +45,10 @@ public class GameController{
 		
 		final Label distance;
 		final Label count;
+		final Label fps;
 		Label d; // temp variable
 		Label c; // temp variable
+		Label f;
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PlayScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
@@ -60,17 +63,30 @@ public class GameController{
 			
 			d = (Label)scene.lookup("#distance");
 			c = (Label)scene.lookup("#coin_count");
+			f = (Label)scene.lookup("#framerate");
 			assert (objects.get(0).getClass() == Hero.class); // hero needs to be first for collision stuff
 		} catch (IOException ignored1) {
 			d = null;
 			c = null;
+			f = null;
 		}
 		distance = d; // distance is a function-level variable
 		count = c;
-		
+		fps = f;
+
 		clock = new AnimationTimer(){
+			static long delta = 0;
+			static long lastFrameTime = 0;
+
+			public int getFrameRate(){
+				return (int) (1e9*(1d/(delta - lastFrameTime)));
+			}
+
 			@Override
 			public void handle (long l) {
+				delta = System.nanoTime();
+				fps.setText(String.valueOf(getFrameRate()));
+				lastFrameTime = delta;
 				for (int i = 0; i < objects.size() - 1; i++) {
 					for (int j = i + 1; j < objects.size(); j++) {
 						float[] overlaps = objects.get(i).getOverlaps(objects.get(j));
@@ -103,10 +119,13 @@ public class GameController{
 					goToOverLose(null);
 					return;
 				}
+
 				// TODO: set coin count
 				count.setText("x " + ((Hero)objects.get(0)).getCurrent_game().getCoin_count());
+
 			}
 		};
+
 		clock.start();
 	}
 	
@@ -208,6 +227,17 @@ public class GameController{
 		try {
 			FXMLLoader saveScreen = new FXMLLoader(GameController.class.getResource("templates/SaveScreen.fxml"));
 			stage.setScene(new Scene(saveScreen.load()));
+			Button save1 = (Button)stage.getScene().lookup("#save1");
+			Button save2 = (Button)stage.getScene().lookup("#save2");
+			Button save3 = (Button)stage.getScene().lookup("#save3");
+			Button save4 = (Button)stage.getScene().lookup("#save4");
+			Button save5 = (Button)stage.getScene().lookup("#save5");
+
+			setHoverActionSave(save1);
+			setHoverActionSave(save2);
+			setHoverActionSave(save3);
+			setHoverActionSave(save4);
+			setHoverActionSave(save5);
 		} catch (IOException ignored1) {
 			System.err.println("IOException when going to save screen");
 		}
@@ -261,6 +291,12 @@ public class GameController{
 	}
 
 	private void setHoverActionLoad(Button b){
+		b.hoverProperty().addListener(e->{
+			System.out.println(b.getId() + " save file located!!!!!");
+		});
+	}
+
+	private void setHoverActionSave(Button b){
 		b.hoverProperty().addListener(e->{
 			System.out.println(b.getId() + " save file located!!!!!");
 		});
