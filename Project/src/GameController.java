@@ -133,10 +133,13 @@ public class GameController{
 	@FXML
 	private void goToOverWin (MouseEvent ignored) {
 		try {
+			int coinCount = ((Hero)objects.get(0)).getCurrent_game().getCoin_count();
 			reset_params();
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/GameOverWin.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
+			Label coins = (Label) stage.getScene().lookup("#coins");
+			coins.setText(String.valueOf(coinCount));
 		} catch (IOException ignored1) {
 		}
 	}
@@ -144,9 +147,12 @@ public class GameController{
 	@FXML
 	public void goToOverLose (MouseEvent ignored) {
 		try {
+			int coinCount = ((Hero)objects.get(0)).getCurrent_game().getCoin_count();
 			reset_params();
 			FXMLLoader overLose = new FXMLLoader(GameController.class.getResource("templates/GameOverLose.fxml"));
 			stage.setScene(new Scene(overLose.load()));
+			Label coins = (Label) stage.getScene().lookup("#coins");
+			coins.setText(String.valueOf(coinCount));
 		} catch (IOException ignored1) {
 			System.err.println("IOException when overLose screen.");
 		}
@@ -218,7 +224,6 @@ public class GameController{
 	
 	@FXML
 	private void exitGame (MouseEvent ignored) {
-		//TODO: Possible to make a method to change Menu's background to reflect the change
 		try {
 			FXMLLoader exitScreen = new FXMLLoader(GameController.class.getResource("templates/Exit.fxml"));
 			stage.setScene(new Scene(exitScreen.load()));
