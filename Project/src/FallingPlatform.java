@@ -43,4 +43,8 @@ public class FallingPlatform extends GameObject implements Collidable{
 			}
 			, 0, collapse_rate);
 	}
+
+	public boolean getCollapsing(){
+		return this.collapsing;
+	}
 }

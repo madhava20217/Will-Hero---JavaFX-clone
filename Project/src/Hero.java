@@ -22,6 +22,7 @@ public class Hero extends GameObject{
 		current_game = gi;
 		current_helmet = new Helmet();
 		current_weapon = new Weapon(0); // TODO: STUB
+		resurrected = false;
 	}
 	
 	public int getDistance () {
@@ -118,5 +119,13 @@ public class Hero extends GameObject{
 	
 	public void equip_weapon (Weapon weapon) {
 		current_weapon = weapon;
+	}
+
+	public void clearMoveCount(){
+		this.moveCnt = 0;
+	}
+
+	public boolean isResurrected() {
+		return resurrected;
 	}
 }

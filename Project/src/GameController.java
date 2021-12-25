@@ -1,11 +1,15 @@
+import com.sun.javafx.scene.ImageViewHelper;
 import javafx.animation.AnimationTimer;
+import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.control.Button;
@@ -115,13 +119,59 @@ public class GameController{
 				distance.setText(String.valueOf(gameInstance.getHero().getDistance()));
 				
 				if (!gameInstance.getHero().is_alive()) {
-					goToOverLose(null);
-					return;
+					//TODO here
+					clock.stop();
+					GameOver();
 				}
 				count.setText("x " + gameInstance.getCoin_count());
 			}
 		};
 		clock.start();
+	}
+
+	@FXML
+	public void GameOver () {
+
+		if(gameInstance.hasResurrected()){
+			goToOverLose(null);
+		}
+		else{
+			//fetch VBox, set button functions, then set opacity.
+			VBox resurrectionMenu = (VBox) stage.getScene().lookup("#vbox");
+
+			Button resurrect = (Button) stage.getScene().lookup("#resurrect");
+			Button endGame = (Button) stage.getScene().lookup("#endgame");
+			javafx.scene.image.ImageView message = (ImageView) stage.getScene().lookup("#message");
+
+			resurrect.setOnMouseClicked(e->{
+				int retValue = gameInstance.resurrect();
+				if(retValue != 0){
+					//not enough coins or other reason
+					FadeTransition fade = new FadeTransition();
+					fade.setNode(message);
+					fade.setFromValue(0);
+					fade.setToValue(1);
+					fade.setDuration(Duration.millis(250));
+					fade.play();
+
+					return;
+				}
+				resurrect.setOnMouseClicked(null);
+				endGame.setOnMouseClicked(null);
+				resurrectionMenu.setVisible(false);
+				clock.start();
+			});
+
+			endGame.setOnMouseClicked(e->{
+				resurrect.setOnMouseClicked(null);
+				endGame.setOnMouseClicked(null);
+				goToOverLose(e);
+			});
+
+		resurrectionMenu.setVisible(true);
+
+
+		}
 	}
 	
 	@FXML

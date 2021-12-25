@@ -198,4 +198,9 @@ public class GameObject implements Serializable{
 	public boolean isRendered () {
 		return rendered;
 	}
+
+	protected void setPos(float x, float y){
+		this.pos[0] = x;
+		this.pos[1] = y;
+	}
 }

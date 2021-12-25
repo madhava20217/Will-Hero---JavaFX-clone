@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <!--
@@ -13,7 +15,7 @@
     background will be in root pane, but root pain will not support clicking for hero movement
 -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
+<AnchorPane id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
    <children>
       <AnchorPane prefHeight="60.0" prefWidth="1048.0">
          <children>
@@ -41,7 +43,30 @@
                </children>
             </HBox>
          </children></AnchorPane>
-      <AnchorPane id = "frame" layoutY="60.0" onMouseClicked="#move_hero" prefHeight="530.0" prefWidth="1048.0">
+      <AnchorPane id="frame" layoutY="60.0" onMouseClicked="#move_hero" prefHeight="530.0" prefWidth="1048.0">
       </AnchorPane>
+      <VBox id="vbox" layoutX="282.0" layoutY="149.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="135.0" prefWidth="521.0" spacing="20.0" visible="false">
+         <children>
+            <ImageView id="message" fitHeight="100.0" fitWidth="498.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/pixel-speech-bubble.png" />
+               </image>
+            </ImageView>
+            <Button id="resurrect" mnemonicParsing="false" prefHeight="25.0" prefWidth="528.0" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="RESURRECT (COST 10 COINS)" wrapText="true">
+               <font>
+                  <Font name="Calibri" size="31.0" />
+               </font>
+            </Button>
+            <Button id="endgame" mnemonicParsing="false" prefHeight="25.0" prefWidth="580.0" styleClass="my_button" text="END GAME" wrapText="true">
+               <stylesheets>
+                  <URL value="@../stylesheets/play_screen.css" />
+                  <URL value="@../stylesheets/button.css" />
+               </stylesheets>
+               <font>
+                  <Font name="Calibri" size="31.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

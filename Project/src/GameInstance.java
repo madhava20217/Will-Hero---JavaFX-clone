@@ -6,8 +6,12 @@ public class GameInstance implements Serializable{
 	private Hero hero;
 	private LinkedHashMap<UUID, GameObject> gamemap;
 	private int coin_count;
-	
+
+	//VARIABLES
+	private static boolean resurrection;
+
 	// RATES
+	private static final int RESURRECTIONCCOST = 10;			//cost for resurrection
 	private static final double GREENORCPROB = 0.6;
 	private static final double ORCPLACEPROB = 0.4;
 	private static final double CHESTPROB = 0.3;
@@ -112,6 +116,7 @@ public class GameInstance implements Serializable{
 	}
 	
 	GameInstance () {
+		resurrection = false;
 		init_gamemap();
 	}
 	
@@ -147,15 +152,77 @@ public class GameInstance implements Serializable{
 		//todo method
 	}
 	
-	public void resurrect () {
-		//todo method
+	public int resurrect () {
+		/**
+		 * Method for resurrection: -1 for coins less than cost, 0 for success, and 1 for no platform being available
+		 */
+		if(getCoin_count() < RESURRECTIONCCOST) return -1;
+		double XPos = hero.getPos()[0];
+
+		//find an appropriate platform
+		List<GameObject> map = new ArrayList<>(this.get_gameMap().values());
+
+		//iterating over map
+		Iterator<GameObject> iter = map.iterator();
+
+		double viableXPos = 0;
+
+		boolean falling = false;
+
+		while(iter.hasNext()){
+			GameObject iterating = iter.next();
+
+			if((iterating instanceof Platform || (iterating instanceof FallingPlatform
+					&&!((FallingPlatform)iterating).getCollapsing()))
+					&& iterating.getPos()[0]> XPos){
+				//it is a Platform!
+				viableXPos = iterating.getPos()[0];
+				break;
+			}
+			if(iterating instanceof FallingPlatform && ((FallingPlatform)iterating).getCollapsing()){
+				falling = true;
+			}
+
+		}
+
+		viableXPos = Math.ceil(viableXPos);
+
+		//some basic stuff to ensure it doesn't break the game
+		if(viableXPos == 0){
+			return 1;
+		}
+
+		if(falling) viableXPos+=200;
+
+		hero.clearMoveCount();
+		hero.setPos((float)viableXPos, 20);
+		hero.set_vel(0,0);
+		hero.set_vel(1,0);
+		setResurrection();
+
+
+		resurrectionDeduction();
+
+		return 0;
 	}
-	
+
+	private void resurrectionDeduction(){
+		this.add_coins(-RESURRECTIONCCOST);
+	}
 	public void game_over () {
 		//todo method
 	}
 	
 	public void win () {
 		//todo method
+	}
+
+	private void setResurrection(){
+		resurrection = true;
+		this.hero.resurrect();
+	}
+
+	public boolean hasResurrected() {
+		return resurrection;
 	}
 }
