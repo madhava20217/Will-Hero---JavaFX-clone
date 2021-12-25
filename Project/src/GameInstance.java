@@ -4,7 +4,7 @@ import java.util.*;
 public class GameInstance implements Serializable{
 	public ArrayList<Helmet> helmet_list;
 	private Hero hero;
-	private Map<UUID, GameObject> gamemap;
+	private LinkedHashMap<UUID, GameObject> gamemap;
 	private int coin_count;
 	
 	// RATES
@@ -35,6 +35,10 @@ public class GameInstance implements Serializable{
 	public void remove_ID(UUID ID){
 		gamemap.remove(ID);
 	}
+	public void add_item(UUID ID, GameObject item){
+		gamemap.put(ID, item);
+		GameController.add_item(item);
+	}
 	
 	public Hero getHero () {
 		return hero;
@@ -54,7 +58,7 @@ public class GameInstance implements Serializable{
 			float p_del_y = PLATFORMVARIANCE[1] * genrand();
 			
 			// SET PLATFORM
-			if (Math.random() < 0.8){
+			if (Math.random() < 0.2){
 				FallingPlatform p = new FallingPlatform(new float[]{PLATFORMSIZE[0] * i + p_del_x, PLATFORMSIZE[1] + p_del_y});
 				gamemap.put(p.getID(), p);
 				for (Platform m : p.getSubmodels()){
@@ -111,8 +115,8 @@ public class GameInstance implements Serializable{
 		init_gamemap();
 	}
 	
-	public List<GameObject> get_gameMap () {
-		return gamemap.values().stream().toList();
+	public LinkedHashMap<UUID, GameObject> get_gameMap () {
+		return gamemap;
 	}
 	
 	public void add_coins (int _coin_count) {

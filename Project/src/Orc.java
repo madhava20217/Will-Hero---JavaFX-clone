@@ -1,5 +1,5 @@
 public abstract class Orc extends GameObject{
-	private final int hit_endurance;
+	private int hit_endurance;
 	private boolean is_alive;
 	private int coin_drop;
 	private String[] dialogues;
@@ -16,6 +16,7 @@ public abstract class Orc extends GameObject{
 		// TODO: im pretty sure we have no reason to store this in orc
 		this.current_game = instance;
 		this.hit_endurance = HP;
+		coin_drop = (int)(Math.random()*4)+1;
 	}
 	
 	@Override
@@ -25,11 +26,17 @@ public abstract class Orc extends GameObject{
 	}
 	
 	public void die (Hero hero) {
-		//todo
+		this.derender();
+		hero.add_coins(coin_drop);
 	}
 	
 	public void get_hit_by_weapon (FlyingWeapon weapon) {
-		//todo: get weapon damage and subtract it from HP
+		hit_endurance--; // TODO: implement varying weapon damages
+		// TODO: merge derendering and map removal into a "remove" method
+		if(hit_endurance == 0){
+			die(GameController.getGameInstance().getHero());
+			GameController.getGameInstance().remove_ID(this.getID());
+		}
 	}
 	
 	public void is_alive () {

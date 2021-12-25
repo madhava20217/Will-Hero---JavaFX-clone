@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class GameController{
@@ -20,12 +20,18 @@ public class GameController{
 	
 	}
 	
+	private static LinkedHashMap<UUID, GameObject> map;
 	private static List<GameObject> objects;
 	private static GameInstance gameInstance;
 	private static Stage stage; // if i keep this non-static the game breaks dont ask me why
 	private static Scene pausedGame = null;
 	private static AnimationTimer clock;
 	private static float panCam;
+	private static AnchorPane frame;
+	
+	public static GameInstance getGameInstance () {
+		return gameInstance;
+	}
 	
 	public static float getPanCam () {
 		return panCam;
@@ -37,6 +43,12 @@ public class GameController{
 	
 	public void setStageVar (Stage _stage) {
 		stage = _stage;
+	}
+	
+	public static void add_item(GameObject o){
+		if(frame != null) {
+			frame.getChildren().add(o.getModel());
+		}
 	}
 	
 	@FXML
@@ -55,9 +67,9 @@ public class GameController{
 			stage.setScene(scene);
 			
 			gameInstance = new GameInstance();
-			AnchorPane frame = (AnchorPane)scene.lookup("#frame");
-			objects = gameInstance.get_gameMap();
-			for (GameObject o : gameInstance.get_gameMap()) {
+			frame = (AnchorPane)scene.lookup("#frame");
+			map = gameInstance.get_gameMap();
+			for (GameObject o : map.values()) {
 				frame.getChildren().add(o.getModel());
 			}
 			
@@ -70,10 +82,18 @@ public class GameController{
 		}
 		distance = d; // distance is a function-level variable
 		count = c;
-		
 		clock = new AnimationTimer(){
 			@Override
 			public void handle (long l) {
+				objects = map.values().stream().toList(); // TODO: this is O(n), and i really dont know if it can be done
+				// faster.
+				for (GameObject obj : objects) {
+					obj.move();
+					if (obj.isRendered()) {
+						obj.refresh();
+					}
+				}
+				
 				for (int i = 0; i < objects.size() - 1; i++) {
 					for (int j = i + 1; j < objects.size(); j++) {
 						float[] overlaps = objects.get(i).getOverlaps(objects.get(j));
@@ -84,29 +104,21 @@ public class GameController{
 								objects.get(i).bounce(objects.get(j), 0.9865F);
 							}
 							
-							//assumes that the 0th index is hero's index
-							if (i == 0 && objects.get(j) instanceof Collidable) {
-								((Collidable)objects.get(j)).collide((Hero)objects.get(0));
+							if (objects.get(j) instanceof Collidable && objects.get(i).isTangible()) {
+								((Collidable)objects.get(j)).collide(objects.get(i));
 							}
 						}
 					}
 				}
 				
-				for (GameObject obj : objects) {
-					obj.move();
-					if (obj.isRendered()) {
-						obj.refresh();
-					}
-				}
-				
 				assert distance != null;
-				distance.setText(String.valueOf(((Hero)objects.get(0)).getDistance()));
+				distance.setText(String.valueOf(gameInstance.getHero().getDistance()));
 				
-				if (!((Hero)objects.get(0)).is_alive()) {
+				if (!gameInstance.getHero().is_alive()) {
 					goToOverLose(null);
 					return;
 				}
-				count.setText("x " + ((Hero)objects.get(0)).getCurrent_game().getCoin_count());
+				count.setText("x " + gameInstance.getCoin_count());
 			}
 		};
 		clock.start();
@@ -121,7 +133,8 @@ public class GameController{
 		// reset params = end game
 		if (clock != null) clock.stop();
 		panCam = 0;
-		objects = new ArrayList<>();
+		map = new LinkedHashMap<>();
+		objects = new LinkedList<>();
 	}
 	
 	@FXML

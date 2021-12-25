@@ -20,6 +20,8 @@ public class Hero extends GameObject{
 		CROSSING = false;
 		is_alive = true;
 		current_game = gi;
+		current_helmet = new Helmet();
+		current_weapon = new Weapon(0); // TODO: STUB
 	}
 	
 	public int getDistance () {
@@ -34,6 +36,7 @@ public class Hero extends GameObject{
 		if (moveCnt >= 5 || (Math.abs(get_vel(0)) > 1)) return;
 		moveCnt++;
 		set_vel(0, 10);
+		if(current_weapon != null) current_weapon.use(this);
 	}
 	
 	@Override

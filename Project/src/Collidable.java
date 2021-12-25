@@ -1,5 +1,5 @@
 public interface Collidable{
 	
-	void collide (Hero other);
+	void collide (GameObject other);
 	
 }

@@ -41,10 +41,10 @@ public class Coin extends GameObject implements Collectable, Collidable{
 	}
 	
 	@Override
-	public void collide (Hero other) {
-		if (!collected) {
-			get_collected(other);
-			other.add_coins(this.value);
-		}
+	public void collide (GameObject obj) {
+		if(!(obj instanceof Hero) || collected)
+			return;
+		get_collected((Hero)obj);
+		((Hero)obj).add_coins(this.value);
 	}
 }

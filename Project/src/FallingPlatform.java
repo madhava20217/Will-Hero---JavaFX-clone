@@ -21,8 +21,9 @@ public class FallingPlatform extends GameObject implements Collidable{
 	}
 	
 	@Override
-	public void collide (Hero other) {
-		collapse();
+	public void collide (GameObject other) {
+		if(other instanceof Hero)
+			collapse();
 	}
 	
 	public void collapse () {

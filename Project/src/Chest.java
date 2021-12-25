@@ -7,7 +7,8 @@ public abstract class Chest extends GameObject implements Collidable{
 	public abstract void collect_chest (Hero hero);
 	
 	@Override
-	public void collide (Hero other) {
-		collect_chest(other);
+	public void collide (GameObject other) {
+		if(!(other instanceof Hero)) return;
+		collect_chest((Hero)other);
 	}
 }
