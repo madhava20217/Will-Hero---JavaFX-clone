@@ -18,7 +18,6 @@ public abstract class Orc extends GameObject{
 	
 	//TODO: other inits
 	Orc (float[] position, float mass, String spritee, float[] size, int HP, GameInstance instance) {
-		//todo constructor
 		super(position, new float[]{0, 3}, new float[]{0, 0}, mass, true, true, spritee, size);
 		// TODO: im pretty sure we have no reason to store this in orc
 		this.current_game = instance;
@@ -30,13 +29,16 @@ public abstract class Orc extends GameObject{
 	public void move () {
 		decelerate(0, 1);
 		super.move();
+		if (super.is_out_of_bounds() && this.getPos()[1] > 500){
+			die();
+		}
 	}
 	
-	public void die (Hero hero) {
+	public void die () {
 		float[] pos = this.getPos();
 
 		this.derender();
-
+		current_game.remove_ID(this.getID());
 		Coin c = new Coin(pos, 0);
 
 		current_game.add_item(c.getID(), c);
@@ -48,17 +50,12 @@ public abstract class Orc extends GameObject{
 		hit_endurance--; // TODO: implement varying weapon damages
 		// TODO: merge derendering and map removal into a "remove" method
 		if(hit_endurance == 0){
-			die(GameController.getGameInstance().getHero());
-			GameController.getGameInstance().remove_ID(this.getID());
+			die();
 		}
 	}
 	
-	public void is_alive () {
-		//todo
-	}
-	
 	public void smash_hero (Hero hero) {
-		//todo
+		// Todo: related to hero death animation, and kill quip
 	}
 	
 	public void call_out () {

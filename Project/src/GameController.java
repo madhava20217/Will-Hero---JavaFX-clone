@@ -1,4 +1,3 @@
-import com.sun.javafx.scene.ImageViewHelper;
 import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
@@ -120,7 +119,7 @@ public class GameController{
 				distance.setText(String.valueOf(gameInstance.getHero().getDistance()));
 				
 				if (!gameInstance.getHero().is_alive()) {
-					//TODO here
+					//TODO turn this into a listener method, not a spinlock-style test
 					clock.stop();
 					GameOver();
 				}

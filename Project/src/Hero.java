@@ -1,8 +1,15 @@
 import javafx.scene.Node;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Hero extends GameObject{
 	
-	private Weapon[] available_weapons;
+	public List<Weapon> getAvailable_weapons () {
+		return available_weapons;
+	}
+	
+	private List<Weapon> available_weapons;
 	private Weapon current_weapon;
 	private Helmet current_helmet;
 	private boolean is_alive;
@@ -22,6 +29,8 @@ public class Hero extends GameObject{
 		current_game = gi;
 		current_helmet = new Helmet();
 		current_weapon = new Weapon(0); // TODO: STUB
+		available_weapons = new ArrayList<>();
+		available_weapons.add(current_weapon);
 		resurrected = false;
 	}
 	

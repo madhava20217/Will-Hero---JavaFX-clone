@@ -156,12 +156,13 @@ public class GameInstance implements Serializable{
 	}
 	
 	public int resurrect () {
-		/**
+		/*
 		 * Method for resurrection: -1 for coins less than cost, 0 for success, and 1 for no platform being available
+		 * TODO: this is functional, but O(n)
 		 */
 		if(getCoin_count() < RESURRECTIONCCOST) return -1;
 		double XPos = hero.getPos()[0];
-
+		
 		//find an appropriate platform
 		List<GameObject> map = new ArrayList<>(this.get_gameMap().values());
 
@@ -172,12 +173,14 @@ public class GameInstance implements Serializable{
 
 		boolean falling = false;
 
+		// TODO: would be cleaner with a for-each loop, although flexing iterator DP is kinda cool.
 		while(iter.hasNext()){
 			GameObject iterating = iter.next();
 
 			if((iterating instanceof Platform || (iterating instanceof FallingPlatform
 					&&!((FallingPlatform)iterating).getCollapsing()))
 					&& iterating.getPos()[0]> XPos){
+				// TODO: doesnt work because of the way fallingplatform is configured. could be fixed but im not too sure.
 				//it is a Platform!
 				viableXPos = iterating.getPos()[0];
 				break;
@@ -201,9 +204,9 @@ public class GameInstance implements Serializable{
 		hero.setPos((float)viableXPos, 20);
 		hero.set_vel(0,0);
 		hero.set_vel(1,0);
+		
+		// TODO dont need to be a separate method imo
 		setResurrection();
-
-
 		resurrectionDeduction();
 
 		return 0;
