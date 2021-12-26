@@ -1,7 +1,10 @@
+import javafx.stage.Stage;
+
 import java.io.Serializable;
 import java.util.*;
 
 public class GameInstance implements Serializable{
+	public Stage stage;
 	public ArrayList<Helmet> helmet_list;
 	private Hero hero;
 	private LinkedHashMap<UUID, GameObject> gamemap;
@@ -224,5 +227,13 @@ public class GameInstance implements Serializable{
 
 	public boolean hasResurrected() {
 		return resurrection;
+	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 }

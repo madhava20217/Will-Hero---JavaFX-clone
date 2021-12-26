@@ -71,6 +71,7 @@ public class GameController{
 			stage.setScene(scene);
 			
 			gameInstance = new GameInstance();
+			gameInstance.setStage(stage);
 			frame = (AnchorPane)scene.lookup("#frame");
 			map = gameInstance.get_gameMap();
 			for (GameObject o : map.values()) {

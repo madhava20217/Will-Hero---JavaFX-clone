@@ -1,3 +1,10 @@
+import javafx.animation.FadeTransition;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
 public abstract class Orc extends GameObject{
 	private int hit_endurance;
 	private boolean is_alive;
@@ -26,8 +33,15 @@ public abstract class Orc extends GameObject{
 	}
 	
 	public void die (Hero hero) {
+		float[] pos = this.getPos();
+
 		this.derender();
-		hero.add_coins(coin_drop);
+
+		Coin c = new Coin(pos, 0);
+
+		current_game.add_item(c.getID(), c);
+		c.collide(current_game.getHero());
+		current_game.add_coins(this.coin_drop);
 	}
 	
 	public void get_hit_by_weapon (FlyingWeapon weapon) {
