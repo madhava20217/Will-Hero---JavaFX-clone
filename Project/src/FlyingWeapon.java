@@ -3,7 +3,7 @@ public class FlyingWeapon extends GameObject implements Collidable{
 	private Weapon category;
 	
 	FlyingWeapon (float[] pos, float[] vel, float angle, Weapon cat) {
-		super(pos, vel, new float[]{0,0}, 1, false, false, cat.getSprite(), cat.getSize());
+		super(pos, vel, new float[]{0,0}, 0.5F, false, false, cat.getSprite(), cat.getSize());
 		this.getModel().setRotate(angle);
 	}
 	
@@ -19,6 +19,7 @@ public class FlyingWeapon extends GameObject implements Collidable{
 		if (other instanceof Hero) return;
 		if (other instanceof Orc){
 			((Orc)other).get_hit_by_weapon(this);
+			bounce(other, 1);
 		}
 		this.derender();
 	}

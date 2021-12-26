@@ -18,22 +18,22 @@ public class GameInstance implements Serializable{
 	private static final double GREENORCPROB = 0.6;
 	private static final double ORCPLACEPROB = 0.4;
 	private static final double CHESTPROB = 0.3;
-	private static final double WEAPONPROB = 0.5;
+	private static final double WEAPONPROB = 0.7;
 	private static final double COINPROB = 0.2;
 	private static final double DOUBLECOINPROB = 0.4;
 	
 	private static final float[] PLATFORMSIZE = {480, 300};
 	
 	// OFFSETS
-	private static final float[] ORCOFFSET = {300, -50};
-	private static final float[] CHESTOFFSET = {200, -54};
-	private static final float[] COINOFFSET = {80, -40};
+	private static final float[] ORCOFFSET = {160, -50};
+	private static final float[] CHESTOFFSET = {250, -55};
+	private static final float[] COINOFFSET = {55, -40};
 	
 	// VARIANCES
 	private static final float[] PLATFORMVARIANCE = {60, 100};
 	private static final float[] ORCVARIANCE = {50, 100};
 	private static final float COINVARIANCE = 50;
-	private static final float CHESTVARIANCE = 50;
+	private static final float CHESTVARIANCE = 35;
 	
 	private static float genrand () {
 		return (float)(Math.random() - 0.5);

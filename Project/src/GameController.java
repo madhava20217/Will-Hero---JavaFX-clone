@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -175,8 +176,12 @@ public class GameController{
 	}
 	
 	@FXML
-	private void move_hero (MouseEvent ignored) {
-		gameInstance.getHero().launch();
+	private void handle_click (MouseEvent click) {
+		if(click.getButton() == MouseButton.PRIMARY) {
+			gameInstance.getHero().launch();
+		} else{
+			gameInstance.getHero().cycleWeapon();
+		}
 	}
 	
 	private void reset_params () {

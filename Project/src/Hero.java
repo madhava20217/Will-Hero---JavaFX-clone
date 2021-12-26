@@ -15,6 +15,7 @@ public class Hero extends GameObject{
 	private boolean is_alive;
 	private boolean resurrected;
 	private final GameInstance current_game;
+	private int weapon_index;
 	
 	private boolean CROSSING;
 	private int moveCnt;
@@ -28,10 +29,16 @@ public class Hero extends GameObject{
 		is_alive = true;
 		current_game = gi;
 		current_helmet = new Helmet();
-		current_weapon = new Weapon(0); // TODO: STUB
+		weapon_index = 0;
+		current_weapon = null;
 		available_weapons = new ArrayList<>();
-		available_weapons.add(current_weapon);
 		resurrected = false;
+	}
+	
+	public void cycleWeapon(){
+		if (available_weapons.size() ==  0) return;
+		weapon_index = (weapon_index + 1)% available_weapons.size();
+		current_weapon = available_weapons.get(weapon_index);
 	}
 	
 	public int getDistance () {
