@@ -14,7 +14,7 @@ public class GameInstance implements Serializable{
 	private static boolean resurrection;
 
 	// RATES
-	private static final int RESURRECTIONCCOST = 10;			//cost for resurrection
+	private static final int RESURRECTIONCCOST = 1;			//cost for resurrection
 	private static final double GREENORCPROB = 0.6;
 	private static final double ORCPLACEPROB = 0.4;
 	private static final double CHESTPROB = 0.3;
@@ -179,7 +179,7 @@ public class GameInstance implements Serializable{
 
 			if((iterating instanceof Platform || (iterating instanceof FallingPlatform
 					&&!((FallingPlatform)iterating).getCollapsing()))
-					&& iterating.getPos()[0]> XPos){
+					&& iterating.getPos()[0]> XPos && iterating.getVel()[1] < 0.1){
 				// TODO: doesnt work because of the way fallingplatform is configured. could be fixed but im not too sure.
 				//it is a Platform!
 				viableXPos = iterating.getPos()[0];

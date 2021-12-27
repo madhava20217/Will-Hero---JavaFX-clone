@@ -31,6 +31,7 @@ public class FallingPlatform extends GameObject implements Collidable{
 			return;
 		collapsing = true;
 		Timer t = new Timer();
+		GameController.getGameInstance().remove_ID(this.getID());
 		t.schedule(
 			new TimerTask() {
 				private int count = 0;

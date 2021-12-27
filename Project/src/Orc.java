@@ -47,7 +47,7 @@ public abstract class Orc extends GameObject{
 	}
 	
 	public void get_hit_by_weapon (FlyingWeapon weapon) {
-		hit_endurance--; // TODO: implement varying weapon damages
+		hit_endurance--;
 		// TODO: merge derendering and map removal into a "remove" method
 		if(hit_endurance == 0){
 			die();
