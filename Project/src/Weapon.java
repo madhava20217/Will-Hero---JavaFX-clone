@@ -1,4 +1,6 @@
-public class Weapon implements Collectable{
+import java.io.Serializable;
+
+public class Weapon implements Serializable{
 	private int level;
 	private String sprite;
 	private float[] size;
@@ -26,11 +28,7 @@ public class Weapon implements Collectable{
 	public String getSprite () {
 		return sprite;
 	}
-	
-	public void get_collected (Hero hero) {
-		//todo
-	}
-	
+
 	public void use (Hero hero) {
 		float[] heropos = hero.getPos();
 		FlyingWeapon p = new FlyingWeapon(new float[]{heropos[0]+25, heropos[1]},new float[]{12,0},0,this);

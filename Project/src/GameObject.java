@@ -7,7 +7,8 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public class GameObject implements Serializable{
-	private final ImageView model;
+	private transient ImageView model;
+	private final String imagePath;
 	private final float mass;
 	private final float[] pos;
 	private final float[] p0;
@@ -59,25 +60,31 @@ public class GameObject implements Serializable{
 		return pos[0] - pc > 1020 || pos[0] - pc + b.getWidth() < 20 || pos[1] + b.getHeight() < 0 || pos[1] > 500;
 	}
 	
-	GameObject (float[] _pos, float[] v, float[] a, float m, boolean g, boolean t, String sprite, float[] size) {
+	GameObject (float[] _pos, float[] v, float[] a, float m, boolean g, boolean t, String sprite, float[] _size) {
 		this.ID = UUID.randomUUID();
-		this.size = size;
-		
 		model = new ImageView();
-		if(sprite != null)
-			model.setImage(new Image(sprite));
-		model.setLayoutX(_pos[0]);
-		model.setLayoutY(_pos[1]);
-		model.setFitWidth(size[0]);
-		model.setFitHeight(size[1]);
-		p0 = _pos.clone();
+		imagePath = sprite;
+		size = _size;
 		pos = _pos;
+		p0 = _pos.clone();
+		setModel();
 		vel = v;
 		acc = a;
 		mass = m;
 		gravity_affected = g;
 		rendered = true;
 		tangible = t;
+	}
+	
+	public void setModel(){
+		model = new ImageView();
+		if(imagePath != null)
+			model.setImage(new Image(imagePath));
+		model.setLayoutX(p0[0]);
+		model.setLayoutY(p0[1]);
+		refresh();
+		model.setFitWidth(size[0]);
+		model.setFitHeight(size[1]);
 	}
 	
 	public UUID getID () {
@@ -193,6 +200,11 @@ public class GameObject implements Serializable{
 	public void derender () {
 		model.setVisible(false);
 		rendered = false;
+	}
+	
+	public void remove() {
+		derender();
+		GameController.getGameInstance().remove_ID(this.getID());
 	}
 	
 	public boolean isRendered () {

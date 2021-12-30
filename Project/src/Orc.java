@@ -37,8 +37,7 @@ public abstract class Orc extends GameObject{
 	public void die () {
 		float[] pos = this.getPos();
 
-		this.derender();
-		current_game.remove_ID(this.getID());
+		this.remove();
 		Coin c = new Coin(pos, 0);
 
 		current_game.add_item(c.getID(), c);
@@ -48,7 +47,6 @@ public abstract class Orc extends GameObject{
 	
 	public void get_hit_by_weapon (FlyingWeapon weapon) {
 		hit_endurance--;
-		// TODO: merge derendering and map removal into a "remove" method
 		if(hit_endurance == 0){
 			die();
 		}

@@ -11,27 +11,27 @@
 <AnchorPane prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
    <VBox alignment="CENTER" layoutX="250.0" layoutY="122.0" prefHeight="403.0" prefWidth="548.0" spacing="20.0">
       <children>
-          <Button id="save1" fx:id="load_save_1" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 1">
+          <Button id="save_1" fx:id="load_1" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 1">
               <font>
                   <Font name="Calibri" size="30.0" />
               </font>
           </Button>
-         <Button id="save2" fx:id="load_save_2" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 2">
+         <Button id="save_2" fx:id="load_2" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 2">
             <font>
                <Font name="Calibri" size="30.0" />
             </font>
          </Button>
-         <Button id="save3" fx:id="load_save_3" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 3">
+         <Button id="save_3" fx:id="load_3" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 3">
             <font>
                <Font name="Calibri" size="30.0" />
             </font>
          </Button>
-         <Button id="save4" fx:id="load_save_4" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 4">
+         <Button id="save_4" fx:id="load_4" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 4">
             <font>
                <Font name="Calibri" size="30.0" />
             </font>
          </Button>
-         <Button id="save5" fx:id="load_save_5" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 5">
+         <Button id="save_5" fx:id="load_5" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 5">
             <font>
                <Font name="Calibri" size="30.0" />
             </font>

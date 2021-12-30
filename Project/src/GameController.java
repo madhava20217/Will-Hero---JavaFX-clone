@@ -15,7 +15,7 @@ import javafx.util.Duration;
 import javafx.scene.control.Button;
 
 import java.awt.*;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.List;
 
@@ -35,6 +35,17 @@ public class GameController{
 	
 	public static GameInstance getGameInstance () {
 		return gameInstance;
+	}
+	
+	private GameInstance getCurrGameInstance(){
+		// singleton method
+		if (gameInstance == null){
+			return new GameInstance();
+		}
+		else{
+			panCam = gameInstance.getPanCam();
+			return gameInstance;
+		}
 	}
 	
 	public static float getPanCam () {
@@ -69,12 +80,13 @@ public class GameController{
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PlayScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
-			
-			gameInstance = new GameInstance();
-			gameInstance.setStage(stage);
+			gameInstance = getCurrGameInstance();
 			frame = (AnchorPane)scene.lookup("#frame");
 			map = gameInstance.get_gameMap();
 			for (GameObject o : map.values()) {
+				if(o.getModel() == null){
+					o.setModel();
+				}
 				frame.getChildren().add(o.getModel());
 			}
 			
@@ -188,6 +200,7 @@ public class GameController{
 		// reset params = end game
 		if (clock != null) clock.stop();
 		panCam = 0;
+		gameInstance = null;
 		map = new LinkedHashMap<>();
 		objects = new LinkedList<>();
 	}
@@ -286,11 +299,11 @@ public class GameController{
 		try {
 			FXMLLoader saveScreen = new FXMLLoader(GameController.class.getResource("templates/LoadScreen.fxml"));
 			stage.setScene(new Scene(saveScreen.load()));
-			Button save1 = (Button)stage.getScene().lookup("#save1");
-			Button save2 = (Button)stage.getScene().lookup("#save2");
-			Button save3 = (Button)stage.getScene().lookup("#save3");
-			Button save4 = (Button)stage.getScene().lookup("#save4");
-			Button save5 = (Button)stage.getScene().lookup("#save5");
+			Button save1 = (Button)stage.getScene().lookup("#save_1");
+			Button save2 = (Button)stage.getScene().lookup("#save_2");
+			Button save3 = (Button)stage.getScene().lookup("#save_3");
+			Button save4 = (Button)stage.getScene().lookup("#save_4");
+			Button save5 = (Button)stage.getScene().lookup("#save_5");
 
 			setHoverActionLoad(save1);
 			setHoverActionLoad(save2);
@@ -317,15 +330,27 @@ public class GameController{
 	}
 	
 	@FXML
-	private void saveGame (MouseEvent ignored) {
-		//TODO: implement it for the final game
+	private void saveGame (MouseEvent X) {
+		String ID = ((Button)X.getSource()).getId();
+		int slot = Integer.parseInt(ID.split("_")[1]);
+		try {
+			gameInstance.setPanCam(panCam);
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("Project/res/saves/save" + slot + ".txt"));
+			out.writeObject(gameInstance);
+		} catch(IOException ignored){ignored.printStackTrace();}
 		System.out.println("Saving game");
 	}
 	
 	@FXML
-	private void loadGame (MouseEvent ignored) {
-		//TODO: implement it for the final game
+	private void loadGame (MouseEvent X) {
+		String ID = ((Button)X.getSource()).getId();
+		int slot = Integer.parseInt(ID.split("_")[1]);
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream("Project/res/saves/save" + slot + ".txt"));
+			gameInstance = (GameInstance)(in.readObject());
+		} catch(IOException | ClassNotFoundException ignored){ignored.printStackTrace();}
 		System.out.println("Loading game");
+		goToPlay(null);
 	}
 
 	private void setHoverActionLoad(Button b){

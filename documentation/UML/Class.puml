@@ -169,12 +169,12 @@ hide IOException members
 hide ClassNotFoundException members
 hide circle
 
-Hero " 1"*--> Helmet
+Hero " 1"*-- Helmet
 Helmet "2"--> Weapon
 
 'for Game
 GameInstance "1 " *-- "1 " Hero
-GameInstance " 0..* " *--> GameObject
+GameInstance " 0..* " *-- GameObject
 GameManager "~*" *-- " 1  " GameInstance
 
 'for Chests

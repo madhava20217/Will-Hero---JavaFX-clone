@@ -23,8 +23,7 @@ public abstract class Chest extends GameObject implements Collidable{
 		fade.setToValue(0);
 		
 		fade.setOnFinished((e)->{
-			hero.getCurrent_game().remove_ID(this.getID());
-			this.derender();
+			this.remove();
 		});
 		
 		fade.play();

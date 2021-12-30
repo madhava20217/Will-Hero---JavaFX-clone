@@ -8,19 +8,12 @@ public class FlyingWeapon extends GameObject implements Collidable{
 	}
 	
 	@Override
-	public void derender(){
-		// remove weapon when it goes off screen
-		super.derender();
-		GameController.getGameInstance().remove_ID(this.getID());
-	}
-	
-	@Override
 	public void collide (GameObject other) {
 		if (other instanceof Hero) return;
 		if (other instanceof Orc){
 			((Orc)other).get_hit_by_weapon(this);
 			bounce(other, 1);
 		}
-		this.derender();
+		this.remove();
 	}
 }
