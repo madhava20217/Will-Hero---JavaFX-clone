@@ -177,35 +177,48 @@ public class GameController{
 			Button endGame = (Button) stage.getScene().lookup("#endgame");
 			javafx.scene.image.ImageView message = (ImageView) stage.getScene().lookup("#message");
 
-			resurrect.setOnMouseClicked(e->{
-				int retValue = gameInstance.resurrect();
-				if(retValue != 0){
-					//not enough coins or other reason
-					FadeTransition fade = new FadeTransition();
-					fade.setNode(message);
-					fade.setFromValue(0);
-					fade.setToValue(1);
-					fade.setDuration(Duration.millis(250));
-					fade.play();
 
-					return;
-				}
-				resurrect.setOnMouseClicked(null);
-				endGame.setOnMouseClicked(null);
-				resurrectionMenu.setVisible(false);
-				clock.start();
-			});
 
-			endGame.setOnMouseClicked(e->{
-				resurrect.setOnMouseClicked(null);
-				endGame.setOnMouseClicked(null);
-				goToOverLose(e);
-			});
-
-		resurrectionMenu.setVisible(true);
+			resurrectionMenu.setVisible(true);
+			endGame.setDisable(false);
+			resurrect.setDisable(false);
 		}
 	}
-	
+
+	@FXML
+	private void resurrectButtonHandler(MouseEvent click){
+		VBox resurrectionMenu = (VBox) stage.getScene().lookup("#vbox");
+		Button resurrect = (Button) stage.getScene().lookup("#resurrect");
+		Button endGame = (Button) stage.getScene().lookup("#endgame");
+		javafx.scene.image.ImageView message = (ImageView) stage.getScene().lookup("#message");
+
+		int retValue = gameInstance.resurrect();
+		if(retValue != 0){
+			//not enough coins or other reason
+			FadeTransition fade = new FadeTransition();
+			fade.setNode(message);
+			fade.setFromValue(0);
+			fade.setToValue(1);
+			fade.setDuration(Duration.millis(250));
+			fade.play();
+
+			return;
+		}
+		resurrect.setDisable(true);
+		endGame.setDisable(true);
+		resurrectionMenu.setVisible(false);
+		clock.start();
+	}
+
+	@FXML
+	private void endGameButtonHandler(MouseEvent click){
+		Button resurrect = (Button) stage.getScene().lookup("#resurrect");
+		Button endGame = (Button) stage.getScene().lookup("#endgame");
+		resurrect.setOnMouseClicked(null);
+		endGame.setOnMouseClicked(null);
+		goToOverLose(click);
+	}
+
 	@FXML
 	private void handle_click (MouseEvent click) {
 		if(click.getButton() == MouseButton.PRIMARY) {
