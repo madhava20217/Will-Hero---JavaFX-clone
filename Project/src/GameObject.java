@@ -204,7 +204,9 @@ public class GameObject implements Serializable{
 	
 	public void remove() {
 		derender();
-		GameController.getGameInstance().remove_ID(this.getID());
+		if(GameController.getGameInstance() != null) {
+			GameController.getGameInstance().remove_ID(this.getID());
+		}
 	}
 	
 	public boolean isRendered () {

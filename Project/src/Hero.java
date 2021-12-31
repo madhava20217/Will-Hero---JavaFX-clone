@@ -50,7 +50,7 @@ public class Hero extends GameObject{
 	}
 	
 	public void launch () {
-		if (moveCnt >= 5 || (Math.abs(get_vel(0)) > 1)) return;
+		if (moveCnt >= 15 || (Math.abs(get_vel(0)) > 1)) return;
 		moveCnt++;
 		set_vel(0, 10);
 		if(current_weapon != null) current_weapon.use(this);

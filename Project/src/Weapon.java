@@ -33,14 +33,14 @@ public class Weapon implements Serializable{
 		float[] heropos = hero.getPos();
 		FlyingWeapon p = new FlyingWeapon(new float[]{heropos[0]+25, heropos[1]},new float[]{12,0},0,this);
 		// TODO: add item can be polished to process ID internally
-		hero.getCurrent_game().add_item(p.getID(), p);
+		hero.getCurrent_game().add_item(p);
 		if(level >= 2){
 			FlyingWeapon q = new FlyingWeapon(new float[]{heropos[0]+25, heropos[1]-25},new float[]{11.5F,-0.5F},-7,this);
-			hero.getCurrent_game().add_item(q.getID(), q);
+			hero.getCurrent_game().add_item(q);
 		}
 		if(level >= 3){
 			FlyingWeapon r = new FlyingWeapon(new float[]{heropos[0]+25, heropos[1]+25},new float[]{11.5F,0.5F},7,this);
-			hero.getCurrent_game().add_item(r.getID(), r);
+			hero.getCurrent_game().add_item(r);
 		}
 	}
 	

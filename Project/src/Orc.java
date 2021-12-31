@@ -7,12 +7,11 @@ import javafx.util.Duration;
 
 public abstract class Orc extends GameObject{
 	private int hit_endurance;
-	private int coin_drop;
+	private final int coin_drop;
 	private String[] dialogues;
 	private float size;
 	private String sprite;
 	private final GameInstance current_game;
-	private final boolean hit = true;
 	
 	private static final double CallOutProbability = 0.0005;
 	
@@ -39,12 +38,12 @@ public abstract class Orc extends GameObject{
 		this.remove();
 		Coin c = new Coin(pos, 0);
 
-		current_game.add_item(c.getID(), c);
+		current_game.add_item(c);
 		c.collide(current_game.getHero());
 		current_game.add_coins(this.coin_drop);
 	}
 	
-	public void get_hit_by_weapon (FlyingWeapon weapon) {
+	public void get_hit_by_weapon () {
 		hit_endurance--;
 		if(hit_endurance == 0){
 			die();
@@ -66,13 +65,5 @@ public abstract class Orc extends GameObject{
 		if (Math.random() < CallOutProbability) {
 			call_out();
 		}
-	}
-
-	protected GameInstance getCurrent_game() {
-		return current_game;
-	}
-
-	protected boolean canGetHit(){
-		return hit;
 	}
 }

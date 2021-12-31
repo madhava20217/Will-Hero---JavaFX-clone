@@ -148,10 +148,9 @@ public class GameController{
 					if(gameOver)return;
 				}
 
-				if(gameInstance.win() == 1){
+				if(gameInstance.isWon()){
 					//for determining whether the game is over (boss orc killed) or not
 					//necessarily returns from the game in this case
-					clock.stop();
 					goToOverWin(null);
 					return;
 				}
@@ -203,8 +202,6 @@ public class GameController{
 			});
 
 		resurrectionMenu.setVisible(true);
-
-
 		}
 	}
 	
