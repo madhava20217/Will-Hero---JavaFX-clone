@@ -19,9 +19,17 @@ import java.io.*;
 import java.util.*;
 import java.util.List;
 
+/*
+TODO: 1) Add delete save feature 2) Add tooltip indicating save/load file status
+ */
+
+
+
 public class GameController{
+
+	private boolean gameOver;
 	public GameController () {
-	
+		gameOver = false;
 	}
 	
 	private static LinkedHashMap<UUID, GameObject> map;
@@ -132,9 +140,20 @@ public class GameController{
 				distance.setText(String.valueOf(gameInstance.getHero().getDistance()));
 				
 				if (!gameInstance.getHero().is_alive()) {
+					//returns in case it gameOver in order to prevent nullpointerexceptions, otherwise continues
+					//(in case of resurrection)
 					//TODO turn this into a listener method, not a spinlock-style test
 					clock.stop();
 					GameOver();
+					if(gameOver)return;
+				}
+
+				if(gameInstance.win() == 1){
+					//for determining whether the game is over (boss orc killed) or not
+					//necessarily returns from the game in this case
+					clock.stop();
+					goToOverWin(null);
+					return;
 				}
 				count.setText("x " + gameInstance.getCoin_count());
 			}
@@ -145,9 +164,11 @@ public class GameController{
 	@FXML
 	public void GameOver () {
 
-		if(gameInstance.hasResurrected()){
+		if(!gameInstance.canResurrect()){
 			goToOverLose(null);
+			this.gameOver = true;
 		}
+
 		else{
 			//fetch VBox, set button functions, then set opacity.
 			VBox resurrectionMenu = (VBox) stage.getScene().lookup("#vbox");

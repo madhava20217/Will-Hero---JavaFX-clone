@@ -6,12 +6,28 @@ public class FallingPlatform extends GameObject implements Collidable{
 	private final Platform[] submodels;
 	private boolean collapsing;
 	private static final float[] size = {71,39};
+	private final int components;					//number of components for the platform
 	
 	FallingPlatform (float[] pos) {
 		super(pos,new float[]{0,0}, new float[]{0,0}, 1000, false, false, null, new float[]{size[0]*6,size[1]});
+		components = 6;
 		submodels = new Platform[6];
 		collapsing = false;
 		for (int i = 0; i < 6; i++) {
+			submodels[i] = new Platform(new float[]{pos[0]+71*i, pos[1]}, "images/platform_falling.png", size);
+		}
+	}
+
+
+	FallingPlatform (float[] pos, int num) {
+		/**
+		 * Different constructor for boss platform init, allows for better control over size.
+		 */
+		super(pos,new float[]{0,0}, new float[]{0,0}, 1000, false, false, null, new float[]{size[0]*num,size[1]});
+		components = num;
+		submodels = new Platform[num];
+		collapsing = false;
+		for (int i = 0; i < num; i++) {
 			submodels[i] = new Platform(new float[]{pos[0]+71*i, pos[1]}, "images/platform_falling.png", size);
 		}
 	}
@@ -38,7 +54,7 @@ public class FallingPlatform extends GameObject implements Collidable{
 				@Override
 				public void run() {
 					submodels[count++].setG(true);
-					if (count == 6)
+					if (count == components)
 						t.cancel();
 				}
 			}

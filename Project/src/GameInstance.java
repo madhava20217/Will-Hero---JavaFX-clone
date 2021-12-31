@@ -3,9 +3,13 @@ import javafx.stage.Stage;
 import java.io.Serializable;
 import java.util.*;
 
+//TODO: improve resurrection method to take into account that the first jump can be on fallingplatform, otherwise it just spawns without any buffer.
+
 public class GameInstance implements Serializable{
 	public ArrayList<Helmet> helmet_list;
 	private Hero hero;
+	private UUID bossID;
+	private BossGreenOrc boss;
 	private LinkedHashMap<UUID, GameObject> gamemap;
 	private int coin_count;
 	private float panCam;
@@ -20,6 +24,7 @@ public class GameInstance implements Serializable{
 	
 	//VARIABLES
 	private static boolean resurrection;
+	private float bossPlatformXcoordinate;
 
 	// RATES
 	private static final int RESURRECTIONCCOST = 1;			//cost for resurrection
@@ -29,6 +34,8 @@ public class GameInstance implements Serializable{
 	private static final double WEAPONPROB = 0.7;
 	private static final double COINPROB = 0.2;
 	private static final double DOUBLECOINPROB = 0.4;
+	private static final int BOSSPLATFORM = 25;				//boss platform's index in the platform array
+	private static final int BOSSPLATFORMCOMPONENTS = 30;	//size of boss' platform;
 	
 	private static final float[] PLATFORMSIZE = {480, 300};
 	
@@ -68,7 +75,7 @@ public class GameInstance implements Serializable{
 		Platform p0 = new Platform(new float[]{0, 300}, 0);
 		gamemap.put(p0.getID(), p0);
 		
-		for (int i = 1; i < 25; i++) {
+		for (int i = 1; i < BOSSPLATFORM; i++) {
 			float p_del_x = PLATFORMVARIANCE[0] * genrand();
 			float p_del_y = PLATFORMVARIANCE[1] * genrand();
 			
@@ -124,11 +131,39 @@ public class GameInstance implements Serializable{
 				gamemap.put(c.getID(), c);
 			}
 		}
+
+		addBossAndPlatforms();
+
 	}
 	
 	GameInstance () {
 		resurrection = false;
 		init_gamemap();
+	}
+
+	private void addBossAndPlatforms(){
+		float p_del_x = PLATFORMVARIANCE[0] * genrand();
+		float p_del_y = PLATFORMVARIANCE[1] * genrand();
+		float xlocation = PLATFORMSIZE[0] * (BOSSPLATFORM) + p_del_x;
+		float ylocation = PLATFORMSIZE[1] + p_del_y;
+		FallingPlatform p1 = new FallingPlatform(new float[]{xlocation,ylocation}, BOSSPLATFORMCOMPONENTS);
+		gamemap.put(p1.getID(), p1);
+		for (Platform m : p1.getSubmodels()){
+			gamemap.put(m.getID(), m);
+		}
+
+		bossPlatformXcoordinate = xlocation;
+
+		float[] o_del = {genrand() * ORCVARIANCE[0], (float)Math.random() * ORCVARIANCE[1]};
+
+		int sign = (Math.random()<0.5) ? -1:1;
+		float[] orcPos = {(float)(xlocation + 71*(BOSSPLATFORMCOMPONENTS/3 + sign*3*Math.random())), (float)(20+80*Math.random())};
+
+		boss = new BossGreenOrc(orcPos, this);
+
+		gamemap.put(boss.getID(), boss);
+		bossID = boss.getID();
+
 	}
 	
 	public LinkedHashMap<UUID, GameObject> get_gameMap () {
@@ -227,8 +262,24 @@ public class GameInstance implements Serializable{
 		//todo method
 	}
 	
-	public void win () {
-		//todo method
+	public int win () {
+		/**
+		 * Checks the status of boss orc.
+		 * Returns 1 if boss.isAlive is false, 0 if boss is alive, -1 if not initialised.
+		 * Mainly for use in the gamecontroller class, so that it can know when to go to the Win screen.
+		 **/
+
+		if(hero.getPos()[0] < this.bossPlatformXcoordinate) return 0;
+		int value = -1;
+		try{
+			boolean res = gamemap.containsKey(bossID);
+			value = (res) ? 0: 1;
+		}
+		catch(NullPointerException ignored){
+		}
+		finally{
+			return value;
+		}
 	}
 
 	private void setResurrection(){
@@ -236,7 +287,20 @@ public class GameInstance implements Serializable{
 		this.hero.resurrect();
 	}
 
-	public boolean hasResurrected() {
+	private boolean hasResurrected() {
 		return resurrection;
 	}
+
+	public boolean	canResurrect(){
+		return !hasResurrected() && bossTime();
+	}
+
+	public boolean bossTime(){
+		/**
+		 * determines if the hero is close enough to the boss so that the boss' hp can be reduced back to normal levels
+		 * also as a helper function for canResurrect();
+		 */
+		return (hero.getPos()[0]< bossPlatformXcoordinate);
+	}
+
 }

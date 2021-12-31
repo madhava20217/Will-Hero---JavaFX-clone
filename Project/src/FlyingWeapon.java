@@ -10,7 +10,7 @@ public class FlyingWeapon extends GameObject implements Collidable{
 	@Override
 	public void collide (GameObject other) {
 		if (other instanceof Hero) return;
-		if (other instanceof Orc){
+		if (other instanceof Orc && ((Orc)other).canGetHit()){
 			((Orc)other).get_hit_by_weapon(this);
 			bounce(other, 1);
 		}
