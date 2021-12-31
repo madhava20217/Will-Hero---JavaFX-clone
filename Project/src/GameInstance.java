@@ -26,7 +26,7 @@ public class GameInstance implements Serializable{
 	// RATES
 	private static final int RESURRECTIONCCOST = 1;			//cost for resurrection
 	private static final double GREENORCPROB = 0.6;
-	private static final double ORCPLACEPROB = 0.4;
+	private static final double ORCPLACEPROB = 1;
 	private static final double CHESTPROB = 0.3;
 	private static final double WEAPONPROB = 0.7;
 	private static final double COINPROB = 0.2;

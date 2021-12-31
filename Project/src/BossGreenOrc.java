@@ -9,6 +9,18 @@ public final class BossGreenOrc extends Orc{
 	}
 
 	@Override
+	public void call_out(){
+		//boss orc doesn't call out!
+		return;
+	}
+
+	@Override
+	public void call_out_death(){
+		// boss orc doesn't call out!
+		return;
+	}
+
+	@Override
 	public void die(){
 		super.die();
 		GameController.getGameInstance().win();

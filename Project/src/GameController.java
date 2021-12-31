@@ -21,6 +21,7 @@ import java.util.List;
 
 /*
 TODO: 1) Add delete save feature 2) Add tooltip indicating save/load file status
+TODO: 2) Create a blank label and have it display save game information: have them deserialised and then display it
  */
 
 
@@ -143,7 +144,6 @@ public class GameController{
 					//returns in case it gameOver in order to prevent nullpointerexceptions, otherwise continues
 					//(in case of resurrection)
 					//TODO turn this into a listener method, not a spinlock-style test
-					clock.stop();
 					GameOver();
 					if(gameOver)return;
 				}
@@ -162,7 +162,8 @@ public class GameController{
 
 	@FXML
 	public void GameOver () {
-
+		//TODO: there may not be any need to stop the clock, it could just continue like that so that the orcs could taunt the hero
+		clock.stop();
 		if(!gameInstance.canResurrect()){
 			goToOverLose(null);
 			this.gameOver = true;

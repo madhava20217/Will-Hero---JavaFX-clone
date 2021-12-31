@@ -12,6 +12,7 @@ public abstract class Orc extends GameObject{
 	private float size;
 	private String sprite;
 	private final GameInstance current_game;
+	protected boolean isTaunting;				//variable in order to store information about the status of taunt
 	
 	private static final double CallOutProbability = 0.0005;
 	
@@ -22,6 +23,7 @@ public abstract class Orc extends GameObject{
 		this.current_game = instance;
 		this.hit_endurance = HP;
 		coin_drop = (int)(Math.random()*4)+1;
+		isTaunting = false;
 	}
 
 	@Override
@@ -54,10 +56,9 @@ public abstract class Orc extends GameObject{
 		// Todo: related to hero death animation, and kill quip
 	}
 	
-	public void call_out () {
-		//todo
-		System.out.println("CALLED OUT!");
-	}
+	abstract void call_out ();
+
+	abstract void call_out_death();
 	@Override
 	public void refresh () {
 		super.refresh();
@@ -65,5 +66,13 @@ public abstract class Orc extends GameObject{
 		if (Math.random() < CallOutProbability) {
 			call_out();
 		}
+	}
+
+	public GameInstance getCurrent_game() {
+		return current_game;
+	}
+
+	public void setUntaunt(){
+		this.isTaunting = false;
 	}
 }

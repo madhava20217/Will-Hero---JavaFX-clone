@@ -96,6 +96,7 @@ public class Hero extends GameObject{
 			if(this.getPos()[1] > other.getPos()[1]){
 				// if hero is below whatever he is colliding with, he will die
 				if (other instanceof Orc) {
+					((Orc) other).call_out_death();
 					die();
 					return;
 				}
