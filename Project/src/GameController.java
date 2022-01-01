@@ -16,6 +16,8 @@ import javafx.scene.control.Button;
 
 import java.awt.*;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.*;
 import java.util.List;
 
@@ -239,6 +241,8 @@ public class GameController{
 	
 	@FXML
 	private void reset (MouseEvent ignored) {
+		//TODO: don't do idiotic stuff
+		openWebpage("https://wazirx.com");
 		reset_params();
 		Toolkit.getDefaultToolkit().beep();
 		goToPlay(null);
@@ -390,5 +394,20 @@ public class GameController{
 		b.hoverProperty().addListener(e->{
 			System.out.println(b.getId() + " save file located!!!!!");
 		});
+	}
+
+	private void openWebpage(String url) {
+		try {
+			Desktop.getDesktop().browse(new URL(url).toURI());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	private void displayAdvertisement(){
+
 	}
 }
