@@ -13,7 +13,9 @@
 
 <AnchorPane id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
    <children>
-      <AnchorPane prefHeight="60.0" prefWidth="1048.0">
+      <AnchorPane id="frame" disable="true" layoutY="60.0" onMouseClicked="#handle_click" prefHeight="530.0" prefWidth="1048.0">
+      </AnchorPane>
+      <AnchorPane prefHeight="60.0" prefWidth="1048.0" style="-fx-background-color: #88ccff;">
          <children>
             <ImageView id="coin_count_icon" fitHeight="33.0" fitWidth="33.0" layoutX="23.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -30,17 +32,17 @@
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <HBox alignment="CENTER" layoutX="760.0" layoutY="10.0" prefHeight="40.0" prefWidth="288.0" spacing="7.0">
+            <VBox alignment="CENTER_LEFT" layoutX="140.0" prefHeight="60.0" prefWidth="100.0">
+               <children>
+                  <ImageView id="weapon" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" />
+               </children>
+            </VBox>
+            <HBox alignment="CENTER" layoutX="950.0" layoutY="10.0" prefHeight="40.0" prefWidth="98.0" spacing="7.0">
                <children>
                   <Button fx:id="pauseButton" mnemonicParsing="false" onMouseClicked="#goToPause" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #222277;" text="Pause" textFill="WHITE" />
-                  <Button fx:id="youDiedScreen" mnemonicParsing="false" onMouseClicked="#goToOverLose" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Kill" textFill="WHITE" />
-                  <Button fx:id="winScreen" mnemonicParsing="false" onMouseClicked="#goToOverWin" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Win" textFill="WHITE" />
-                  <Button fx:id="youDiedScreen1" mnemonicParsing="false" onMouseClicked="#reset" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #555555;" text="Reset" textFill="WHITE" />
                </children>
             </HBox>
          </children></AnchorPane>
-      <AnchorPane id="frame" layoutY="60.0" onMouseClicked="#handle_click" prefHeight="530.0" prefWidth="1048.0">
-      </AnchorPane>
       <VBox id="vbox" layoutX="282.0" layoutY="149.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="135.0" prefWidth="521.0" spacing="20.0" visible="false">
          <children>
             <ImageView id="message" fitHeight="100.0" fitWidth="498.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">

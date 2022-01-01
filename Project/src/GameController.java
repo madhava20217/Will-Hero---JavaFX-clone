@@ -9,10 +9,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 
 import java.awt.*;
 import java.io.*;
@@ -23,38 +25,34 @@ import java.util.List;
 TODO: 1) Add delete save feature 2) Add tooltip indicating save/load file status
 TODO: 2) Create a blank label and have it display save game information: have them deserialised and then display it
  */
-
-
-
 public class GameController{
-
-	private boolean gameOver;
-	public GameController () {
-		gameOver = false;
-	}
-	
-	private static LinkedHashMap<UUID, GameObject> map;
-	private static List<GameObject> objects;
-	private static GameInstance gameInstance;
-	private static Stage stage; // if i keep this non-static the game breaks dont ask me why
-	private static Scene pausedGame = null;
-	private static AnimationTimer clock;
-	private static float panCam;
+	// JAVAFX OBJECTS
+	private static Stage stage;
+	private static Scene curr_scene;
 	private static AnchorPane frame;
+	private static AnimationTimer clock;
+	private static ImageView weapon;
+	
+	// GAME OBJECTS
+	private static GameInstance gameInstance;
+	private static LinkedHashMap<UUID, GameObject> map;
+	private static Hero hero;
+	private static float panCam;
+	
+	private static boolean gameOver = false; // TODO: try and get rid of this
 	
 	public static GameInstance getGameInstance () {
 		return gameInstance;
 	}
 	
-	private GameInstance getCurrGameInstance(){
-		// singleton method
-		if (gameInstance == null){
-			return new GameInstance();
-		}
-		else{
-			panCam = gameInstance.getPanCam();
-			return gameInstance;
-		}
+	public static void setWeapon(Weapon w){
+		weapon.setImage(new Image(w.getSprite()));
+		weapon.setFitWidth(w.getSize()[0]);
+		weapon.setFitHeight(w.getSize()[1]);
+	}
+	
+	public static Hero getHero () {
+		return hero;
 	}
 	
 	public static float getPanCam () {
@@ -69,10 +67,30 @@ public class GameController{
 		stage = _stage;
 	}
 	
-	public static void add_item(GameObject o){
-		if(frame != null) {
+	private GameInstance getCurrGameInstance () {
+		// singleton method
+		if (gameInstance == null) {
+			return new GameInstance();
+		} else {
+			panCam = gameInstance.getPanCam();
+			return gameInstance;
+		}
+	}
+	
+	public static void add_object (GameObject o) {
+		if (frame != null) {
 			frame.getChildren().add(o.getModel());
 		}
+	}
+	
+	private void reset_params () {
+		// reset params = end game
+		if (clock != null) clock.stop();
+		panCam = 0;
+		gameInstance = null;
+		curr_scene = null;
+		weapon = null;
+		map = new LinkedHashMap<>();
 	}
 	
 	@FXML
@@ -87,21 +105,25 @@ public class GameController{
 		Label c; // temp variable
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PlayScreen.fxml"));
-			Scene scene = new Scene(fxmlLoader.load());
-			stage.setScene(scene);
+			curr_scene = new Scene(fxmlLoader.load());
+			stage.setScene(curr_scene);
+			frame = (AnchorPane)curr_scene.lookup("#frame");
+			weapon = (ImageView)curr_scene.lookup("#weapon");
+			
 			gameInstance = getCurrGameInstance();
-			frame = (AnchorPane)scene.lookup("#frame");
+			
 			map = gameInstance.get_gameMap();
+			hero = gameInstance.getHero();
+			
 			for (GameObject o : map.values()) {
-				if(o.getModel() == null){
+				if (o.getModel() == null) { // happens when you deserialise
 					o.setModel();
+					frame.getChildren().add(o.getModel());
 				}
-				frame.getChildren().add(o.getModel());
 			}
 			
-			d = (Label)scene.lookup("#distance");
-			c = (Label)scene.lookup("#coin_count");
-			assert (objects.get(0).getClass() == Hero.class); // hero needs to be first for collision stuff
+			d = (Label)curr_scene.lookup("#distance");
+			c = (Label)curr_scene.lookup("#coin_count");
 		} catch (IOException ignored1) {
 			d = null;
 			c = null;
@@ -111,8 +133,7 @@ public class GameController{
 		clock = new AnimationTimer(){
 			@Override
 			public void handle (long l) {
-				objects = map.values().stream().toList(); // TODO: this is O(n), and i really dont know if it can be done
-				// faster.
+				List<GameObject> objects = map.values().stream().toList();
 				for (GameObject obj : objects) {
 					obj.move();
 					if (obj.isRendered()) {
@@ -143,41 +164,37 @@ public class GameController{
 				if (!gameInstance.getHero().is_alive()) {
 					//returns in case it gameOver in order to prevent nullpointerexceptions, otherwise continues
 					//(in case of resurrection)
-					//TODO turn this into a listener method, not a spinlock-style test
+					clock.stop();
 					GameOver();
-					if(gameOver)return;
+					if (gameOver) return;
 				}
-
-				if(gameInstance.isWon()){
+				
+				if (gameInstance.isWon()) {
 					//for determining whether the game is over (boss orc killed) or not
 					//necessarily returns from the game in this case
-					goToOverWin(null);
+					goToOverWin();
 					return;
 				}
 				count.setText("x " + gameInstance.getCoin_count());
 			}
 		};
+		frame.setDisable(false);
+		// prevents race conditions where double clicking start can crash game because hero
+		// hasn't loaded yet
 		clock.start();
 	}
-
+	
 	@FXML
 	public void GameOver () {
-		//TODO: there may not be any need to stop the clock, it could just continue like that so that the orcs could taunt the hero
-		clock.stop();
-		if(!gameInstance.canResurrect()){
+		if (!gameInstance.canResurrect()) {
 			goToOverLose(null);
-			this.gameOver = true;
-		}
-
-		else{
+			gameOver = true;
+		} else {
 			//fetch VBox, set button functions, then set opacity.
 			VBox resurrectionMenu = (VBox) stage.getScene().lookup("#vbox");
 
 			Button resurrect = (Button) stage.getScene().lookup("#resurrect");
 			Button endGame = (Button) stage.getScene().lookup("#endgame");
-			javafx.scene.image.ImageView message = (ImageView) stage.getScene().lookup("#message");
-
-
 
 			resurrectionMenu.setVisible(true);
 			endGame.setDisable(false);
@@ -186,7 +203,7 @@ public class GameController{
 	}
 
 	@FXML
-	private void resurrectButtonHandler(MouseEvent click){
+	private void resurrectButtonHandler(MouseEvent ignored){
 		VBox resurrectionMenu = (VBox) stage.getScene().lookup("#vbox");
 		Button resurrect = (Button) stage.getScene().lookup("#resurrect");
 		Button endGame = (Button) stage.getScene().lookup("#endgame");
@@ -197,11 +214,9 @@ public class GameController{
 			//not enough coins or other reason
 			FadeTransition fade = new FadeTransition();
 			fade.setNode(message);
-			fade.setFromValue(0);
-			fade.setToValue(1);
+			fade.setFromValue(0); fade.setToValue(1);
 			fade.setDuration(Duration.millis(250));
 			fade.play();
-
 			return;
 		}
 		resurrect.setDisable(true);
@@ -218,42 +233,25 @@ public class GameController{
 		endGame.setOnMouseClicked(null);
 		goToOverLose(click);
 	}
-
+	
 	@FXML
 	private void handle_click (MouseEvent click) {
-		if(click.getButton() == MouseButton.PRIMARY) {
-			gameInstance.getHero().launch();
-		} else{
-			gameInstance.getHero().cycleWeapon();
+		if (click.getButton() == MouseButton.PRIMARY) {
+			hero.launch();
+		} else {
+			hero.cycleWeapon();
 		}
 	}
 	
-	private void reset_params () {
-		// reset params = end game
-		if (clock != null) clock.stop();
-		panCam = 0;
-		gameInstance = null;
-		map = new LinkedHashMap<>();
-		objects = new LinkedList<>();
-	}
-	
-	@FXML
-	private void reset (MouseEvent ignored) {
-		reset_params();
-		Toolkit.getDefaultToolkit().beep();
-		goToPlay(null);
-	}
-	
-	@FXML
-	private void goToOverWin (MouseEvent ignored) {
+	private void goToOverWin () {
 		try {
-			int coinCount = ((Hero)objects.get(0)).getCurrent_game().getCoin_count();
-			reset_params();
+			clock.stop();
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/GameOverWin.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
-			Label coins = (Label) stage.getScene().lookup("#coins");
-			coins.setText(String.valueOf(coinCount));
+			
+			Label coins = (Label)stage.getScene().lookup("#coins");
+			coins.setText(String.valueOf(gameInstance.getCoin_count()));
 		} catch (IOException ignored1) {
 		}
 	}
@@ -261,14 +259,12 @@ public class GameController{
 	@FXML
 	public void goToOverLose (MouseEvent ignored) {
 		try {
-			int coinCount = ((Hero)objects.get(0)).getCurrent_game().getCoin_count();
-			reset_params();
 			FXMLLoader overLose = new FXMLLoader(GameController.class.getResource("templates/GameOverLose.fxml"));
 			stage.setScene(new Scene(overLose.load()));
-			Label coins = (Label) stage.getScene().lookup("#coins");
-			coins.setText(String.valueOf(coinCount));
+			
+			Label coins = (Label)stage.getScene().lookup("#coins");
+			coins.setText(String.valueOf(gameInstance.getCoin_count()));
 		} catch (IOException ignored1) {
-			System.err.println("IOException when overLose screen.");
 		}
 	}
 	
@@ -276,7 +272,6 @@ public class GameController{
 	private void goToPause (MouseEvent ignored) {
 		try {
 			clock.stop(); // game pauses running when we go to pause screen
-			pausedGame = stage.getScene();
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PauseScreen.fxml"));
 			Scene scene = new Scene(fxmlLoader.load());
 			stage.setScene(scene);
@@ -298,7 +293,7 @@ public class GameController{
 	@FXML
 	private void goResumeFromPause (MouseEvent ignored) {
 		try {
-			stage.setScene(pausedGame);
+			stage.setScene(curr_scene);
 			clock.start();
 		} catch (NullPointerException ignored1) {
 			System.err.println("Null Pointer exception when resuming game");
@@ -336,7 +331,7 @@ public class GameController{
 			Button save3 = (Button)stage.getScene().lookup("#save_3");
 			Button save4 = (Button)stage.getScene().lookup("#save_4");
 			Button save5 = (Button)stage.getScene().lookup("#save_5");
-
+			
 			setHoverActionLoad(save1);
 			setHoverActionLoad(save2);
 			setHoverActionLoad(save3);
@@ -352,7 +347,7 @@ public class GameController{
 		try {
 			FXMLLoader exitScreen = new FXMLLoader(GameController.class.getResource("templates/Exit.fxml"));
 			stage.setScene(new Scene(exitScreen.load()));
-			System.out.println("Thank you for playing!");
+			
 			PauseTransition delay = new PauseTransition(Duration.seconds(3));
 			delay.setOnFinished(ignored1->stage.close());
 			delay.play();
@@ -369,8 +364,8 @@ public class GameController{
 			gameInstance.setPanCam(panCam);
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("Project/res/saves/save" + slot + ".txt"));
 			out.writeObject(gameInstance);
-		} catch(IOException ignored){ignored.printStackTrace();}
-		System.out.println("Saving game");
+		} catch (IOException ignored) {
+		}
 	}
 	
 	@FXML
@@ -380,15 +375,13 @@ public class GameController{
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream("Project/res/saves/save" + slot + ".txt"));
 			gameInstance = (GameInstance)(in.readObject());
-		} catch(IOException | ClassNotFoundException ignored){ignored.printStackTrace();}
-		System.out.println("Loading game");
+		} catch (IOException | ClassNotFoundException ignored) {
+		}
 		goToPlay(null);
 	}
-
-	private void setHoverActionLoad(Button b){
+	
+	private void setHoverActionLoad (Button b) {
 		// TODO: do something better with the handler
-		b.hoverProperty().addListener(e->{
-			System.out.println(b.getId() + " save file located!!!!!");
-		});
+		b.hoverProperty().addListener(e->System.out.println(b.getId() + " save file located!!!!!"));
 	}
 }

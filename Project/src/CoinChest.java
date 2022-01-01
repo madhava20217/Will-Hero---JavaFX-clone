@@ -7,9 +7,9 @@ public class CoinChest extends Chest{
 	}
 	
 	@Override
-	public void collect_chest (Hero hero) {
+	public void get_collected (Hero hero) {
 		if (isCollected()) return;
+		super.get_collected(hero);
 		hero.add_coins(coins_number);
-		super.collect_chest(hero);
 	}
 }
