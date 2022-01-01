@@ -48,4 +48,10 @@
          <Font name="System Bold" size="50.0" />
       </font>
    </Label>
+
+   <Label id="saveInfo" alignment="CENTER" layoutX="824.0" layoutY="250.0" opacity="0.0" prefHeight="241.0" prefWidth="220.0" style="-fx-background-color: #FFFFFF;" text="Label" wrapText="true">
+      <font>
+         <Font size="25.0" />
+      </font>
+   </Label>
 </AnchorPane>

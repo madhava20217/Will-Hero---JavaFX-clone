@@ -1,6 +1,4 @@
-import javafx.animation.AnimationTimer;
-import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,6 +8,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.control.Button;
@@ -43,7 +44,7 @@ public class GameController{
 	private static AnimationTimer clock;
 	private static float panCam;
 	private static AnchorPane frame;
-	
+	private static GameInstance[] saveList = new GameInstance[5];
 	public static GameInstance getGameInstance () {
 		return gameInstance;
 	}
@@ -241,8 +242,9 @@ public class GameController{
 	
 	@FXML
 	private void reset (MouseEvent ignored) {
-		//TODO: don't do idiotic stuff
-		openWebpage("https://wazirx.com");
+		//TODO: trying advertisements like in mobile games
+/*		openWebpage("https://wazirx.com");
+		displayAdvertisement();*/
 		reset_params();
 		Toolkit.getDefaultToolkit().beep();
 		goToPlay(null);
@@ -341,11 +343,17 @@ public class GameController{
 			Button save4 = (Button)stage.getScene().lookup("#save_4");
 			Button save5 = (Button)stage.getScene().lookup("#save_5");
 
-			setHoverActionLoad(save1);
-			setHoverActionLoad(save2);
-			setHoverActionLoad(save3);
-			setHoverActionLoad(save4);
-			setHoverActionLoad(save5);
+			Label text = (Label)stage.getScene().lookup("#saveInfo");
+			text.setVisible(true);
+			text.setOpacity(0);
+
+			setHoverActionLoad(save1, text);
+			setHoverActionLoad(save2, text);
+			setHoverActionLoad(save3, text);
+			setHoverActionLoad(save4, text);
+			setHoverActionLoad(save5, text);
+
+			initialiseLoadList();
 		} catch (IOException ignored1) {
 			System.err.println("IOException when going to save screen");
 		}
@@ -379,24 +387,65 @@ public class GameController{
 	
 	@FXML
 	private void loadGame (MouseEvent X) {
-		String ID = ((Button)X.getSource()).getId();
+		String ID = ((Button) X.getSource()).getId();
 		int slot = Integer.parseInt(ID.split("_")[1]);
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream("Project/res/saves/save" + slot + ".txt"));
-			gameInstance = (GameInstance)(in.readObject());
-		} catch(IOException | ClassNotFoundException ignored){ignored.printStackTrace();}
-		System.out.println("Loading game");
-		goToPlay(null);
+			gameInstance =(GameInstance) (in.readObject());
+		} catch (IOException | ClassNotFoundException ignored) {ignored.printStackTrace();}
+			System.out.println("Loading game");
+			goToPlay(null);
+		}
+
+	private void initialiseLoadList(){
+		for(int slot = 1; slot<6; slot++){
+			try {
+				ObjectInputStream in = new ObjectInputStream(new FileInputStream("Project/res/saves/save" + slot + ".txt"));
+				saveList[slot-1] = (GameInstance)(in.readObject());
+			} catch(IOException | ClassNotFoundException ignored){}
+		}
 	}
 
-	private void setHoverActionLoad(Button b){
-		// TODO: do something better with the handler
+	private void setHoverActionLoad(Button b, Label info){
+		// hovering should display important stuff about the game, like coin count, steps, resurrected status
 		b.hoverProperty().addListener(e->{
-			System.out.println(b.getId() + " save file located!!!!!");
+			String ID = b.getId();
+			int slot = Integer.parseInt(ID.split("_")[1]);
+			GameInstance selected = saveList[slot-1];
+
+			String toDisplay;
+			if(selected != null){
+				//then proceed to extract information
+				int coins = selected.getCoin_count();
+				int steps = selected.getHero().getDistance();
+				boolean resurrected = selected.canResurrect();
+				String res = resurrected ? "Yes" : "No";
+
+				toDisplay = "Coins: " + coins + "\n"
+						+ "Steps: " + steps + "\n"
+						+ "Can Resurrect?: " + res;
+			}
+			else{
+				toDisplay = "**NO SAVE \nFILE PRESENT**";
+			}
+
+			//change text
+			info.setText(toDisplay);
+			info.setVisible(true);
+			info.setOpacity(1);
+			FadeTransition fade = new FadeTransition();
+			fade.setNode(info);
+			fade.setFromValue(1);
+			fade.setToValue(0);
+			fade.setDuration(Duration.seconds(1.25));
 		});
+		b.setDisable(false);
 	}
 
 	private void openWebpage(String url) {
+		/**
+		 * Trying out stupid stuff to make pennies
+		 */
 		try {
 			Desktop.getDesktop().browse(new URL(url).toURI());
 		} catch (IOException e) {
@@ -408,6 +457,35 @@ public class GameController{
 
 	@FXML
 	private void displayAdvertisement(){
+		/**
+		 * Trying out stupid stuff to make pennies
+		 */
+		try{
+			clock.stop();                //stop clock for advertisement
+			Scene scene = stage.getScene();
+
+
+			//creating media and mediaview
+			String url = "advertisement_videos/wazirx_advertisement.mp4";
+			Media advertisement = new Media(url);
+			MediaPlayer player = new MediaPlayer(advertisement);
+			player.setAutoPlay(true);
+
+			MediaView container = new MediaView(player);
+			container.setFitWidth(960);
+			container.setFitHeight(540);
+
+			((AnchorPane) stage.getScene().lookup("#mainFrame")).getChildren().add(container);
+			FadeTransition transition = new FadeTransition();
+			transition.setDuration(Duration.seconds(5));
+			transition.setNode(container);
+			transition.setOnFinished(e -> {
+				((AnchorPane) stage.getScene().lookup("#mainFrame")).getChildren().remove(container);
+			});
+
+			clock.start();
+		}
+		catch (Exception ignored){}
 
 	}
 }
