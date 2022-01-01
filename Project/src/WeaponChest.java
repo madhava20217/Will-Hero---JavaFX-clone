@@ -1,4 +1,4 @@
-public class WeaponChest extends Chest{
+public final class WeaponChest extends Chest{
 	WeaponChest (float[] pos) {
 		super(pos, "images/chest_weapon_closed.png");
 	}

@@ -1,9 +1,6 @@
-public class FlyingWeapon extends GameObject implements Collidable{
-	private final Weapon category; // currently unused, usable as a Strategy DP technically.
-	
+public final class FlyingWeapon extends GameObject implements Collidable{
 	FlyingWeapon (float[] pos, float[] vel, float angle, Weapon cat) {
 		super(pos, vel, new float[]{0, 0}, 0.5F, false, false, cat.getSprite(), cat.getSize());
-		category = cat;
 		this.getModel().setRotate(angle);
 	}
 	

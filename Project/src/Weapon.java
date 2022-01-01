@@ -1,10 +1,14 @@
+import java.io.Serial;
 import java.io.Serializable;
 
-public class Weapon implements Serializable{
+public final class Weapon implements Serializable{
 	private int level;
 	private String sprite;
 	private float[] size;
 	private final int cat;
+	
+	@Serial
+	private static final long serialVersionUID = 33;
 	
 	Weapon (int _cat) {
 		level = 1;
@@ -49,7 +53,8 @@ public class Weapon implements Serializable{
 			hero.getCurrent_game().register(q);
 		}
 		if (level >= 3) {
-			FlyingWeapon r = new FlyingWeapon(new float[]{heropos[0] + 25, heropos[1] + 25}, new float[]{11.5F, 0.5F}, 7, this);
+			FlyingWeapon r = new FlyingWeapon(new float[]{heropos[0] + 25, heropos[1] + 25}, new float[]{11.5F, 0.5F}, 7,
+				this);
 			hero.getCurrent_game().register(r);
 		}
 	}

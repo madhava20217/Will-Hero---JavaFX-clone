@@ -1,7 +1,7 @@
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class FallingPlatform extends GameObject implements Collidable{
+public final class FallingPlatform extends GameObject implements Collidable{
 	private final static int collapse_rate = 350;
 	private final Platform[] submodels;
 	private boolean collapsing;

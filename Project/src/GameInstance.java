@@ -5,48 +5,70 @@ import java.util.*;
 //TODO: improve resurrection method to take into account that the first jump can be on fallingplatform, otherwise it
 // just spawns without any buffer.
 
-public class GameInstance implements Serializable{
+public final class GameInstance implements Serializable{
 	private Hero hero;
 	private LinkedHashMap<UUID, GameObject> gamemap;
 	private int coin_count;
 	private float panCam;
 	
 	@Serial
-	private static final long serialVersionUID = 30;
+	private static final long serialVersionUID = 33;
 	
 	// STATE VARIABLES
 	private boolean resurrection;  // has the hero resurrected yet?
 	private boolean won;
-	private static final int RESURRECTIONCCOST = 10;      //cost for resurrection
+	private final int RESURRECTIONCCOST;      //cost for resurrection
 	
 	// DESIGN VARIABLES
-	private static final int BOSSPLATFORM = 22;        //boss platform's index in the platform array
-	private static final int BOSSPLATFORMCOMPONENTS = 15;  //size of boss' platform;
-	private static final float[] PLATFORMSIZE = {480, 300};
+	private final int BOSSPLATFORM;        //boss platform's index in the platform array
+	private final int BOSSPLATFORMCOMPONENTS;  //size of boss' platform;
+	private final float[] PLATFORMSIZE = {480, 300};
 	
 	// RATES
-	private static final double GREENORCPROB = 0.6;
-	private static final double ORCPLACEPROB = 0.5;
-	private static final double CHESTPROB = 1;
-	private static final double WEAPONPROB = 0.7;
-	private static final double COINPROB = 0.2;
-	private static final double DOUBLECOINPROB = 0.4;
-	private static final double FALLINGPROB = 0.2;
+	private final double GREENORCPROB;
+	private final double ORCPLACEPROB;
+	private final double CHESTPROB;
+	private final double WEAPONPROB;
+	private final double COINPROB;
+	private final double DOUBLECOINPROB;
+	private final double FALLINGPROB;
 	
 	// OFFSETS
-	private static final float[] ORCOFFSET = {160, -100};
-	private static final float[] CHESTOFFSET = {250, -55};
-	private static final float[] COINOFFSET = {55, -40};
+	private final float[] ORCOFFSET = {160, -100};
+	private final float[] CHESTOFFSET = {250, -55};
+	private final float[] COINOFFSET = {55, -40};
 	
 	// VARIANCES
-	private static final float[] PLATFORMVARIANCE = {60, 100};
-	private static final float[] ORCVARIANCE = {50, 100};
-	private static final float[] COINVARIANCE = {50, 0};
-	private static final float[] CHESTVARIANCE = {35, 0};
+	private final float[] PLATFORMVARIANCE = {60, 100};
+	private final float[] ORCVARIANCE = {50, 100};
+	private final float[] COINVARIANCE = {50, 0};
+	private final float[] CHESTVARIANCE = {35, 0};
 	
-	GameInstance () {
+	GameInstance (int difficulty) {
 		resurrection = false;
 		won = false;
+		
+		double[][] probs = {
+			{0.8, 0.3, 0.7, 0.6, 0.3, 0.4, 0.1},
+			{0.6, 0.5, 0.4, 0.7, 0.2, 0.4, 0.2},
+			{0.4, 0.7, 0.3, 0.8, 0.1, 0.4, 0.4},
+		};
+		int[] bossPlatform = {15, 22, 30};
+		int[] bossPlatformComponents = {10, 15, 20};
+		int[] resurrectionCost = {5, 10, 15};
+		
+		BOSSPLATFORM = bossPlatform[difficulty];
+		BOSSPLATFORMCOMPONENTS = bossPlatformComponents[difficulty];
+		RESURRECTIONCCOST = resurrectionCost[difficulty];
+		
+		GREENORCPROB = probs[difficulty][0];
+		ORCPLACEPROB = probs[difficulty][1];
+		CHESTPROB = probs[difficulty][2];
+		WEAPONPROB = probs[difficulty][3];
+		COINPROB = probs[difficulty][4];
+		DOUBLECOINPROB = probs[difficulty][5];
+		FALLINGPROB = probs[difficulty][6];
+		
 		init_gamemap();
 	}
 	
@@ -69,6 +91,10 @@ public class GameInstance implements Serializable{
 	
 	public int getCoin_count () {
 		return coin_count;
+	}
+	
+	public int getResurrectionCost () {
+		return RESURRECTIONCCOST;
 	}
 	
 	public LinkedHashMap<UUID, GameObject> get_gameMap () {
@@ -126,7 +152,7 @@ public class GameInstance implements Serializable{
 				
 				// Decide Orc Type
 				Orc orc = (Math.random() < GREENORCPROB) ?
-					new GreenOrc(orcPos, this) : new RedOrc(orcPos, this);
+					new GreenOrc(orcPos) : new RedOrc(orcPos);
 				register(orc);
 			}
 			
@@ -136,7 +162,7 @@ public class GameInstance implements Serializable{
 				register(c1);
 				
 				if (Math.random() < DOUBLECOINPROB) {
-					Coin c2 = new Coin(apply_offset(START, new float[]{COINOFFSET[0] + 35, COINOFFSET[1]}, COINVARIANCE));
+					Coin c2 = new Coin(apply_offset(c1.getPos(), new float[]{35, 0}, new float[]{0, 0}));
 					register(c2);
 				}
 			}
@@ -167,7 +193,7 @@ public class GameInstance implements Serializable{
 			register(m);
 		}
 		float[] orcPos = {xlocation + 71 * (BOSSPLATFORMCOMPONENTS / 2F), (float)(-50 + 50 * Math.random())};
-		GameObject boss = new BossGreenOrc(orcPos, this);
+		GameObject boss = new BossGreenOrc(orcPos);
 		register(boss);
 	}
 	

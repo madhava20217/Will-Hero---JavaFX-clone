@@ -1,4 +1,4 @@
-public class CoinChest extends Chest{
+public final class CoinChest extends Chest{
 	private final int coins_number;
 	
 	CoinChest (float[] pos) {

@@ -8,50 +8,65 @@
     Loading Screen: only meant for loading saved games
 -->
 
-<AnchorPane prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
-   <VBox alignment="CENTER" layoutX="250.0" layoutY="122.0" prefHeight="403.0" prefWidth="548.0" spacing="20.0">
-      <children>
-          <Button id="save_1" fx:id="load_1" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 1">
-              <font>
-                  <Font name="Calibri" size="30.0" />
-              </font>
-          </Button>
-         <Button id="save_2" fx:id="load_2" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 2">
-            <font>
-               <Font name="Calibri" size="30.0" />
-            </font>
-         </Button>
-         <Button id="save_3" fx:id="load_3" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 3">
-            <font>
-               <Font name="Calibri" size="30.0" />
-            </font>
-         </Button>
-         <Button id="save_4" fx:id="load_4" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 4">
-            <font>
-               <Font name="Calibri" size="30.0" />
-            </font>
-         </Button>
-         <Button id="save_5" fx:id="load_5" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Save 5">
-            <font>
-               <Font name="Calibri" size="30.0" />
-            </font>
-         </Button>
-         <Button fx:id="mainMenu" layoutX="13.0" layoutY="331.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #E55555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Return to Main Menu">
-            <font>
-               <Font name="Calibri" size="30.0" />
-            </font>
-         </Button>
-      </children>
-   </VBox>
-   <Label layoutX="295.0" layoutY="25.0" text="Load a Saved Game">
-      <font>
-         <Font name="System Bold" size="50.0" />
-      </font>
-   </Label>
+<AnchorPane prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;"
+            xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
+    <VBox alignment="CENTER" layoutX="250.0" layoutY="122.0" prefHeight="403.0" prefWidth="548.0" spacing="20.0">
+        <children>
+            <Button id="save_1" fx:id="load_1" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0"
+                    prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button"
+                    stylesheets="@../stylesheets/button.css" text="Save 1">
+                <font>
+                    <Font name="Calibri" size="30.0"/>
+                </font>
+            </Button>
+            <Button id="save_2" fx:id="load_2" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0"
+                    prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button"
+                    stylesheets="@../stylesheets/button.css" text="Save 2">
+                <font>
+                    <Font name="Calibri" size="30.0"/>
+                </font>
+            </Button>
+            <Button id="save_3" fx:id="load_3" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0"
+                    prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button"
+                    stylesheets="@../stylesheets/button.css" text="Save 3">
+                <font>
+                    <Font name="Calibri" size="30.0"/>
+                </font>
+            </Button>
+            <Button id="save_4" fx:id="load_4" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0"
+                    prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button"
+                    stylesheets="@../stylesheets/button.css" text="Save 4">
+                <font>
+                    <Font name="Calibri" size="30.0"/>
+                </font>
+            </Button>
+            <Button id="save_5" fx:id="load_5" mnemonicParsing="false" onMouseClicked="#loadGame" prefHeight="56.0"
+                    prefWidth="541.0" style="-fx-background-color: #55E555;" styleClass="my_button"
+                    stylesheets="@../stylesheets/button.css" text="Save 5">
+                <font>
+                    <Font name="Calibri" size="30.0"/>
+                </font>
+            </Button>
+            <Button fx:id="mainMenu" layoutX="13.0" layoutY="331.0" mnemonicParsing="false"
+                    onMouseClicked="#goToMainMenu" prefHeight="56.0" prefWidth="541.0"
+                    style="-fx-background-color: #E55555;" styleClass="my_button"
+                    stylesheets="@../stylesheets/button.css" text="Return to Main Menu">
+                <font>
+                    <Font name="Calibri" size="30.0"/>
+                </font>
+            </Button>
+        </children>
+    </VBox>
+    <Label layoutX="295.0" layoutY="25.0" text="Load a Saved Game">
+        <font>
+            <Font name="System Bold" size="50.0"/>
+        </font>
+    </Label>
 
-   <Label id="saveInfo" alignment="CENTER" layoutX="824.0" layoutY="250.0" opacity="0.0" prefHeight="241.0" prefWidth="220.0" style="-fx-background-color: #FFFFFF;" text="Label" wrapText="true">
-      <font>
-         <Font size="25.0" />
-      </font>
-   </Label>
+    <Label id="saveInfo" alignment="CENTER" layoutX="828.0" layoutY="348.0" opacity="0.0" prefHeight="241.0"
+           prefWidth="220.0" style="-fx-background-color: #7799CC;" text="Label" wrapText="true">
+        <font>
+            <Font size="25.0"/>
+        </font>
+    </Label>
 </AnchorPane>

@@ -1,4 +1,4 @@
-public class Platform extends GameObject{
+public final class Platform extends GameObject{
 	private static String getfile (int cat) {
 		assert (0 <= cat && cat <= 2);
 		return "images/platform_" + (cat + 1) + ".png";

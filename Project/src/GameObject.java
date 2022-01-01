@@ -1,12 +1,18 @@
+import javafx.animation.FadeTransition;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class GameObject implements Serializable{
+public abstract class GameObject implements Serializable{
+	@Serial
+	private static final long serialVersionUID = 33;
+	
 	// INSTANCE VARIABLES
 	private final UUID ID;
 	private final float[] pos;  // current position
@@ -84,10 +90,6 @@ public class GameObject implements Serializable{
 		return tangible;
 	}
 	
-	public float[] getSize () {
-		return size;
-	}
-	
 	public boolean isRendered () {
 		return rendered;
 	}
@@ -128,7 +130,7 @@ public class GameObject implements Serializable{
 	}
 	
 	public void bounce (GameObject other, float e) {
-		if (e < 0 || e > 1) return;
+		assert (0 <= e && e <= 1);
 		float[] overlaps = this.getOverlaps(other);
 		float x_overlap = overlaps[0];
 		float y_overlap = overlaps[1];
@@ -230,5 +232,14 @@ public class GameObject implements Serializable{
 			// it may happen that the game tries to remove an object just after it has ended.
 			GameController.getGameInstance().deregister(this);
 		}
+	}
+	
+	public void fade_out (int frames) {
+		FadeTransition fade = new FadeTransition(new Duration(frames));
+		fade.setNode(this.getModel());
+		fade.setFromValue(1);
+		fade.setToValue(0);
+		fade.setOnFinished(e->remove());
+		fade.play();
 	}
 }

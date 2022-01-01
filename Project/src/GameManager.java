@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.Serializable;
 
-public class GameManager extends Application implements Serializable{
+public final class GameManager extends Application implements Serializable{
 	public GameManager () {
 	}
 	

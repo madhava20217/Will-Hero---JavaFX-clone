@@ -3,7 +3,7 @@ import javafx.scene.Node;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hero extends GameObject{
+public final class Hero extends GameObject{
 	private static final int MAXLAUNCHES = 15;
 	private static final int LAUNCHVEL = 10;
 	private final GameInstance current_game;
@@ -14,7 +14,6 @@ public class Hero extends GameObject{
 	private int weapon_index;
 	
 	private boolean is_alive;
-	private final boolean resurrected;
 	
 	private boolean CROSSING;
 	private int moveCnt;
@@ -31,7 +30,6 @@ public class Hero extends GameObject{
 		weapon_index = 0;
 		
 		is_alive = true;
-		resurrected = false;
 		moveCnt = 0;
 		CROSSING = false;
 	}
@@ -125,7 +123,7 @@ public class Hero extends GameObject{
 			if (this.getPos()[1] > other.getPos()[1]) {
 				// if hero is below whatever he is colliding with, he will die
 				if (other instanceof Orc) {
-					((Orc) other).call_out_death();
+					((Orc)other).call_out_death();
 					die();
 					return;
 				}

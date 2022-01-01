@@ -1,19 +1,20 @@
 public abstract class Orc extends GameObject{
 	private int hit_endurance;
 	private final int coin_drop;
-	protected boolean isTaunting;				//variable in order to store information about the status of taunt
+	protected boolean isTaunting;        //variable in order to store information about the status of taunt
 	
 	private static final double CallOutProbability = 0.002;
 	
 	Orc (float[] position, float mass, String spritee, float[] size, int HP) {
 		super(position, new float[]{0, 3}, new float[]{0, 0}, mass, true, true, spritee, size);
 		this.hit_endurance = HP;
-		coin_drop = (int)(Math.random()*4)+1;
+		coin_drop = (int)(Math.random() * 4) + 1;
 		isTaunting = false;
 	}
 	
 	abstract void call_out ();
-	abstract void call_out_death();
+	
+	abstract void call_out_death ();
 	
 	@Override
 	public void move () {
@@ -26,9 +27,8 @@ public abstract class Orc extends GameObject{
 	
 	public void die () {
 		float[] pos = this.getPos();
-		this.remove();
+		fade_out(100);
 		Coin c = new Coin(pos, 0);
-		
 		GameController.getGameInstance().register(c);
 		c.collide(GameController.getHero());
 		GameController.getHero().add_coins(this.coin_drop);
@@ -41,10 +41,6 @@ public abstract class Orc extends GameObject{
 		}
 	}
 	
-	public void smash_hero (Hero hero) {
-		// Todo: related to hero death animation, and kill quip
-	}
-	
 	@Override
 	public void refresh () {
 		super.refresh();
@@ -53,8 +49,8 @@ public abstract class Orc extends GameObject{
 			call_out();
 		}
 	}
-
-	public void setUntaunt(){
+	
+	public void setUntaunt () {
 		this.isTaunting = false;
 	}
 }
