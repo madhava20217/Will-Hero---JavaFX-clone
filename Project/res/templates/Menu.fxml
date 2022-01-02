@@ -9,67 +9,55 @@
 <!--
 -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0"
-            prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
     <children>
-        <Button fx:id="exitButton" layoutX="984.0" layoutY="14.0" maxHeight="50.0" maxWidth="50.0" minHeight="50.0"
-                minWidth="50.0" mnemonicParsing="false" onMouseClicked="#exitGame" prefHeight="50.0" prefWidth="50.0"
-                style="-fx-background-color: transparent;" textFill="TRANSPARENT">
+        <Button fx:id="exitButton" layoutX="984.0" layoutY="14.0" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#exitGame" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent;" textFill="TRANSPARENT">
             <graphic>
                 <ImageView fx:id="exit" fitHeight="74.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../images/exit_icon.png"/>
+                    <Image url="@../images/exit_icon.png" />
                 </ImageView>
             </graphic>
         </Button>
-        <Label layoutX="285.0" layoutY="135.0" prefHeight="102.0" prefWidth="478.0" text="Will Hero">
+        <Label layoutX="285.0" layoutY="64.0" prefHeight="102.0" prefWidth="478.0" text="Will Hero">
             <font>
-                <Font name="Calibri Bold" size="120.0"/>
+                <Font name="Calibri Bold" size="120.0" />
             </font>
         </Label>
-        <VBox alignment="CENTER" layoutX="371.0" layoutY="278.0" prefHeight="291.0" prefWidth="320.0" spacing="10.0">
+        <VBox alignment="CENTER" layoutX="364.0" layoutY="235.0" prefHeight="291.0" prefWidth="320.0" spacing="20.0">
             <children>
-                <Button fx:id="startButton0" mnemonicParsing="false" onMouseClicked="#goToPlay" prefWidth="320.0"
-                        style="-fx-background-color: #55E555;" styleClass="my_button"
-                        stylesheets="@../stylesheets/button.css" text="New Game [Easy]" textFill="#3e3e3e">
+                <Button fx:id="startButton0" mnemonicParsing="false" onMouseClicked="#goToPlay" prefWidth="320.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="New Game [Easy]" textFill="#3e3e3e">
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                     <font>
-                        <Font name="Calibri" size="30.0"/>
+                        <Font name="Calibri" size="30.0" />
                     </font>
                 </Button>
-                <Button fx:id="startButton1" mnemonicParsing="false" onMouseClicked="#goToPlay" prefWidth="320.0"
-                        style="-fx-background-color: #55E555;" styleClass="my_button"
-                        stylesheets="@../stylesheets/button.css" text="New Game [Normal]" textFill="#3e3e3e">
+                <Button fx:id="startButton1" mnemonicParsing="false" onMouseClicked="#goToPlay" prefWidth="320.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="New Game [Normal]" textFill="#3e3e3e">
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                     <font>
-                        <Font name="Calibri" size="30.0"/>
+                        <Font name="Calibri" size="30.0" />
                     </font>
                 </Button>
-                <Button fx:id="startButton2" mnemonicParsing="false" onMouseClicked="#goToPlay" prefWidth="320.0"
-                        style="-fx-background-color: #55E555;" styleClass="my_button"
-                        stylesheets="@../stylesheets/button.css" text="New Game [Hard]" textFill="#3e3e3e">
+                <Button fx:id="startButton2" mnemonicParsing="false" onMouseClicked="#goToPlay" prefWidth="320.0" style="-fx-background-color: #55E555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="New Game [Hard]" textFill="#3e3e3e">
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                     <font>
-                        <Font name="Calibri" size="30.0"/>
+                        <Font name="Calibri" size="30.0" />
                     </font>
                 </Button>
-                <Button fx:id="loadButton" mnemonicParsing="false" onMouseClicked="#goToLoadScreen" prefWidth="320.0"
-                        style="-fx-background-color: #55E555;" styleClass="my_button"
-                        stylesheets="@../stylesheets/button.css" text="Load Saved Game">
+                <Button fx:id="loadButton" mnemonicParsing="false" onMouseClicked="#goToLoadScreen" prefWidth="320.0" style="-fx-background-color: #8888EE;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Load Saved Game">
                     <font>
-                        <Font name="Calibri" size="30.0"/>
+                        <Font name="Calibri" size="30.0" />
                     </font>
                 </Button>
             </children>
         </VBox>
     </children>
     <opaqueInsets>
-        <Insets/>
+        <Insets />
     </opaqueInsets>
 </AnchorPane>

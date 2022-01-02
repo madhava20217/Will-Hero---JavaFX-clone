@@ -2,9 +2,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-//TODO: improve resurrection method to take into account that the first jump can be on fallingplatform, otherwise it
-// just spawns without any buffer.
-
 public final class GameInstance implements Serializable{
 	private Hero hero;
 	private LinkedHashMap<UUID, GameObject> gamemap;
@@ -211,7 +208,6 @@ public final class GameInstance implements Serializable{
 	public int resurrect () {
 		/*
 		 * Method for resurrection: -1 for coins less than cost, 0 for success, and 1 for no platform being available
-		 * TODO: this is functional, but O(n)
 		 */
 		if (getCoin_count() < RESURRECTIONCCOST) return -1;
 		double XPos = hero.getPos()[0];
@@ -226,15 +222,13 @@ public final class GameInstance implements Serializable{
 		
 		boolean falling = false;
 		
-		// TODO: would be cleaner with a for-each loop, although flexing iterator DP is kinda cool.
 		while (iter.hasNext()) {
 			GameObject iterating = iter.next();
 			
 			if ((iterating instanceof Platform || (iterating instanceof FallingPlatform
 				&& !((FallingPlatform)iterating).getCollapsing()))
 				&& iterating.getPos()[0] > XPos && iterating.getVel()[1] < 0.1) {
-				// TODO: doesnt work because of the way fallingplatform is configured. could be fixed but im not too sure.
-				//it is a Platform!
+				//it is a Platform
 				viableXPos = iterating.getPos()[0];
 				break;
 			}
@@ -258,7 +252,6 @@ public final class GameInstance implements Serializable{
 		hero.set_vel(0, 0);
 		hero.set_vel(1, 0);
 		
-		// TODO dont need to be a separate method imo
 		setResurrection();
 		resurrectionDeduction();
 		

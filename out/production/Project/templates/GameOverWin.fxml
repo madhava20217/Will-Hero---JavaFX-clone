@@ -5,30 +5,36 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
+<AnchorPane prefHeight="590.0" prefWidth="1048.0" style="-fx-background-color: #99CCFF;"
+            xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
     <children>
-        <Button fx:id="stuff" layoutX="258.0" layoutY="441.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu" prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #E55555;" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="Return to Main Menu">
+        <Button fx:id="stuff" layoutX="258.0" layoutY="441.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu"
+                prefHeight="56.0" prefWidth="541.0" style="-fx-background-color: #E55555;" styleClass="my_button"
+                stylesheets="@../stylesheets/button.css" text="Return to Main Menu">
             <font>
-                <Font name="Calibri" size="39.0" />
+                <Font name="Calibri" size="39.0"/>
             </font>
         </Button>
         <Label layoutX="155.0" layoutY="135.0" text="VICTORY ACHIEVED" textFill="#bc9a03">
             <font>
-                <Font name="Microsoft Sans Serif" size="76.0" />
+                <Font name="Microsoft Sans Serif" size="76.0"/>
             </font>
         </Label>
-      <Label layoutX="318.0" layoutY="295.0" text="Coins collected:">
-         <font>
-            <Font name="Microsoft Sans Serif" size="28.0" />
-         </font>
-      </Label>
-        <Label id="coins" alignment="CENTER_RIGHT" layoutX="529.0" layoutY="286.0" prefHeight="51.0" prefWidth="91.0" text="Label" textFill="#c69342">
+        <Label layoutX="318.0" layoutY="295.0" text="Coins collected:">
             <font>
-                <Font name="Microsoft Sans Serif" size="36.0" />
-            </font></Label>
-        <ImageView fitHeight="48.0" fitWidth="29.0" layoutX="627.0" layoutY="296.0" pickOnBounds="true" preserveRatio="true">
+                <Font name="Microsoft Sans Serif" size="28.0"/>
+            </font>
+        </Label>
+        <Label id="coins" alignment="CENTER_RIGHT" layoutX="529.0" layoutY="286.0" prefHeight="51.0" prefWidth="91.0"
+               text="Label" textFill="#c69342">
+            <font>
+                <Font name="Microsoft Sans Serif" size="36.0"/>
+            </font>
+        </Label>
+        <ImageView fitHeight="48.0" fitWidth="29.0" layoutX="627.0" layoutY="296.0" pickOnBounds="true"
+                   preserveRatio="true">
             <image>
-                <Image url="@../images/coin.png" />
+                <Image url="@../images/coin.png"/>
             </image>
         </ImageView>
     </children>

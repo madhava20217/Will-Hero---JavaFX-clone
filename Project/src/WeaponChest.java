@@ -12,6 +12,7 @@ public final class WeaponChest extends Chest{
 		for (Weapon w : hero.getAvailable_weapons()) {
 			if (w.equals(weapon)) {
 				w.upgrade();
+				GameController.setWeapon(w);
 				return;
 			}
 		}

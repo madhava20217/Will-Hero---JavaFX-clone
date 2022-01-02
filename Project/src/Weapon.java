@@ -33,8 +33,12 @@ public final class Weapon implements Serializable{
 		return sprite;
 	}
 	
+	public int getLevel() {return level;}
+	
 	public void upgrade () {
-		level++;
+		if(level < 3) {
+			level++;
+		}
 	}
 	
 	@Override

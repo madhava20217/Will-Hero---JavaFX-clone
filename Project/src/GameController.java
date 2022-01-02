@@ -21,10 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
-/*
-TODO: 1) Add delete save feature 2) Add tooltip indicating save/load file status
-TODO: 2) Create a blank label and have it display save game information: have them deserialised and then display it
- */
 public final class GameController{
 	// JAVAFX OBJECTS
 	private static Stage stage;
@@ -32,6 +28,7 @@ public final class GameController{
 	private static AnchorPane frame;
 	private static AnimationTimer clock;
 	private static ImageView weapon;
+	private static Label weapon_label;
 	
 	// GAME OBJECTS
 	private static GameInstance gameInstance;
@@ -49,6 +46,7 @@ public final class GameController{
 		weapon.setImage(new Image(w.getSprite()));
 		weapon.setFitWidth(w.getSize()[0]);
 		weapon.setFitHeight(w.getSize()[1]);
+		weapon_label.setText(Integer.toString(w.getLevel()));
 	}
 	
 	public static Hero getHero () {
@@ -103,7 +101,6 @@ public final class GameController{
 	
 	@FXML
 	private void goToPlay (MouseEvent clicker) {
-		// TODO: audio stuff?
 		Toolkit.getDefaultToolkit().beep();
 		int D = 1;
 		if (clicker != null) {
@@ -117,15 +114,15 @@ public final class GameController{
 		// label of the distance counter in game header
 		final Label distance;
 		final Label count;
-		Label d; // temp variable
-		Label c; // temp variable
+		Label d; // temp variables
+		Label c;
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(GameController.class.getResource("templates/PlayScreen.fxml"));
 			curr_scene = new Scene(fxmlLoader.load());
 			stage.setScene(curr_scene);
 			frame = (AnchorPane)curr_scene.lookup("#frame");
 			weapon = (ImageView)curr_scene.lookup("#weapon");
-			
+			weapon_label = (Label)curr_scene.lookup("#weapon_level");
 			gameInstance = getCurrGameInstance(D);
 			
 			map = gameInstance.get_gameMap();
@@ -243,7 +240,7 @@ public final class GameController{
 	}
 	
 	@FXML
-	private void endGameButtonHandler (MouseEvent click) {
+	private void endGameButtonHandler (MouseEvent ignored) {
 		Button resurrect = (Button)stage.getScene().lookup("#resurrect");
 		Button endGame = (Button)stage.getScene().lookup("#endgame");
 		resurrect.setOnMouseClicked(null);
@@ -399,7 +396,9 @@ public final class GameController{
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream("Project/res/saves/save" + slot + ".txt"));
 			gameInstance = (GameInstance)(in.readObject());
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+			Label text = (Label)stage.getScene().lookup("#saveInfo");
+			text.setText("This save\ncannot be\nloaded");
+			return;
 		}
 		goToPlay(null);
 	}

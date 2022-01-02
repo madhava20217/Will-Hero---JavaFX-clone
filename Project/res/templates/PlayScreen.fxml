@@ -11,72 +11,63 @@
     background will be in root pane, but root pain will not support clicking for hero movement
 -->
 
-<AnchorPane id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css"
-            xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
+<AnchorPane id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1048.0" styleClass="pane_main" stylesheets="@../stylesheets/play_screen.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
     <children>
-        <AnchorPane id="frame" disable="true" layoutY="60.0" onMouseClicked="#handle_click" prefHeight="530.0"
-                    prefWidth="1048.0">
+        <AnchorPane id="frame" disable="true" layoutY="60.0" onMouseClicked="#handle_click" prefHeight="530.0" prefWidth="1048.0">
         </AnchorPane>
         <AnchorPane prefHeight="60.0" prefWidth="1048.0" style="-fx-background-color: #88ccff;">
             <children>
-                <ImageView id="coin_count_icon" fitHeight="33.0" fitWidth="33.0" layoutX="23.0" layoutY="14.0"
-                           pickOnBounds="true" preserveRatio="true">
+                <ImageView id="coin_count_icon" fitHeight="33.0" fitWidth="33.0" layoutX="23.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/coin.png"/>
+                        <Image url="@../images/coin.png" />
                     </image>
                 </ImageView>
-                <Label id="coin_count" layoutX="61.0" layoutY="12.0" prefHeight="33.0" prefWidth="79.0" text="X 25"
-                       textFill="WHITE">
+                <Label id="coin_count" layoutX="61.0" layoutY="12.0" prefHeight="33.0" prefWidth="79.0" text="X 25" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="25.0"/>
+                        <Font name="System Bold" size="25.0" />
                     </font>
                 </Label>
-                <Label fx:id="distance" alignment="CENTER" layoutX="489.0" layoutY="13.0" prefHeight="34.0"
-                       prefWidth="70.0" text="009" textFill="WHITE">
+                <Label fx:id="distance" alignment="CENTER" layoutX="489.0" layoutY="13.0" prefHeight="34.0" prefWidth="70.0" text="009" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="25.0"/>
+                        <Font name="System Bold" size="25.0" />
                     </font>
                 </Label>
-                <VBox alignment="CENTER_LEFT" layoutX="140.0" prefHeight="60.0" prefWidth="100.0">
+            <Label id="weapon_level" fx:id="weapon_level" layoutX="223.0" layoutY="13.0" prefHeight="30.0" prefWidth="100.0" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Label>
+                <VBox alignment="CENTER_LEFT" layoutX="150.0" prefHeight="60.0" prefWidth="100.0">
                     <children>
-                        <ImageView id="weapon" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true"/>
+                        <ImageView id="weapon" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" />
                     </children>
                 </VBox>
-                <HBox alignment="CENTER" layoutX="950.0" layoutY="10.0" prefHeight="40.0" prefWidth="98.0"
-                      spacing="7.0">
+                <HBox alignment="CENTER" layoutX="950.0" layoutY="10.0" prefHeight="40.0" prefWidth="98.0" spacing="7.0">
                     <children>
-                        <Button fx:id="pauseButton" mnemonicParsing="false" onMouseClicked="#goToPause"
-                                prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #222277;" text="Pause"
-                                textFill="WHITE"/>
+                        <Button fx:id="pauseButton" mnemonicParsing="false" onMouseClicked="#goToPause" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #222277;" text="Pause" textFill="WHITE" />
                     </children>
                 </HBox>
             </children>
         </AnchorPane>
-        <VBox id="vbox" layoutX="282.0" layoutY="149.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="135.0"
-              prefWidth="521.0" spacing="20.0" visible="false">
+        <VBox id="vbox" layoutX="282.0" layoutY="149.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="135.0" prefWidth="521.0" spacing="20.0" visible="false">
             <children>
-                <ImageView id="message" fitHeight="100.0" fitWidth="498.0" opacity="0.0" pickOnBounds="true"
-                           preserveRatio="true">
+                <ImageView id="message" fitHeight="100.0" fitWidth="498.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/pixel-speech-bubble.png"/>
+                        <Image url="@../images/pixel-speech-bubble.png" />
                     </image>
                 </ImageView>
-                <Button id="resurrect" mnemonicParsing="false" onMouseClicked="#resurrectButtonHandler"
-                        prefHeight="25.0" prefWidth="528.0" styleClass="my_button"
-                        stylesheets="@../stylesheets/button.css" text="RESURRECT (COST 10 COINS)" wrapText="true">
+                <Button id="resurrect" mnemonicParsing="false" onMouseClicked="#resurrectButtonHandler" prefHeight="25.0" prefWidth="528.0" styleClass="my_button" stylesheets="@../stylesheets/button.css" text="RESURRECT (COST 10 COINS)" wrapText="true">
                     <font>
-                        <Font name="Calibri" size="31.0"/>
+                        <Font name="Calibri" size="31.0" />
                     </font>
                 </Button>
-                <Button id="endgame" mnemonicParsing="false" onMouseClicked="#endGameButtonHandler" prefHeight="25.0"
-                        prefWidth="580.0" styleClass="my_button" text="END GAME" wrapText="true">
+                <Button id="endgame" mnemonicParsing="false" onMouseClicked="#endGameButtonHandler" prefHeight="25.0" prefWidth="580.0" styleClass="my_button" text="END GAME" wrapText="true">
                     <stylesheets>
-                        <URL value="@../stylesheets/play_screen.css"/>
-                        <URL value="@../stylesheets/button.css"/>
+                        <URL value="@../stylesheets/play_screen.css" />
+                        <URL value="@../stylesheets/button.css" />
                     </stylesheets>
                     <font>
-                        <Font name="Calibri" size="31.0"/>
+                        <Font name="Calibri" size="31.0" />
                     </font>
                 </Button>
             </children>
