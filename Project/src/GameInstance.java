@@ -194,7 +194,7 @@ public final class GameInstance implements Serializable{
 		register(boss);
 	}
 	
-	// REGISTRATION AND DEREGISTRATION OF OBJECTS
+	// REGISTRATION AND DEREGISTRATION OF OBJECTS - this is a Listener Design Pattern.
 	public void deregister (GameObject object) {
 		gamemap.remove(object.getID());
 	}

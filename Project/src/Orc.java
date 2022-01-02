@@ -3,7 +3,7 @@ public abstract class Orc extends GameObject{
 	private final int coin_drop;
 	protected boolean isTaunting;        //variable in order to store information about the status of taunt
 	
-	private static final double CallOutProbability = 0.002;
+	private static final double CallOutProbability = 0.0015;
 	
 	Orc (float[] position, float mass, String spritee, float[] size, int HP) {
 		super(position, new float[]{0, 3}, new float[]{0, 0}, mass, true, true, spritee, size);

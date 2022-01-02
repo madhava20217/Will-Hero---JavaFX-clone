@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Hero extends GameObject{
-	private static final int MAXLAUNCHES = 15;
+	private static final int MAXLAUNCHES = 4;
 	private static final int LAUNCHVEL = 10;
 	private final GameInstance current_game;
 	
@@ -38,6 +38,8 @@ public final class Hero extends GameObject{
 	public Helmet get_helmet () {
 		return current_helmet;
 	}
+	
+	public Weapon getCurrent_weapon() {return current_weapon;}
 	
 	public List<Weapon> getAvailable_weapons () {
 		return available_weapons;
@@ -82,7 +84,7 @@ public final class Hero extends GameObject{
 		if (moveCnt >= MAXLAUNCHES || (Math.abs(get_vel(0)) > 1)) return;
 		moveCnt++;
 		set_vel(0, LAUNCHVEL);
-		if (current_weapon != null) current_weapon.use(this);
+		if (current_weapon != null) current_weapon.use(this); // Strategy Design Pattern
 	}
 	
 	@Override

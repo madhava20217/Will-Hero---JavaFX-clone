@@ -43,6 +43,7 @@ public final class GameController{
 	}
 	
 	public static void setWeapon (Weapon w) {
+		if(w == null) return;
 		weapon.setImage(new Image(w.getSprite()));
 		weapon.setFitWidth(w.getSize()[0]);
 		weapon.setFitHeight(w.getSize()[1]);
@@ -74,7 +75,7 @@ public final class GameController{
 	}
 	
 	private GameInstance getCurrGameInstance (int difficulty) {
-		// singleton method
+		// Singleton Design Pattern
 		if (gameInstance == null) {
 			return new GameInstance(difficulty);
 		} else {
@@ -127,7 +128,7 @@ public final class GameController{
 			
 			map = gameInstance.get_gameMap();
 			hero = gameInstance.getHero();
-			
+			setWeapon(hero.getCurrent_weapon());
 			for (GameObject o : map.values()) {
 				if (o.getModel() == null) { // happens when you deserialise
 					o.setModel();
@@ -147,8 +148,8 @@ public final class GameController{
 			@Override
 			public void handle (long l) {
 				List<GameObject> objects = map.values().stream().toList();
-				for (GameObject obj : objects) {
-					obj.move();
+				for (GameObject obj : objects) { // List of listeners
+					obj.move(); // announcing to a listener
 					if (obj.isRendered()) {
 						obj.refresh();
 					}
